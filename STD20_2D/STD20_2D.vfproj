@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{94231087-9E1F-43D9-A3E9-41305D2D50D0}">
+	<Platforms>
+		<Platform Name="x64"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole" StackReserveSize="30000000" StackCommitSize="30000000"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole" StackReserveSize="30000000" StackCommitSize="30000000"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath="..\SOURCE CODE\ALLOCATION_VARIABLE_FILE.f90"/>
+		<File RelativePath="..\SOURCE CODE\ANALYTICAL_CASES.f90"/>
+		<File RelativePath="..\SOURCE CODE\CAL_CLCT_QUADRIC.f90"/>
+		<File RelativePath="..\SOURCE CODE\CAL_ERROR.f90"/>
+		<File RelativePath="..\SOURCE CODE\CAL_GRID_SIZE.f90"/>
+		<File RelativePath="..\SOURCE CODE\CAL_PROBE.f90"/>
+		<File RelativePath="..\SOURCE CODE\CAL_QUADRIC_2D.f90"/>
+		<File RelativePath="..\SOURCE CODE\csv_file.f90"/>
+		<File RelativePath="..\SOURCE CODE\csv_file_1d.f90"/>
+		<File RelativePath="..\SOURCE CODE\csv_file_2d.f90"/>
+		<File RelativePath="..\SOURCE CODE\EXIT.f90"/>
+		<File RelativePath="..\SOURCE CODE\FUNCTIONAL.f90"/>
+		<File RelativePath="..\SOURCE CODE\IBM_CAL_VELON_FOR_BN1.f90"/>
+		<File RelativePath="..\SOURCE CODE\IBM_INITIATION.f90"/>
+		<File RelativePath="..\SOURCE CODE\IBM_PRIMITIVE2DERIVATIVE.f90"/>
+		<File RelativePath="..\SOURCE CODE\IBM_TYPE_FILTER.f90"/>
+		<File RelativePath="..\SOURCE CODE\INITIATION.f90"/>
+		<File RelativePath="..\SOURCE CODE\INTERSECTION_QUADRIC.f90"/>
+		<File RelativePath="..\SOURCE CODE\MAIN_QUADRIC.f90"/>
+		<File RelativePath="..\SOURCE CODE\MAJOR_CONFIGURATION.f90"/>
+		<File RelativePath="..\SOURCE CODE\MESHING_FIXED.f90"/>
+		<File RelativePath="..\SOURCE CODE\MODULE.f90"/>
+		<File RelativePath="..\SOURCE CODE\OUTPUT.f90"/>
+		<File RelativePath="..\SOURCE CODE\OUTPUT_INTERSECTION.f90"/>
+		<File RelativePath="..\SOURCE CODE\OUTPUT_VELOCITY_PROFILE.f90"/>
+		<File RelativePath="..\SOURCE CODE\POSTPROCESSING.f90"/>
+		<File RelativePath="..\SOURCE CODE\PROGRAM_RESTART.f90"/>
+		<File RelativePath="..\SOURCE CODE\SOLID_PRESSURE_MODIFY.f90"/>
+		<File RelativePath="..\SOURCE CODE\TIMEADVANCE1_ME.f90"/>
+		<File RelativePath="..\SOURCE CODE\TIMEADVANCE2_PPE.f90"/>
+		<File RelativePath="..\SOURCE CODE\TIMEADVANCE3_UPDATEUP.f90"/>
+		<File RelativePath="..\SOURCE CODE\TIMEADVANCE_INSE_FSM_RK3CN.f90"/>
+		<File RelativePath="..\SOURCE CODE\TRUECARTESIAN.f90"/></Filter></Files>
+	<Globals/></VisualStudioProject>

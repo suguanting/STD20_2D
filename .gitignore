@@ -3,6 +3,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# 自定义
+# ignore a file type
+*.PLT
+*.dat
+*.DAT
+*.TXT
+# 自定义
+
 # User-specific files
 *.rsuser
 *.suo

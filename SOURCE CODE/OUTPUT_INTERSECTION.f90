@@ -1,0 +1,30 @@
+    SUBROUTINE OUTPUT_INTERSECTION
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+    CHARACTER(LEN=6)CHAR_STEP,CHAR_PSI,CHAR_PHIW,CHAR_PSIW
+
+    WRITE(CHAR_STEP,'(I4.4)') NSTEP
+    WRITE(CHAR_PSI,'(I3.2)')  0
+    WRITE(CHAR_PSIW,'(I2.2)') 50
+    WRITE(CHAR_PHIW,'(I2.2)') IDNINT(32.5D0)
+
+    OPEN(UNIT=550,FILE='ITRSCTN_PSI'//TRIM(CHAR_PSI)//'_PHIW'//TRIM(CHAR_PHIW)//'_PSIW'//TRIM(CHAR_PSIW)//'_N'//TRIM(CHAR_STEP)//'.TXT')
+
+    N=0
+    DO J=1,JM-1,1
+        DO I=IM-1,1,-1
+            IF( TYPEUX(I,J)*TYPEUY(I,J)<100 )THEN
+                WRITE(550,"( I6,3(1X,F12.8) )") N,X(I),YPU(J),1.0D0!ZITT(N)二维下给定值
+                N=N+1
+            END IF
+            IF( TYPEVX(I,J)*TYPEVY(I,J)<100 )THEN
+                WRITE(550,"( I6,3(1X,F12.8) )") N,XPV(I),Y(J),1.0D0!ZITT(N)二维下给定值
+                N=N+1
+            END IF
+        END DO
+    END DO
+
+    CLOSE(550)
+
+    END SUBROUTINE
