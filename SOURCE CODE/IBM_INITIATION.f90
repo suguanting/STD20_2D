@@ -15,10 +15,10 @@
         !计算刚开始,没有上一层数据，需人为设置或求解
         IF(CASE_TYPE==1)THEN
             !人为设置
-            TYPEUXN=10
-            TYPEVXN=10
-            TYPEUYN=10
-            TYPEVYN=10
+            TYPEUXM=10
+            TYPEVXM=10
+            TYPEUYM=10
+            TYPEVYM=10
 
             IB_ITSCT_UXN=0.0D0
             IB_ITSCT_VXN=0.0D0
@@ -43,10 +43,10 @@
             IF( BOUNDARY_EXISTENCE_2==1)CALL INTERSECTION_QUADRIC(QUADRIC_GEOMETRICAL_2,QUADRIC_KINETIC_2)
             T=DT*DBLE(NSTEP)
 
-            TYPEUXN=TYPEUX
-            TYPEVXN=TYPEVX
-            TYPEUYN=TYPEUY
-            TYPEVYN=TYPEVY
+            TYPEUXM=TYPEUX
+            TYPEVXM=TYPEVX
+            TYPEUYM=TYPEUY
+            TYPEVYM=TYPEVY
 
             IB_ITSCT_UXN=IB_ITSCT_UX
             IB_ITSCT_VXN=IB_ITSCT_VX
@@ -64,10 +64,10 @@
         END IF
     ELSE
         !直接储存上一层数据
-        TYPEUXN=TYPEUX
-        TYPEVXN=TYPEVX
-        TYPEUYN=TYPEUY
-        TYPEVYN=TYPEVY
+        TYPEUXM=TYPEUX
+        TYPEVXM=TYPEVX
+        TYPEUYM=TYPEUY
+        TYPEVYM=TYPEVY
 
         IB_ITSCT_UXN=IB_ITSCT_UX
         IB_ITSCT_VXN=IB_ITSCT_VX
@@ -237,83 +237,83 @@
     !DO J=1,JM-1,1
     !    DO I=1,IM-1,1
     !
-    !    IF(TYPEVXN(I,J)==1)THEN
+    !    IF(TYPEVXM(I,J)==1)THEN
     !        DE=XPV(I+1)-XPV(I)
     !        DB=XPV(I)-IB_ITSCT_VX(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_VXN(I,J)=IB_B*IB_IPSVL_VX(I,J)+IB_I*VN(I,J)+IB_IE*VN(I+1,J)
-    !    ELSE IF(TYPEVXN(I,J)==-1)THEN
+    !    ELSE IF(TYPEVXM(I,J)==-1)THEN
     !        DE=-XPV(I-1)+XPV(I)
     !        DB=-XPV(I)+IB_ITSCT_VX(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_VXN(I,J)=IB_B*IB_IPSVL_VX(I,J)+IB_I*VN(I,J)+IB_IE*VN(I-1,J)
-    !    ELSE IF(TYPEVXN(I,J)==0)THEN
+    !    ELSE IF(TYPEVXM(I,J)==0)THEN
     !        VISCOUS_VXN(I,J)=0.0D0
-    !    ELSE IF(TYPEVXN(I,J)==-10)THEN
+    !    ELSE IF(TYPEVXM(I,J)==-10)THEN
     !        VISCOUS_VXN(I,J)=0.0D0
     !    END IF
     !
-    !    IF(TYPEVYN(I,J)==1)THEN
+    !    IF(TYPEVYM(I,J)==1)THEN
     !        DE=Y(J+1)-Y(J)
     !        DB=Y(J)-IB_ITSCT_VY(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_VYN(I,J)=IB_B*IB_IPSVL_VY(I,J)+IB_I*VN(I,J)+IB_IE*VN(I,J+1)
-    !    ELSE IF(TYPEVYN(I,J)==-1)THEN
+    !    ELSE IF(TYPEVYM(I,J)==-1)THEN
     !        DE=-Y(J-1)+Y(J)
     !        DB=-Y(J)+IB_ITSCT_VY(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_VYN(I,J)=IB_B*IB_IPSVL_VY(I,J)+IB_I*VN(I,J)+IB_IE*VN(I,J-1)
-    !    ELSE IF(TYPEVYN(I,J)==0)THEN
+    !    ELSE IF(TYPEVYM(I,J)==0)THEN
     !        VISCOUS_VYN(I,J)=0.0D0
-    !    ELSE IF(TYPEVYN(I,J)==-10)THEN
+    !    ELSE IF(TYPEVYM(I,J)==-10)THEN
     !        VISCOUS_VYN(I,J)=0.0D0
     !    END IF
     !
-    !    IF(TYPEUXN(I,J)==1)THEN
+    !    IF(TYPEUXM(I,J)==1)THEN
     !        DE=X(I+1)-X(I)
     !        DB=X(I)-IB_ITSCT_UX(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_UXN(I,J)=IB_B*IB_IPSVL_UX(I,J)+IB_I*UN(I,J)+IB_IE*UN(I+1,J)
-    !    ELSE IF(TYPEUXN(I,J)==-1)THEN
+    !    ELSE IF(TYPEUXM(I,J)==-1)THEN
     !        DE=-X(I-1)+X(I)
     !        DB=-X(I)+IB_ITSCT_UX(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_UXN(I,J)=IB_B*IB_IPSVL_UX(I,J)+IB_I*UN(I,J)+IB_IE*UN(I-1,J)
-    !    ELSE IF(TYPEUXN(I,J)==0)THEN
+    !    ELSE IF(TYPEUXM(I,J)==0)THEN
     !        VISCOUS_UXN(I,J)=0.0D0
-    !    ELSE IF(TYPEUXN(I,J)==-10)THEN
+    !    ELSE IF(TYPEUXM(I,J)==-10)THEN
     !        VISCOUS_UXN(I,J)=0.0D0
     !    END IF
     !
-    !    IF(TYPEUYN(I,J)==1)THEN
+    !    IF(TYPEUYM(I,J)==1)THEN
     !        DE=YPU(J+1)-YPU(J)
     !        DB=YPU(J)-IB_ITSCT_UY(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_UYN(I,J)=IB_B*IB_IPSVL_UY(I,J)+IB_I*UN(I,J)+IB_IE*UN(I,J+1)
-    !    ELSE IF(TYPEUYN(I,J)==-1)THEN
+    !    ELSE IF(TYPEUYM(I,J)==-1)THEN
     !        DE=-YPU(J-1)+YPU(J)
     !        DB=-YPU(J)+IB_ITSCT_UY(I,J)
     !        IB_B = 2.0D0/( DB*(DB+DE) )
     !        IB_I =-2.0D0/( DB*DE )
     !        IB_IE= 2.0D0/( DE*(DB+DE) )
     !        VISCOUS_UYN(I,J)=IB_B*IB_IPSVL_UY(I,J)+IB_I*UN(I,J)+IB_IE*UN(I,J-1)
-    !    ELSE IF(TYPEUYN(I,J)==0)THEN
+    !    ELSE IF(TYPEUYM(I,J)==0)THEN
     !        VISCOUS_UYN(I,J)=0.0D0
-    !    ELSE IF(TYPEUYN(I,J)==-10)THEN
+    !    ELSE IF(TYPEUYM(I,J)==-10)THEN
     !        VISCOUS_UYN(I,J)=0.0D0
     !    END IF
     !
@@ -356,56 +356,56 @@
     !DO J=1,JM-1,1
     !    DO I=1,IM-1,1
     !
-    !        IF(TYPEVXN(I,J)==1)THEN
+    !        IF(TYPEVXM(I,J)==1)THEN
     !            CALL LINEAR_INTERPOLATION( VN(I+1,J),VR,VN(I  ,J),XPV(I+1),X(I+1),XPV(I  ) )
     !            CALL LINEAR_INTERPOLATION( UN(I+1,J),UR,UN(I+1,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
     !            CONVECT_VXN(I,J)=( UR*VR-IB_IPSVL_VX(I,J)*IB_IPSVL_VXU(I,J) )/( X(I+1)-IB_ITSCT_VX(I,J) )
-    !        ELSE IF(TYPEVXN(I,J)==-1)THEN
+    !        ELSE IF(TYPEVXM(I,J)==-1)THEN
     !            CALL LINEAR_INTERPOLATION( VN(I  ,J),VL,VN(I-1,J),XPV(I  ),X(I  ),XPV(I-1) )
     !            CALL LINEAR_INTERPOLATION( UN(I  ,J),UL,UN(I  ,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
     !            CONVECT_VXN(I,J)=( UL*VL-IB_IPSVL_VX(I,J)*IB_IPSVL_VXU(I,J) )/( X(I)-IB_ITSCT_VX(I,J) )
-    !        ELSE IF(TYPEVXN(I,J)==0)THEN
+    !        ELSE IF(TYPEVXM(I,J)==0)THEN
     !            CONVECT_VXN(I,J)=0.0D0
-    !        ELSE IF(TYPEVXN(I,J)==-10)THEN
+    !        ELSE IF(TYPEVXM(I,J)==-10)THEN
     !            CONVECT_VXN(I,J)=0.0D0
     !        END IF
     !
-    !        IF(TYPEVYN(I,J)==1)THEN
+    !        IF(TYPEVYM(I,J)==1)THEN
     !            VU=0.5D0*( VN(I,J+1)+VN(I,J) )
     !            CONVECT_VYN(I,J)=( VU**2.0D0-IB_IPSVL_VY(I,J)**2.0D0 )/( YPU(J)-IB_ITSCT_VY(I,J) )
-    !        ELSE IF(TYPEVYN(I,J)==-1)THEN
+    !        ELSE IF(TYPEVYM(I,J)==-1)THEN
     !            VD=0.5D0*( VN(I,J-1)+VN(I,J) )
     !            CONVECT_VYN(I,J)=( VD**2.0D0-IB_IPSVL_VY(I,J)**2.0D0 )/( YPU(J-1)-IB_ITSCT_VY(I,J) )
-    !        ELSE IF(TYPEVYN(I,J)==0)THEN
+    !        ELSE IF(TYPEVYM(I,J)==0)THEN
     !            CONVECT_VYN(I,J)=0.0D0
-    !        ELSE IF(TYPEVYN(I,J)==-10)THEN
+    !        ELSE IF(TYPEVYM(I,J)==-10)THEN
     !            CONVECT_VYN(I,J)=0.0D0
     !        END IF
     !
     !
-    !        IF(TYPEUXN(I,J)==1)THEN
+    !        IF(TYPEUXM(I,J)==1)THEN
     !            UR=0.5D0*( UN(I+1,J)+UN(I,J) )
     !            CONVECT_UXN(I,J)=( UR**2.0D0-IB_IPSVL_UX(I,J)**2.0D0 )/( XPV(I)-IB_ITSCT_UX(I,J) )
-    !        ELSE IF(TYPEUXN(I,J)==-1)THEN
+    !        ELSE IF(TYPEUXM(I,J)==-1)THEN
     !            UL=0.5D0*( UN(I-1,J)+UN(I,J) )
     !            CONVECT_UXN(I,J)=( UL**2.0D0-IB_IPSVL_UX(I,J)**2.0D0 )/( XPV(I-1)-IB_ITSCT_UX(I,J) )
-    !        ELSE IF(TYPEUXN(I,J)==0)THEN
+    !        ELSE IF(TYPEUXM(I,J)==0)THEN
     !            CONVECT_UXN(I,J)=0.0D0
-    !        ELSE IF(TYPEUXN(I,J)==-10)THEN
+    !        ELSE IF(TYPEUXM(I,J)==-10)THEN
     !            CONVECT_UXN(I,J)=0.0D0
     !        END IF
     !
-    !        IF(TYPEUYN(I,J)==1)THEN
+    !        IF(TYPEUYM(I,J)==1)THEN
     !            CALL LINEAR_INTERPOLATION( UN(I,J+1),UU,UN(I,J  ),YPU(J+1),Y(J+1),YPU(J  ) )
     !            CALL LINEAR_INTERPOLATION( VN(I,J+1),VU,VN(I-1,J+1),XPV(I  ),X(I  ),XPV(I-1) )
     !            CONVECT_UYN(I,J)=( UU*VU-IB_IPSVL_UY(I,J)*IB_IPSVL_UYV(I,J) )/( Y(J+1)-IB_ITSCT_UY(I,J) )
-    !        ELSE IF(TYPEUYN(I,J)==-1)THEN
+    !        ELSE IF(TYPEUYM(I,J)==-1)THEN
     !            CALL LINEAR_INTERPOLATION( UN(I,J  ),UD,UN(I,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
     !            CALL LINEAR_INTERPOLATION( VN(I,J  ),VD,VN(I-1,J  ),XPV(I  ),X(I  ),XPV(I-1) )
     !            CONVECT_UYN(I,J)=( UD*VD-IB_IPSVL_UY(I,J)*IB_IPSVL_UYV(I,J) )/( Y(J)-IB_ITSCT_UY(I,J) )
-    !        ELSE IF(TYPEUYN(I,J)==0)THEN
+    !        ELSE IF(TYPEUYM(I,J)==0)THEN
     !            CONVECT_UYN(I,J)=0.0D0
-    !        ELSE IF(TYPEUYN(I,J)==-10)THEN
+    !        ELSE IF(TYPEUYM(I,J)==-10)THEN
     !            CONVECT_UYN(I,J)=0.0D0
     !        END IF
     !
