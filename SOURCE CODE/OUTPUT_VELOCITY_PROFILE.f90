@@ -4,7 +4,7 @@
     !#                                                                    #!
     !######################################################################!
 
-    !*************************************求解蜻蜓翅膀某一时刻下欧拉角等角度信息，确定转换矩阵系数******************************************!
+    !*************************************输出速度分布******************************************!
     SUBROUTINE OUTPUT_VELOCITY_PROFILE
     USE DECLARATION
     IMPLICIT NONE
@@ -25,10 +25,10 @@
     REAL(KIND=8),ALLOCATABLE::PROBEX(:),PROBEY(:)
     REAL(KIND=8),ALLOCATABLE::PROBEXPV(:),PROBEYPU(:)
     REAL(KIND=8),ALLOCATABLE::U_OUT(:),V_OUT(:)
-    
+
     ALLOCATE( PROBEX(IM),PROBEY(JM) )
     ALLOCATE( PROBEXPV(0:IM),PROBEYPU(0:JM) )
-    
+
     !------输出Y方向的速度型------!
     !VALUE_Y1= 0.6D0
     !VALUE_Y2= 0.0D0
@@ -80,7 +80,7 @@
     !
     !PROBEX=X(:)-RANGE2
     !VALUE_IU2=MINLOC( DABS(PROBEX),1 )
-    !IF( X(VALUE_IU2)<RANGE2 ) VALUE_IU2=VALUE_IU2+1   
+    !IF( X(VALUE_IU2)<RANGE2 ) VALUE_IU2=VALUE_IU2+1
     !
     !CALL READFROMFILE_2D_STAGGERED(FILENAME)
     !
@@ -113,72 +113,72 @@
     !    WRITE(10,*) X(I),VALUE_Y4,U_OUT(I)
     !END DO
     !CLOSE(10)
-    
+
     !------输出X方向的速度型------!
     VALUE_X1=-0.6D0
     VALUE_X2= 0.0D0
     VALUE_X3= 0.6D0
     VALUE_X4= 1.2D0
-    
+
     RANGE1=-1.1D0
     RANGE2= 1.1D0
-    
+
     PROBEX=X(:)-VALUE_X1
     VALUE_IU1=MINLOC( DABS(PROBEX),1 )
     IF( X(VALUE_IU1)>VALUE_X1 ) VALUE_IU1=VALUE_IU1-1
-    
+
     PROBEX=X(:)-VALUE_X2
     VALUE_IU2=MINLOC( DABS(PROBEX),1 )
     IF( X(VALUE_IU2)>VALUE_X2 ) VALUE_IU2=VALUE_IU2-1
-    
+
     PROBEX=X(:)-VALUE_X3
     VALUE_IU3=MINLOC( DABS(PROBEX),1 )
     IF( X(VALUE_IU3)>VALUE_X3 ) VALUE_IU3=VALUE_IU3-1
-    
+
     PROBEX=X(:)-VALUE_X4
     VALUE_IU4=MINLOC( DABS(PROBEX),1 )
     IF( X(VALUE_IU4)>VALUE_X4 ) VALUE_IU4=VALUE_IU4-1
-    
+
     PROBEYPU=YPU(:)-RANGE1
     VALUE_JPU1=MINLOC( DABS(PROBEYPU),1 )
     IF( YPU(VALUE_JPU1)>RANGE1 ) VALUE_JPU1=VALUE_JPU1-1
-    
+
     PROBEYPU=YPU(:)-RANGE2
     VALUE_JPU2=MINLOC( DABS(PROBEYPU),1 )
     IF( YPU(VALUE_JPU2)>RANGE2 ) VALUE_JPU2=VALUE_JPU2-1
-    
+
     CALL READFROMFILE_2D_STAGGERED(FILENAME)
-    
+
     ALLOCATE( U_OUT(JM),V_OUT(JM) )
-    
+
     OPEN(UNIT=10,FILE='速度分布X-06.DAT')
     DO J=VALUE_JPU1,VALUE_JPU2,1
         CALL LINEAR_INTERPOLATION( U(VALUE_IU1+1,J),U_OUT(J),U(VALUE_IU1,J),X(VALUE_IU1+1),VALUE_X1,X(VALUE_IU1) )
         WRITE(10,*) YPU(J),VALUE_X1,U_OUT(J)
     END DO
     CLOSE(10)
-    
+
     OPEN(UNIT=10,FILE='速度分布X00.DAT')
     DO J=VALUE_JPU1,VALUE_JPU2,1
         CALL LINEAR_INTERPOLATION( U(VALUE_IU2+1,J),U_OUT(J),U(VALUE_IU2,J),X(VALUE_IU2+1),VALUE_X2,X(VALUE_IU2) )
         WRITE(10,*) YPU(J),VALUE_X2,U_OUT(J)
     END DO
     CLOSE(10)
-    
+
     OPEN(UNIT=10,FILE='速度分布X06.DAT')
     DO J=VALUE_JPU1,VALUE_JPU2,1
         CALL LINEAR_INTERPOLATION( U(VALUE_IU3+1,J),U_OUT(J),U(VALUE_IU3,J),X(VALUE_IU3+1),VALUE_X3,X(VALUE_IU3) )
         WRITE(10,*) YPU(J),VALUE_X3,U_OUT(J)
     END DO
     CLOSE(10)
-    
+
     OPEN(UNIT=10,FILE='速度分布X12.DAT')
     DO J=VALUE_JPU1,VALUE_JPU2,1
         CALL LINEAR_INTERPOLATION( U(VALUE_IU4+1,J),U_OUT(J),U(VALUE_IU4,J),X(VALUE_IU4+1),VALUE_X4,X(VALUE_IU4) )
         WRITE(10,*) YPU(J),VALUE_X4,U_OUT(J)
     END DO
     CLOSE(10)
-    
+
     !------输出X方向的速度型DRIVENCAVITY------!
     !VALUE_X1= 0.5D0
     !
@@ -207,8 +207,8 @@
     !    WRITE(10,*) YPU(J),VALUE_X1,U_OUT(J)
     !END DO
     !CLOSE(10)
-    
-    
-    
+
+
+
     RETURN
     END SUBROUTINE
