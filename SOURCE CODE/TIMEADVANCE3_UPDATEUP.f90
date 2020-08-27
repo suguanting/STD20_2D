@@ -10,93 +10,93 @@
     IMPLICIT NONE
     REAL(KIND=8)::A1,A2,A3,B1,B2,B3,CORRECTION
 
-    !------更新VK------!
+    !------更新VM------!
     DO J=2,JM-1,1
         DO I=1,IM-1,1
-            VK(I,J)=VHAT(I,J)-ALPHA(NSUBSTEP)*DT*( PHI(I,J)-PHI(I,J-1) )/( YPU(J)-YPU(J-1) )
+            VM(I,J)=VHAT(I,J)-ALPHA(NSUBSTEP)*DT*( PHI(I,J)-PHI(I,J-1) )/( YPU(J)-YPU(J-1) )
         END DO
     END DO
     !------施加边界条件------!
-    VK(1:IM-1:1,1       )=BCV_AB*VK(1:IM-1:1,2       )+BCV_BB
-    VK(1:IM-1:1,JM      )=BCV_AT*VK(1:IM-1:1,JM-1    )+BCV_BT
-    VK(0       ,:       )=BCV_AL*VK(1       ,:       )+BCV_BL
-    VK(IM      ,:       )=BCV_AR*VK(IM-1    ,:       )+BCV_BR
+    VM(1:IM-1:1,1       )=BCV_AB*VM(1:IM-1:1,2       )+BCV_BB
+    VM(1:IM-1:1,JM      )=BCV_AT*VM(1:IM-1:1,JM-1    )+BCV_BT
+    VM(0       ,:       )=BCV_AL*VM(1       ,:       )+BCV_BL
+    VM(IM      ,:       )=BCV_AR*VM(IM-1    ,:       )+BCV_BR
     
     
-    !------更新UK------!
+    !------更新UM------!
     DO J=1,JM-1,1
         DO I=2,IM-1,1
-            UK(I,J)=UHAT(I,J)-ALPHA(NSUBSTEP)*DT*( PHI(I,J)-PHI(I-1,J) )/( XPV(I)-XPV(I-1) )
+            UM(I,J)=UHAT(I,J)-ALPHA(NSUBSTEP)*DT*( PHI(I,J)-PHI(I-1,J) )/( XPV(I)-XPV(I-1) )
         END DO
     END DO
     !------施加边界条件------!
-    UK(1       ,1:JM-1:1)=BCU_AL*UK(2       ,1:JM-1:1)+BCU_BL
-    UK(IM      ,1:JM-1:1)=BCU_AR*UK(IM-1    ,1:JM-1:1)+BCU_BR
-    UK(:       ,0       )=BCU_AB*UK(:       ,1       )+BCU_BB
-    UK(:       ,JM      )=BCU_AT*UK(:       ,JM-1    )+BCU_BT
+    UM(1       ,1:JM-1:1)=BCU_AL*UM(2       ,1:JM-1:1)+BCU_BL
+    UM(IM      ,1:JM-1:1)=BCU_AR*UM(IM-1    ,1:JM-1:1)+BCU_BR
+    UM(:       ,0       )=BCU_AB*UM(:       ,1       )+BCU_BB
+    UM(:       ,JM      )=BCU_AT*UM(:       ,JM-1    )+BCU_BT
     
     !!------施加出口边界条件(满足边界cell的质量守恒)------!
     !IF(BCTYPE_L==2)THEN
     !    DO J=1,JM-1,1
-    !        UK(1 ,J)=UK(2   ,J)+(X(2 )-X(1   ))/(Y(J+1)-Y(J))*(VK(1   ,J+1)-VK(1   ,J))
+    !        UM(1 ,J)=UM(2   ,J)+(X(2 )-X(1   ))/(Y(J+1)-Y(J))*(VM(1   ,J+1)-VM(1   ,J))
     !    END DO
     !END IF
     !IF(BCTYPE_R==2)THEN
     !    DO J=1,JM-1,1
-    !        UK(IM,J)=UK(IM-1,J)-(X(IM)-X(IM-1))/(Y(J+1)-Y(J))*(VK(IM-1,J+1)-VK(IM-1,J))
+    !        UM(IM,J)=UM(IM-1,J)-(X(IM)-X(IM-1))/(Y(J+1)-Y(J))*(VM(IM-1,J+1)-VM(IM-1,J))
     !    END DO
     !END IF
     !IF(BCTYPE_B==2)THEN
     !    DO I=1,IM-1,1
-    !        VK(I,1 )=VK(I,2   )+(Y(2 )-Y(1   ))/(X(I+1)-X(I))*(UK(I+1,1   )-UK(I,1   ))
+    !        VM(I,1 )=VM(I,2   )+(Y(2 )-Y(1   ))/(X(I+1)-X(I))*(UM(I+1,1   )-UM(I,1   ))
     !    END DO
     !END IF
     !IF(BCTYPE_T==2)THEN
     !    DO I=1,IM-1,1
-    !        VK(I,JM)=VK(I,JM-1)-(Y(JM)-Y(JM-1))/(X(I+1)-X(I))*(UK(I+1,JM-1)-UK(I,JM-1))
+    !        VM(I,JM)=VM(I,JM-1)-(Y(JM)-Y(JM-1))/(X(I+1)-X(I))*(UM(I+1,JM-1)-UM(I,JM-1))
     !    END DO
     !END IF
     
     !------施加出口边界条件(修正出口速度，满足全域质量守恒)------!
     IF(BCTYPE_L==2 .OR. BCTYPE_L==5)THEN
         DO J=1,JM-1,1
-            UK(1 ,J)=UHAT(1 ,J)
+            UM(1 ,J)=UHAT(1 ,J)
         END DO
     END IF
     IF(BCTYPE_R==2 .OR. BCTYPE_R==5)THEN
         DO J=1,JM-1,1
-            UK(IM,J)=UHAT(IM,J)
+            UM(IM,J)=UHAT(IM,J)
         END DO
     END IF
     IF(BCTYPE_B==2 .OR. BCTYPE_B==5)THEN
         DO I=1,IM-1,1
-            VK(I,1 )=VHAT(I,1 )
+            VM(I,1 )=VHAT(I,1 )
         END DO
     END IF
     IF(BCTYPE_T==2 .OR. BCTYPE_T==5)THEN
         DO I=1,IM-1,1
-            VK(I,JM)=VHAT(I,JM)
+            VM(I,JM)=VHAT(I,JM)
         END DO
     END IF
     !------施加出口边界条件(对流边条额外)------!
     IF(BCTYPE_L==5)THEN
         DO J=1,JM,1
-            VK(0 ,J)=VHAT(0 ,J)
+            VM(0 ,J)=VHAT(0 ,J)
         END DO
     END IF
     IF(BCTYPE_R==5)THEN
         DO J=1,JM,1
-            VK(IM,J)=VHAT(IM,J)
+            VM(IM,J)=VHAT(IM,J)
         END DO
     END IF
     IF(BCTYPE_B==5)THEN
         DO I=1,IM,1
-            UK(I,0 )=UHAT(I,0 )
+            UM(I,0 )=UHAT(I,0 )
         END DO
     END IF
     IF(BCTYPE_T==5)THEN
         DO I=1,IM,1
-            UK(I,JM)=UHAT(I,JM)
+            UM(I,JM)=UHAT(I,JM)
         END DO
     END IF
     

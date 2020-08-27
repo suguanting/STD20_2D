@@ -61,10 +61,10 @@
     REAL(KIND=8)::U_PROBE,V_PROBE
     REAL(KIND=8)::A1,A2,A3,B1,B2,B3
 
-    LAPLACE_VXK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    LAPLACE_VYK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    LAPLACE_UXK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    LAPLACE_UYK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    LAPLACE_VXM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    LAPLACE_VYM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    LAPLACE_UXM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    LAPLACE_UYM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
 
     DO J=1,JM-1,1
         DO I=1,IM-1,1
@@ -76,11 +76,11 @@
                 A2=2.0D0/( ( XPV(I  )-XPV(I-1) )*( XPV(I+1)-XPV(I  ) ) )
                 A3=2.0D0/( ( XPV(I+1)-XPV(I-1) )*( XPV(I+1)-XPV(I  ) ) )
                 IF( TYPEVX(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(VK(I+1,J),VK(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
-                    LAPLACE_VXK1(I,J)= A1*V_PROBE - A2*VK(I,J) + A3*VK(I+1,J)
+                    CALL VELOCITY_PROBING(VM(I+1,J),VM(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
+                    LAPLACE_VXM1(I,J)= A1*V_PROBE - A2*VM(I,J) + A3*VM(I+1,J)
                 ELSE IF( TYPEVX(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I-1,J),VK(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I-1),XPV(I),IB_ITSCT_VX(I,J),XPV(I+1))
-                    LAPLACE_VXK1(I,J)= A1*VK(I-1,J) - A2*VK(I,J) + A3*V_PROBE
+                    CALL VELOCITY_PROBING(VM(I-1,J),VM(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I-1),XPV(I),IB_ITSCT_VX(I,J),XPV(I+1))
+                    LAPLACE_VXM1(I,J)= A1*VM(I-1,J) - A2*VM(I,J) + A3*V_PROBE
                 END IF
 
             END IF
@@ -91,11 +91,11 @@
                 B2=2.0D0/( ( Y(J  )-Y(J-1) )*( Y(J+1)-Y(J  ) ) )
                 B3=2.0D0/( ( Y(J+1)-Y(J-1) )*( Y(J+1)-Y(J  ) ) )
                 IF( TYPEVY(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(VK(I,J+1),VK(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J+1),Y(J),IB_ITSCT_VY(I,J),Y(J-1))
-                    LAPLACE_VYK1(I,J)= B1*V_PROBE - B2*VK(I,J) + B3*VK(I,J+1)
+                    CALL VELOCITY_PROBING(VM(I,J+1),VM(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J+1),Y(J),IB_ITSCT_VY(I,J),Y(J-1))
+                    LAPLACE_VYM1(I,J)= B1*V_PROBE - B2*VM(I,J) + B3*VM(I,J+1)
                 ELSE IF( TYPEVY(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I,J-1),VK(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J-1),Y(J),IB_ITSCT_VY(I,J),Y(J+1))
-                    LAPLACE_VYK1(I,J)= B1*VK(I,J-1) - B2*VK(I,J) + B3*V_PROBE
+                    CALL VELOCITY_PROBING(VM(I,J-1),VM(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J-1),Y(J),IB_ITSCT_VY(I,J),Y(J+1))
+                    LAPLACE_VYM1(I,J)= B1*VM(I,J-1) - B2*VM(I,J) + B3*V_PROBE
                 END IF
 
             END IF
@@ -106,11 +106,11 @@
                 A2=2.0D0/( ( X(I  )-X(I-1) )*( X(I+1)-X(I  ) ) )
                 A3=2.0D0/( ( X(I+1)-X(I-1) )*( X(I+1)-X(I  ) ) )
                 IF( TYPEUX(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(UK(I+1,J),UK(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I+1),X(I),IB_ITSCT_UX(I,J),X(I-1))
-                    LAPLACE_UXK1(I,J)= A1*U_PROBE - A2*UK(I,J) + A3*UK(I+1,J)
+                    CALL VELOCITY_PROBING(UM(I+1,J),UM(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I+1),X(I),IB_ITSCT_UX(I,J),X(I-1))
+                    LAPLACE_UXM1(I,J)= A1*U_PROBE - A2*UM(I,J) + A3*UM(I+1,J)
                 ELSE IF( TYPEUX(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I-1,J),UK(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I-1),X(I),IB_ITSCT_UX(I,J),X(I+1))
-                    LAPLACE_UXK1(I,J)= A1*UK(I-1,J) - A2*UK(I,J) + A3*U_PROBE
+                    CALL VELOCITY_PROBING(UM(I-1,J),UM(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I-1),X(I),IB_ITSCT_UX(I,J),X(I+1))
+                    LAPLACE_UXM1(I,J)= A1*UM(I-1,J) - A2*UM(I,J) + A3*U_PROBE
                 END IF
 
             END IF
@@ -121,11 +121,11 @@
                 B2=2.0D0/( ( YPU(J  )-YPU(J-1) )*( YPU(J+1)-YPU(J  ) ) )
                 B3=2.0D0/( ( YPU(J+1)-YPU(J-1) )*( YPU(J+1)-YPU(J  ) ) )
                 IF( TYPEUY(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J+1),UK(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
-                    LAPLACE_UYK1(I,J)= B1*U_PROBE - B2*UK(I,J) + B3*UK(I,J+1)
+                    CALL VELOCITY_PROBING(UM(I,J+1),UM(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
+                    LAPLACE_UYM1(I,J)= B1*U_PROBE - B2*UM(I,J) + B3*UM(I,J+1)
                 ELSE IF( TYPEUY(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J-1),UK(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J-1),YPU(J),IB_ITSCT_UY(I,J),YPU(J+1))
-                    LAPLACE_UYK1(I,J)= B1*UK(I,J-1) - B2*UK(I,J) + B3*U_PROBE
+                    CALL VELOCITY_PROBING(UM(I,J-1),UM(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J-1),YPU(J),IB_ITSCT_UY(I,J),YPU(J+1))
+                    LAPLACE_UYM1(I,J)= B1*UM(I,J-1) - B2*UM(I,J) + B3*U_PROBE
                 END IF
 
             END IF
@@ -153,22 +153,22 @@
     REAL(KIND=8)::CVCMARK!特殊处理的标记
 
 
-    CONVECT_VXK2=CONVECT_VXK1
-    CONVECT_VYK2=CONVECT_VYK1
-    CONVECT_UXK2=CONVECT_UXK1
-    CONVECT_UYK2=CONVECT_UYK1
+    CONVECT_VXM2=CONVECT_VXM1
+    CONVECT_VYM2=CONVECT_VYM1
+    CONVECT_UXM2=CONVECT_UXM1
+    CONVECT_UYM2=CONVECT_UYM1
     !置零这样在TIMEMARCH中直接不进行CONVECT_***2的计算了
     IF(NSUBSTEP==3)THEN
-        CONVECT_VXK2=0.0D0
-        CONVECT_VYK2=0.0D0
-        CONVECT_UXK2=0.0D0
-        CONVECT_UYK2=0.0D0
+        CONVECT_VXM2=0.0D0
+        CONVECT_VYM2=0.0D0
+        CONVECT_UXM2=0.0D0
+        CONVECT_UYM2=0.0D0
     END IF
 
-    CONVECT_VXK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    CONVECT_VYK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    CONVECT_UXK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
-    CONVECT_UYK1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    CONVECT_VXM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    CONVECT_VYM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    CONVECT_UXM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
+    CONVECT_UYM1=TRANSFER((/ Z'00000000', Z'7FF80000' /),1.0_8)
 
 
     DO J=1,JM-1,1
@@ -180,11 +180,11 @@
                 D1=Y(J-1)-Y(J)
                 D2=Y(J+1)-Y(J)
                 IF( TYPEVY(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(VK(I,J+1),VK(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J+1),Y(J),IB_ITSCT_VY(I,J),Y(J-1))
-                    CONVECT_VYK1(I,J)= ( D2*D2*V_PROBE*V_PROBE+(D1*D1-D2*D2)*VK(I,J)*VK(I,J)-D1*D1*VK(I,J+1)*VK(I,J+1) )/( D1*D2*(D2-D1) )
+                    CALL VELOCITY_PROBING(VM(I,J+1),VM(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J+1),Y(J),IB_ITSCT_VY(I,J),Y(J-1))
+                    CONVECT_VYM1(I,J)= ( D2*D2*V_PROBE*V_PROBE+(D1*D1-D2*D2)*VM(I,J)*VM(I,J)-D1*D1*VM(I,J+1)*VM(I,J+1) )/( D1*D2*(D2-D1) )
                 ELSE IF( TYPEVY(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I,J-1),VK(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J-1),Y(J),IB_ITSCT_VY(I,J),Y(J+1))
-                    CONVECT_VYK1(I,J)= ( D2*D2*VK(I,J-1)*VK(I,J-1)+(D1*D1-D2*D2)*VK(I,J)*VK(I,J)-D1*D1*V_PROBE*V_PROBE )/( D1*D2*(D2-D1) )
+                    CALL VELOCITY_PROBING(VM(I,J-1),VM(I,J),IB_IPSVL_VY(I,J),V_PROBE,Y(J-1),Y(J),IB_ITSCT_VY(I,J),Y(J+1))
+                    CONVECT_VYM1(I,J)= ( D2*D2*VM(I,J-1)*VM(I,J-1)+(D1*D1-D2*D2)*VM(I,J)*VM(I,J)-D1*D1*V_PROBE*V_PROBE )/( D1*D2*(D2-D1) )
                 END IF
 
             END IF
@@ -193,42 +193,42 @@
             IF(TYPEVX(I,J)/=-10 .AND. TYPEVX(I,J)/=0)THEN
                 CVCMARK=0
                 !URK,ULK,VRK,VLK,XRK,XLK正常数值
-                CALL LINEAR_INTERPOLATION( VK(I  ,J),VLK,VK(I-1,J),XPV(I  ),X(I  ),XPV(I-1) )
-                CALL LINEAR_INTERPOLATION( VK(I+1,J),VRK,VK(I  ,J),XPV(I+1),X(I+1),XPV(I  ) )
-                CALL LINEAR_INTERPOLATION( UK(I  ,J),ULK,UK(I  ,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
-                CALL LINEAR_INTERPOLATION( UK(I+1,J),URK,UK(I+1,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
+                CALL LINEAR_INTERPOLATION( VM(I  ,J),VLK,VM(I-1,J),XPV(I  ),X(I  ),XPV(I-1) )
+                CALL LINEAR_INTERPOLATION( VM(I+1,J),VRK,VM(I  ,J),XPV(I+1),X(I+1),XPV(I  ) )
+                CALL LINEAR_INTERPOLATION( UM(I  ,J),ULK,UM(I  ,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
+                CALL LINEAR_INTERPOLATION( UM(I+1,J),URK,UM(I+1,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
                 XRK=X(I+1)
                 XLK=X(I  )
                 !VLK
                 IF( TYPEVX(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(VK(I+1,J),VK(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
-                    CALL LINEAR_INTERPOLATION( VK(I  ,J),VLK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
+                    CALL VELOCITY_PROBING(VM(I+1,J),VM(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
+                    CALL LINEAR_INTERPOLATION( VM(I  ,J),VLK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
                     CVCMARK=1
                 END IF
                 !VRK
                 IF( TYPEVX(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I-1,J),VK(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I-1),XPV(I),IB_ITSCT_VX(I,J),XPV(I+1))
-                    CALL LINEAR_INTERPOLATION( V_PROBE,VRK,VK(I  ,J),XPV(I+1),X(I+1),XPV(I  ) )
+                    CALL VELOCITY_PROBING(VM(I-1,J),VM(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I-1),XPV(I),IB_ITSCT_VX(I,J),XPV(I+1))
+                    CALL LINEAR_INTERPOLATION( V_PROBE,VRK,VM(I  ,J),XPV(I+1),X(I+1),XPV(I  ) )
                     CVCMARK=1
                 END IF
                 !ULK
                 IF( TYPEUY(I,J)==1 .AND. TYPEUY(I,J-1)==-10 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J+1),UK(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
-                    CALL LINEAR_INTERPOLATION( UK(I  ,J),ULK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
+                    CALL VELOCITY_PROBING(UM(I,J+1),UM(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
+                    CALL LINEAR_INTERPOLATION( UM(I  ,J),ULK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
                     CVCMARK=1
                 ELSE IF( TYPEUY(I,J)==-10 .AND. TYPEUY(I,J-1)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J-2),UK(I,J-1),IB_IPSVL_UY(I,J-1),U_PROBE,YPU(J-2),YPU(J-1),IB_ITSCT_UY(I,J-1),YPU(J))
-                    CALL LINEAR_INTERPOLATION( U_PROBE,ULK,UK(I  ,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
+                    CALL VELOCITY_PROBING(UM(I,J-2),UM(I,J-1),IB_IPSVL_UY(I,J-1),U_PROBE,YPU(J-2),YPU(J-1),IB_ITSCT_UY(I,J-1),YPU(J))
+                    CALL LINEAR_INTERPOLATION( U_PROBE,ULK,UM(I  ,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
                     CVCMARK=1
                 END IF
                 !URK
                 IF( TYPEUY(I+1,J)==1 .AND. TYPEUY(I+1,J-1)==-10 )THEN
-                    CALL VELOCITY_PROBING(UK(I+1,J+1),UK(I+1,J),IB_IPSVL_UY(I+1,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I+1,J),YPU(J-1))
-                    CALL LINEAR_INTERPOLATION( UK(I+1,J),URK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
+                    CALL VELOCITY_PROBING(UM(I+1,J+1),UM(I+1,J),IB_IPSVL_UY(I+1,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I+1,J),YPU(J-1))
+                    CALL LINEAR_INTERPOLATION( UM(I+1,J),URK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
                     CVCMARK=1
                 ELSE IF( TYPEUY(I+1,J)==-10 .AND. TYPEUY(I+1,J-1)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I+1,J-2),UK(I+1,J-1),IB_IPSVL_UY(I+1,J-1),U_PROBE,YPU(J-2),YPU(J-1),IB_ITSCT_UY(I+1,J-1),YPU(J))
-                    CALL LINEAR_INTERPOLATION( U_PROBE,URK,UK(I+1,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
+                    CALL VELOCITY_PROBING(UM(I+1,J-2),UM(I+1,J-1),IB_IPSVL_UY(I+1,J-1),U_PROBE,YPU(J-2),YPU(J-1),IB_ITSCT_UY(I+1,J-1),YPU(J))
+                    CALL LINEAR_INTERPOLATION( U_PROBE,URK,UM(I+1,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
                     CVCMARK=1
                 END IF
                 !ULK,VLK,XLK
@@ -248,7 +248,7 @@
 
                 !最终计算
                 IF(CVCMARK==1)THEN
-                    CONVECT_VXK1(I,J)= ( URK*VRK-ULK*VLK )/( XRK-XLK )
+                    CONVECT_VXM1(I,J)= ( URK*VRK-ULK*VLK )/( XRK-XLK )
                 END IF
             END IF
 
@@ -258,11 +258,11 @@
                 D1=X(I-1)-X(I)
                 D2=X(I+1)-X(I)
                 IF( TYPEUX(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(UK(I+1,J),UK(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I+1),X(I),IB_ITSCT_UX(I,J),X(I-1))
-                    CONVECT_UXK1(I,J)= ( D2*D2*U_PROBE*U_PROBE+(D1*D1-D2*D2)*UK(I,J)*UK(I,J)-D1*D1*UK(I+1,J)*UK(I+1,J) )/( D1*D2*(D2-D1) )
+                    CALL VELOCITY_PROBING(UM(I+1,J),UM(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I+1),X(I),IB_ITSCT_UX(I,J),X(I-1))
+                    CONVECT_UXM1(I,J)= ( D2*D2*U_PROBE*U_PROBE+(D1*D1-D2*D2)*UM(I,J)*UM(I,J)-D1*D1*UM(I+1,J)*UM(I+1,J) )/( D1*D2*(D2-D1) )
                 ELSE IF( TYPEUX(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I-1,J),UK(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I-1),X(I),IB_ITSCT_UX(I,J),X(I+1))
-                    CONVECT_UXK1(I,J)= ( D2*D2*UK(I-1,J)*UK(I-1,J)+(D1*D1-D2*D2)*UK(I,J)*UK(I,J)-D1*D1*U_PROBE*U_PROBE )/( D1*D2*(D2-D1) )
+                    CALL VELOCITY_PROBING(UM(I-1,J),UM(I,J),IB_IPSVL_UX(I,J),U_PROBE,X(I-1),X(I),IB_ITSCT_UX(I,J),X(I+1))
+                    CONVECT_UXM1(I,J)= ( D2*D2*UM(I-1,J)*UM(I-1,J)+(D1*D1-D2*D2)*UM(I,J)*UM(I,J)-D1*D1*U_PROBE*U_PROBE )/( D1*D2*(D2-D1) )
                 END IF
 
             END IF
@@ -272,42 +272,42 @@
             IF(TYPEUY(I,J)/=-10 .AND. TYPEUY(I,J)/=0)THEN
                 CVCMARK=0
                 !UTK,UBK,VTK,VBK,YTK,YBK正常数值
-                CALL LINEAR_INTERPOLATION( UK(I,J+1),UTK,UK(I,J  ),YPU(J+1),Y(J+1),YPU(J  ) )
-                CALL LINEAR_INTERPOLATION( UK(I,J  ),UBK,UK(I,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
-                CALL LINEAR_INTERPOLATION( VK(I,J+1),VTK,VK(I-1,J+1),XPV(I  ),X(I  ),XPV(I-1) )
-                CALL LINEAR_INTERPOLATION( VK(I,J  ),VBK,VK(I-1,J  ),XPV(I  ),X(I  ),XPV(I-1) )
+                CALL LINEAR_INTERPOLATION( UM(I,J+1),UTK,UM(I,J  ),YPU(J+1),Y(J+1),YPU(J  ) )
+                CALL LINEAR_INTERPOLATION( UM(I,J  ),UBK,UM(I,J-1),YPU(J  ),Y(J  ),YPU(J-1) )
+                CALL LINEAR_INTERPOLATION( VM(I,J+1),VTK,VM(I-1,J+1),XPV(I  ),X(I  ),XPV(I-1) )
+                CALL LINEAR_INTERPOLATION( VM(I,J  ),VBK,VM(I-1,J  ),XPV(I  ),X(I  ),XPV(I-1) )
                 YTK=Y(J+1)
                 YBK=Y(J  )
                 !UBK
                 IF( TYPEUY(I,J)==1 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J+1),UK(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
-                    CALL LINEAR_INTERPOLATION( UK(I,J  ),UBK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
+                    CALL VELOCITY_PROBING(UM(I,J+1),UM(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
+                    CALL LINEAR_INTERPOLATION( UM(I,J  ),UBK,U_PROBE,YPU(J  ),Y(J  ),YPU(J-1) )
                     CVCMARK=1
                 END IF
                 !UTK
                 IF( TYPEUY(I,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(UK(I,J-1),UK(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J-1),YPU(J),IB_ITSCT_UY(I,J),YPU(J+1))
-                    CALL LINEAR_INTERPOLATION( U_PROBE,UTK,UK(I,J  ),YPU(J+1),Y(J+1),YPU(J  ) )
+                    CALL VELOCITY_PROBING(UM(I,J-1),UM(I,J),IB_IPSVL_UY(I,J),U_PROBE,YPU(J-1),YPU(J),IB_ITSCT_UY(I,J),YPU(J+1))
+                    CALL LINEAR_INTERPOLATION( U_PROBE,UTK,UM(I,J  ),YPU(J+1),Y(J+1),YPU(J  ) )
                     CVCMARK=1
                 END IF
                 !VBK
                 IF( TYPEVX(I,J)==1 .AND. TYPEVX(I-1,J)==-10 )THEN
-                    CALL VELOCITY_PROBING(VK(I+1,J),VK(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
-                    CALL LINEAR_INTERPOLATION( VK(I,J  ),VBK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
+                    CALL VELOCITY_PROBING(VM(I+1,J),VM(I,J),IB_IPSVL_VX(I,J),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
+                    CALL LINEAR_INTERPOLATION( VM(I,J  ),VBK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
                     CVCMARK=1
                 ELSE IF( TYPEVX(I,J)==-10 .AND. TYPEVX(I-1,J)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I-2,J),VK(I-1,J),IB_IPSVL_VX(I-1,J),V_PROBE,XPV(I-2),XPV(I-1),IB_ITSCT_VX(I-1,J),XPV(I))
-                    CALL LINEAR_INTERPOLATION( V_PROBE,VBK,VK(I-1,J  ),XPV(I  ),X(I  ),XPV(I-1) )
+                    CALL VELOCITY_PROBING(VM(I-2,J),VM(I-1,J),IB_IPSVL_VX(I-1,J),V_PROBE,XPV(I-2),XPV(I-1),IB_ITSCT_VX(I-1,J),XPV(I))
+                    CALL LINEAR_INTERPOLATION( V_PROBE,VBK,VM(I-1,J  ),XPV(I  ),X(I  ),XPV(I-1) )
                     CVCMARK=1
                 END IF
                 !VTK
                 IF( TYPEVX(I,J+1)==1 .AND. TYPEVX(I-1,J+1)==-10 )THEN
-                    CALL VELOCITY_PROBING(VK(I+1,J+1),VK(I,J+1),IB_IPSVL_VX(I,J+1),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J+1),XPV(I-1))
-                    CALL LINEAR_INTERPOLATION( VK(I,J+1),VTK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
+                    CALL VELOCITY_PROBING(VM(I+1,J+1),VM(I,J+1),IB_IPSVL_VX(I,J+1),V_PROBE,XPV(I+1),XPV(I),IB_ITSCT_VX(I,J+1),XPV(I-1))
+                    CALL LINEAR_INTERPOLATION( VM(I,J+1),VTK,V_PROBE,XPV(I  ),X(I  ),XPV(I-1) )
                     CVCMARK=1
                 ELSE IF( TYPEVX(I,J+1)==-10 .AND. TYPEVX(I-1,J+1)==-1 )THEN
-                    CALL VELOCITY_PROBING(VK(I-2,J+1),VK(I-1,J+1),IB_IPSVL_VX(I-1,J+1),V_PROBE,XPV(I-2),XPV(I-1),IB_ITSCT_VX(I-1,J+1),XPV(I))
-                    CALL LINEAR_INTERPOLATION( V_PROBE,VTK,VK(I-1,J+1),XPV(I  ),X(I  ),XPV(I-1) )
+                    CALL VELOCITY_PROBING(VM(I-2,J+1),VM(I-1,J+1),IB_IPSVL_VX(I-1,J+1),V_PROBE,XPV(I-2),XPV(I-1),IB_ITSCT_VX(I-1,J+1),XPV(I))
+                    CALL LINEAR_INTERPOLATION( V_PROBE,VTK,VM(I-1,J+1),XPV(I  ),X(I  ),XPV(I-1) )
                     CVCMARK=1
                 END IF
 
@@ -328,7 +328,7 @@
 
                 !最终计算
                 IF(CVCMARK==1)THEN
-                    CONVECT_UYK1(I,J)=( UTK*VTK-UBK*VBK )/( YTK-YBK )
+                    CONVECT_UYM1(I,J)=( UTK*VTK-UBK*VBK )/( YTK-YBK )
                 END IF
             END IF
 

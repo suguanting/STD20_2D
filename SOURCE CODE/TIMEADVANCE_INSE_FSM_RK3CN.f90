@@ -24,12 +24,12 @@
     ALPHA(2)=2.0D0/15.0D0
     ALPHA(3)=1.0D0/3.0D0
 
-    UK=0.0D0
-    VK=0.0D0
-    UK1=UN
-    VK1=VN
-    UK2=0.0D0
-    VK2=0.0D0
+    UM=0.0D0
+    VM=0.0D0
+    UM1=UN
+    VM1=VN
+    UM2=0.0D0
+    VM2=0.0D0
 
 
     DO NSUBSTEP=1,3,1
@@ -48,16 +48,16 @@
         CALL CAL_NONFLUIDIC_LAPLACE_K
 
         !------下一循环------!
-        UK2=UK1
-        VK2=VK1
-        UK1=UK
-        VK1=VK
+        UM2=UM1
+        VM2=VM1
+        UM1=UM
+        VM1=VM
 
     END DO
 
     !------循环结束，更新速度------!
-    U=UK
-    V=VK
+    U=UM
+    V=VM
 
     !------求解气动参数------!
     IF( MOD( NSTEP,IDNINT( DBLE(NCYCLE)/DBLE(NCLCT) ) )==0 )THEN
