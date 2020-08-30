@@ -836,13 +836,13 @@
     !            RPN=( P(I,J)-P(I,J-1) )/( YPU(J)-YPU(J-1) )
     !            RCN =( UR *VR -UL *VL  )/( X(I+1)-X(I) )+( D2*D2*VD *VD +(D1*D1-D2*D2)*VN (I,J)*VN (I,J)-D1*D1*VU *VU  )/( D1*D2*(D2-D1) )
     !            RCN1=( UR1*VR1-UL1*VL1 )/( X(I+1)-X(I) )+( D2*D2*VD1*VD1+(D1*D1-D2*D2)*VN1(I,J)*VN1(I,J)-D1*D1*VU1*VU1 )/( D1*D2*(D2-D1) )
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*VN(I-1,J) + 2.0D0*A2(I,J)*VN(I,J) - 2.0D0*A3(I,J)*VN(I+1,J)
     !            ELSE
     !                RVXN=DT/Re*VISCOUS_VXN(I,J)
     !            END IF
     !
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*VN(I,J-1) + 2.0D0*B2(I,J)*VN(I,J) - 2.0D0*B3(I,J)*VN(I,J+1)
     !            ELSE
     !                RVYN=DT/Re*VISCOUS_VYN(I,J)
@@ -1140,13 +1140,13 @@
     !            RCN =( D2*D2*UL *UL +(D1*D1-D2*D2)*UN (I,J)*UN (I,J)-D1*D1*UR *UR  )/( D1*D2*(D2-D1) )+( UU *VU -UD *VD  )/( Y(J+1)-Y(J) )
     !            RCN1=( D2*D2*UL1*UL1+(D1*D1-D2*D2)*UN1(I,J)*UN1(I,J)-D1*D1*UR1*UR1 )/( D1*D2*(D2-D1) )+( UU1*VU1-UD1*VD1 )/( Y(J+1)-Y(J) )
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*UN(I-1,J) + 2.0D0*A2(I,J)*UN(I,J) - 2.0D0*A3(I,J)*UN(I+1,J)
     !            ELSE
     !                RVXN=DT/Re*VISCOUS_UXN(I,J)
     !            END IF
     !
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*UN(I,J-1) + 2.0D0*B2(I,J)*UN(I,J) - 2.0D0*B3(I,J)*UN(I,J+1)
     !            ELSE
     !                RVYN=DT/Re*VISCOUS_UYN(I,J)
@@ -1475,12 +1475,12 @@
     !            D2=YPU(J)-Y(J)
     !            RPN=( P(I,J)-P(I,J-1) )/( YPU(J)-YPU(J-1) )
     !
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCXN=( UR *VR -UL *VL  )/( X(I+1)-X(I) )
     !            ELSE
     !                RCXN=CONVECT_VXN(I,J)
     !            END IF
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCYN=( D2*D2*VD *VD +(D1*D1-D2*D2)*VN (I,J)*VN (I,J)-D1*D1*VU *VU  )/( D1*D2*(D2-D1) )
     !            ELSE
     !                RCYN=CONVECT_VYN(I,J)
@@ -1488,12 +1488,12 @@
     !
     !            RCN =RCXN+RCYN
     !
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCXN=( UR1*VR1-UL1*VL1 )/( X(I+1)-X(I) )
     !            ELSE
     !                RCXN=CONVECT_VXN(I,J)
     !            END IF
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCYN=( D2*D2*VD1*VD1+(D1*D1-D2*D2)*VN1(I,J)*VN1(I,J)-D1*D1*VU1*VU1 )/( D1*D2*(D2-D1) )
     !            ELSE
     !                RCYN=CONVECT_VYN(I,J)
@@ -1501,13 +1501,13 @@
     !
     !            RCN1=RCXN+RCYN
     !
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*VN(I-1,J) + 2.0D0*A2(I,J)*VN(I,J) - 2.0D0*A3(I,J)*VN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_VXN(I,J)
     !            END IF
     !
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*VN(I,J-1) + 2.0D0*B2(I,J)*VN(I,J) - 2.0D0*B3(I,J)*VN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_VYN(I,J)
@@ -1803,12 +1803,12 @@
     !            D2=XPV(I)-X(I)
     !            RPN=( P(I,J)-P(I-1,J) )/( XPV(I)-XPV(I-1) )
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCXN=( D2*D2*UL *UL +(D1*D1-D2*D2)*UN (I,J)*UN (I,J)-D1*D1*UR *UR  )/( D1*D2*(D2-D1) )
     !            ELSE
     !                RCXN=CONVECT_UXN(I,J)
     !            END IF
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCYN=( UU *VU -UD *VD  )/( Y(J+1)-Y(J) )
     !            ELSE
     !                RCYN=CONVECT_UYN(I,J)
@@ -1816,12 +1816,12 @@
     !
     !            RCN =RCXN+RCYN
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCXN=( D2*D2*UL1*UL1+(D1*D1-D2*D2)*UN1(I,J)*UN1(I,J)-D1*D1*UR1*UR1 )/( D1*D2*(D2-D1) )
     !            ELSE
     !                RCXN=CONVECT_UXN(I,J)
     !            END IF
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RCYN=( UU1*VU1-UD1*VD1 )/( Y(J+1)-Y(J) )
     !            ELSE
     !                RCYN=CONVECT_UYN(I,J)
@@ -1829,13 +1829,13 @@
     !
     !            RCN =RCXN+RCYN
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*UN(I-1,J) + 2.0D0*A2(I,J)*UN(I,J) - 2.0D0*A3(I,J)*UN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_UXN(I,J)
     !            END IF
     !
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*UN(I,J-1) + 2.0D0*B2(I,J)*UN(I,J) - 2.0D0*B3(I,J)*UN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_UYN(I,J)
@@ -2148,13 +2148,13 @@
     !    DO I=1,IM-1,1
     !        IF( TYPEVX(I,J)/=-10 .AND. TYPEVY(I,J)/=-10 )THEN
     !            RPN=( P(I,J)-P(I,J-1) )/( YPU(J)-YPU(J-1) )
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*VN(I-1,J) + 2.0D0*A2(I,J)*VN(I,J) - 2.0D0*A3(I,J)*VN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_VXN(I,J)
     !            END IF
     !
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*VN(I,J-1) + 2.0D0*B2(I,J)*VN(I,J) - 2.0D0*B3(I,J)*VN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_VYN(I,J)
@@ -2436,13 +2436,13 @@
     !        IF( TYPEUX(I,J)/=-10 .AND. TYPEUY(I,J)/=-10 )THEN
     !            RPN=( P(I,J)-P(I-1,J) )/( XPV(I)-XPV(I-1) )
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*UN(I-1,J) + 2.0D0*A2(I,J)*UN(I,J) - 2.0D0*A3(I,J)*UN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_UXN(I,J)
     !            END IF
     !
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*UN(I,J-1) + 2.0D0*B2(I,J)*UN(I,J) - 2.0D0*B3(I,J)*UN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_UYN(I,J)
@@ -2754,13 +2754,13 @@
     !    DO I=1,IM-1,1
     !        IF( TYPEVX(I,J)/=-10 .AND. TYPEVY(I,J)/=-10 )THEN
     !            RPN=( P(I,J)-P(I,J-1) )/( YPU(J)-YPU(J-1) )
-    !            IF(TYPEVXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*VN(I-1,J) + 2.0D0*A2(I,J)*VN(I,J) - 2.0D0*A3(I,J)*VN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_VXN(I,J)
     !            END IF
     !
-    !            IF(TYPEVYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEVYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*VN(I,J-1) + 2.0D0*B2(I,J)*VN(I,J) - 2.0D0*B3(I,J)*VN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_VYN(I,J)
@@ -2808,13 +2808,13 @@
     !        IF( TYPEUX(I,J)/=-10 .AND. TYPEUY(I,J)/=-10 )THEN
     !            RPN=( P(I,J)-P(I-1,J) )/( XPV(I)-XPV(I-1) )
     !
-    !            IF(TYPEUXM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUXM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVXN=-2.0D0*A1(I,J)*UN(I-1,J) + 2.0D0*A2(I,J)*UN(I,J) - 2.0D0*A3(I,J)*UN(I+1,J)
     !            ELSE
     !                RVXN=VISCOUS_UXN(I,J)
     !            END IF
     !
-    !            IF(TYPEUYM(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
+    !            IF(TYPEUYM1(I,J)==10 .OR. VISCOUS_TERM_METHOD==1)THEN
     !                RVYN=-2.0D0*B1(I,J)*UN(I,J-1) + 2.0D0*B2(I,J)*UN(I,J) - 2.0D0*B3(I,J)*UN(I,J+1)
     !            ELSE
     !                RVYN=VISCOUS_UYN(I,J)
