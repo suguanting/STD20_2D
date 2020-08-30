@@ -52,6 +52,13 @@
         VM2=VM1
         UM1=UM
         VM1=VM
+        !m=1虚拟时间层结束时赋值TYPEM1
+        IF(NSUBSTEP==1)THEN
+            TYPEUXM1=TYPEUX
+            TYPEVXM1=TYPEVX
+            TYPEUYM1=TYPEUY
+            TYPEVYM1=TYPEVY
+        END IF
 
     END DO
 
