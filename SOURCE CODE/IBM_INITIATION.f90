@@ -20,14 +20,14 @@
             TYPEUYM1=10
             TYPEVYM1=10
 
-            IB_ITSCT_UXN=0.0D0
-            IB_ITSCT_VXN=0.0D0
-            IB_IPSVL_UXN=0.0D0
-            IB_IPSVL_VXN=0.0D0
-            IB_ITSCT_UYN=0.0D0
-            IB_ITSCT_VYN=0.0D0
-            IB_IPSVL_UYN=0.0D0
-            IB_IPSVL_VYN=0.0D0
+            IB_ITSCT_UXM1=0.0D0
+            IB_ITSCT_VXM1=0.0D0
+            IB_IPSVL_UXM1=0.0D0
+            IB_IPSVL_VXM1=0.0D0
+            IB_ITSCT_UYM1=0.0D0
+            IB_ITSCT_VYM1=0.0D0
+            IB_IPSVL_UYM1=0.0D0
+            IB_IPSVL_VYM1=0.0D0
 
             IB_IPSVL_UXVN=0.0D0
             IB_IPSVL_VXUN=0.0D0
@@ -48,14 +48,14 @@
             TYPEUYM1=TYPEUY
             TYPEVYM1=TYPEVY
 
-            IB_ITSCT_UXN=IB_ITSCT_UX
-            IB_ITSCT_VXN=IB_ITSCT_VX
-            IB_IPSVL_UXN=IB_IPSVL_UX
-            IB_IPSVL_VXN=IB_IPSVL_VX
-            IB_ITSCT_UYN=IB_ITSCT_UY
-            IB_ITSCT_VYN=IB_ITSCT_VY
-            IB_IPSVL_UYN=IB_IPSVL_UY
-            IB_IPSVL_VYN=IB_IPSVL_VY
+            IB_ITSCT_UXM1=IB_ITSCT_UX
+            IB_ITSCT_VXM1=IB_ITSCT_VX
+            IB_IPSVL_UXM1=IB_IPSVL_UX
+            IB_IPSVL_VXM1=IB_IPSVL_VX
+            IB_ITSCT_UYM1=IB_ITSCT_UY
+            IB_ITSCT_VYM1=IB_ITSCT_VY
+            IB_IPSVL_UYM1=IB_IPSVL_UY
+            IB_IPSVL_VYM1=IB_IPSVL_VY
 
             IB_IPSVL_UXVN=IB_IPSVL_UXV
             IB_IPSVL_VXUN=IB_IPSVL_VXU
@@ -64,15 +64,6 @@
         END IF
     ELSE
         !直接储存上一层数据
-        IB_ITSCT_UXN=IB_ITSCT_UX
-        IB_ITSCT_VXN=IB_ITSCT_VX
-        IB_IPSVL_UXN=IB_IPSVL_UX
-        IB_IPSVL_VXN=IB_IPSVL_VX
-        IB_ITSCT_UYN=IB_ITSCT_UY
-        IB_ITSCT_VYN=IB_ITSCT_VY
-        IB_IPSVL_UYN=IB_IPSVL_UY
-        IB_IPSVL_VYN=IB_IPSVL_VY
-
         IB_IPSVL_UXVN=IB_IPSVL_UXV
         IB_IPSVL_VXUN=IB_IPSVL_VXU
         IB_IPSVL_UYVN=IB_IPSVL_UYV

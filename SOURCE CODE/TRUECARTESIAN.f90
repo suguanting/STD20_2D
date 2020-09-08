@@ -393,7 +393,7 @@
                 IF(CASE_TYPE==1 .AND. NSTEP==1 .AND. NSUBSTEP==1)THEN
                     DELTA_VELO_BOUNDARY=IB_IPSVL_VX(I,J)-V_FREESTREAM
                 ELSE IF( NSUBSTEP==1)THEN
-                    DELTA_VELO_BOUNDARY=IB_IPSVL_VX(I,J)-IB_IPSVL_VXN(I,J)
+                    DELTA_VELO_BOUNDARY=IB_IPSVL_VX(I,J)-IB_IPSVL_VXM1(I,J)
                 ELSE IF( NSUBSTEP/=1)THEN
                     DELTA_VELO_BOUNDARY=0.0D0
                 END IF
@@ -435,7 +435,7 @@
                 IF(CASE_TYPE==1 .AND. NSTEP==1 .AND. NSUBSTEP==1)THEN
                     DELTA_VELO_BOUNDARY=IB_IPSVL_VY(I,J)-V_FREESTREAM
                 ELSE IF( NSUBSTEP==1)THEN
-                    DELTA_VELO_BOUNDARY=IB_IPSVL_VY(I,J)-IB_IPSVL_VYN(I,J)
+                    DELTA_VELO_BOUNDARY=IB_IPSVL_VY(I,J)-IB_IPSVL_VYM1(I,J)
                 ELSE IF( NSUBSTEP/=1)THEN
                     DELTA_VELO_BOUNDARY=0.0D0
                 END IF
@@ -483,7 +483,7 @@
                 IF(CASE_TYPE==1 .AND. NSTEP==1 .AND. NSUBSTEP==1)THEN
                     DELTA_VELO_BOUNDARY=IB_IPSVL_UX(I,J)-U_FREESTREAM
                 ELSE IF( NSUBSTEP==1)THEN
-                    DELTA_VELO_BOUNDARY=IB_IPSVL_UX(I,J)-IB_IPSVL_UXN(I,J)
+                    DELTA_VELO_BOUNDARY=IB_IPSVL_UX(I,J)-IB_IPSVL_UXM1(I,J)
                 ELSE IF( NSUBSTEP/=1)THEN
                     DELTA_VELO_BOUNDARY=0.0D0
                 END IF
@@ -525,7 +525,7 @@
                 IF(CASE_TYPE==1 .AND. NSTEP==1 .AND. NSUBSTEP==1)THEN
                     DELTA_VELO_BOUNDARY=IB_IPSVL_UY(I,J)-U_FREESTREAM
                 ELSE IF( NSUBSTEP==1)THEN
-                    DELTA_VELO_BOUNDARY=IB_IPSVL_UY(I,J)-IB_IPSVL_UYN(I,J)
+                    DELTA_VELO_BOUNDARY=IB_IPSVL_UY(I,J)-IB_IPSVL_UYM1(I,J)
                 ELSE IF( NSUBSTEP/=1)THEN
                     DELTA_VELO_BOUNDARY=0.0D0
                 END IF
