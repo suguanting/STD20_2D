@@ -52,12 +52,21 @@
         VM2=VM1
         UM1=UM
         VM1=VM
-        !m=1虚拟时间层结束时赋值TYPEM1
+        !m=1虚拟时间层结束时赋值TYPEM1，IB_ITSCT_XXM1和IB_IPSVL_XXM1
         IF(NSUBSTEP==1)THEN
             TYPEUXM1=TYPEUX
             TYPEVXM1=TYPEVX
             TYPEUYM1=TYPEUY
             TYPEVYM1=TYPEVY
+
+            IB_ITSCT_UXM1=IB_ITSCT_UX
+            IB_ITSCT_VXM1=IB_ITSCT_VX
+            IB_IPSVL_UXM1=IB_IPSVL_UX
+            IB_IPSVL_VXM1=IB_IPSVL_VX
+            IB_ITSCT_UYM1=IB_ITSCT_UY
+            IB_ITSCT_VYM1=IB_ITSCT_VY
+            IB_IPSVL_UYM1=IB_IPSVL_UY
+            IB_IPSVL_VYM1=IB_IPSVL_VY
         END IF
 
     END DO

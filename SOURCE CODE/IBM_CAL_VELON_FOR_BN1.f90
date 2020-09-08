@@ -25,9 +25,9 @@
 
             ELSE IF(TYPEUX(I,J)==1)THEN
                 IF     (TYPEUX(I-1,J)==-10 .AND. TYPEUXM1(I,J)==1 .AND. TYPEUXM1(I-1,J)==-10)THEN
-                    IF     (IB_ITSCT_UXN(I,J)<IB_ITSCT_UX(I,J)-CRITERIA)THEN!+1+1+1+1+1
-                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),IB_IPSVL_UXN(I,J),X(I),IB_ITSCT_UX(I,J),IB_ITSCT_UXN(I,J))
-                    ELSE IF(IB_ITSCT_UXN(I,J)>IB_ITSCT_UX(I,J)+CRITERIA)THEN!+3+3+3+3+3
+                    IF     (IB_ITSCT_UXM1(I,J)<IB_ITSCT_UX(I,J)-CRITERIA)THEN!+1+1+1+1+1
+                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),IB_IPSVL_UXM1(I,J),X(I),IB_ITSCT_UX(I,J),IB_ITSCT_UXM1(I,J))
+                    ELSE IF(IB_ITSCT_UXM1(I,J)>IB_ITSCT_UX(I,J)+CRITERIA)THEN!+3+3+3+3+3
                         VALUE_X=IB_ITSCT_UX(I,J)
                         VALUE_Y=YPU(J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -38,8 +38,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_UXN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_UXN(I,J)-IB_ITSCT_UX(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_UXN(I,J)=IB_IPSVL_UXN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_UXM1(I,J)-IB_ITSCT_UX(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_UXN(I,J)=IB_IPSVL_UXM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEUX(I-1,J)==-10 .AND. TYPEUXM1(I-1,J)==1 .AND. TYPEUXM1(I-2,J)==-10)THEN!+2+2+2+2+2
                     CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),UN(I-1,J),X(I),IB_ITSCT_UX(I,J),X(I-1))
@@ -78,9 +78,9 @@
 
             ELSE IF(TYPEUX(I,J)==-1)THEN!(条件改一下，内容只需改正负号)
                 IF     (TYPEUX(I+1,J)==-10 .AND. TYPEUXM1(I,J)==-1 .AND. TYPEUXM1(I+1,J)==-10)THEN
-                    IF     (IB_ITSCT_UX(I,J)<IB_ITSCT_UXN(I,J)-CRITERIA)THEN!-1-1-1-1-1
-                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),IB_IPSVL_UXN(I,J),X(I),IB_ITSCT_UX(I,J),IB_ITSCT_UXN(I,J))
-                    ELSE IF(IB_ITSCT_UX(I,J)>IB_ITSCT_UXN(I,J)+CRITERIA)THEN!-3-3-3-3-3
+                    IF     (IB_ITSCT_UX(I,J)<IB_ITSCT_UXM1(I,J)-CRITERIA)THEN!-1-1-1-1-1
+                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),IB_IPSVL_UXM1(I,J),X(I),IB_ITSCT_UX(I,J),IB_ITSCT_UXM1(I,J))
+                    ELSE IF(IB_ITSCT_UX(I,J)>IB_ITSCT_UXM1(I,J)+CRITERIA)THEN!-3-3-3-3-3
                         VALUE_X=IB_ITSCT_UX(I,J)
                         VALUE_Y=YPU(J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -91,8 +91,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_UXN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_UXN(I,J)-IB_ITSCT_UX(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_UXN(I,J)=IB_IPSVL_UXN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_UXM1(I,J)-IB_ITSCT_UX(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_UXN(I,J)=IB_IPSVL_UXM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEUX(I+1,J)==-10 .AND. TYPEUXM1(I+1,J)==-1 .AND. TYPEUXM1(I+2,J)==-10)THEN!-2-2-2-2-2
                     CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UXN(I,J),UN(I+1,J),X(I),IB_ITSCT_UX(I,J),X(I+1))
@@ -137,9 +137,9 @@
 
             ELSE IF(TYPEUY(I,J)==1)THEN
                 IF     (TYPEUY(I,J-1)==-10 .AND. TYPEUYM1(I,J)==1 .AND. TYPEUYM1(I,J-1)==-10)THEN
-                    IF     (IB_ITSCT_UYN(I,J)<IB_ITSCT_UY(I,J)-CRITERIA)THEN!+1+1+1+1+1
-                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),IB_IPSVL_UYN(I,J),YPU(J),IB_ITSCT_UY(I,J),IB_ITSCT_UYN(I,J))
-                    ELSE IF(IB_ITSCT_UYN(I,J)>IB_ITSCT_UY(I,J)+CRITERIA)THEN!+3+3+3+3+3
+                    IF     (IB_ITSCT_UYM1(I,J)<IB_ITSCT_UY(I,J)-CRITERIA)THEN!+1+1+1+1+1
+                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),IB_IPSVL_UYM1(I,J),YPU(J),IB_ITSCT_UY(I,J),IB_ITSCT_UYM1(I,J))
+                    ELSE IF(IB_ITSCT_UYM1(I,J)>IB_ITSCT_UY(I,J)+CRITERIA)THEN!+3+3+3+3+3
                         VALUE_X=X(I)
                         VALUE_Y=IB_ITSCT_UY(I,J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -150,8 +150,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_UYN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_UYN(I,J)-IB_ITSCT_UY(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_UYN(I,J)=IB_IPSVL_UYN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_UYM1(I,J)-IB_ITSCT_UY(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_UYN(I,J)=IB_IPSVL_UYM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEUY(I,J-1)==-10 .AND. TYPEUYM1(I,J-1)==1 .AND. TYPEUYM1(I,J-2)==-10)THEN!+2+2+2+2+2
                     CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),UN(I,J-1),YPU(J),IB_ITSCT_UY(I,J),YPU(J-1))
@@ -190,9 +190,9 @@
 
             ELSE IF(TYPEUY(I,J)==-1)THEN!(条件改一下，内容只需改正负号)
                 IF     (TYPEUY(I,J+1)==-10 .AND. TYPEUYM1(I,J)==-1 .AND. TYPEUYM1(I,J+1)==-10)THEN
-                    IF     (IB_ITSCT_UY(I,J)<IB_ITSCT_UYN(I,J)-CRITERIA)THEN!-1-1-1-1-1
-                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),IB_IPSVL_UYN(I,J),YPU(J),IB_ITSCT_UY(I,J),IB_ITSCT_UYN(I,J))
-                    ELSE IF(IB_ITSCT_UY(I,J)>IB_ITSCT_UYN(I,J)+CRITERIA)THEN!-3-3-3-3-3
+                    IF     (IB_ITSCT_UY(I,J)<IB_ITSCT_UYM1(I,J)-CRITERIA)THEN!-1-1-1-1-1
+                        CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),IB_IPSVL_UYM1(I,J),YPU(J),IB_ITSCT_UY(I,J),IB_ITSCT_UYM1(I,J))
+                    ELSE IF(IB_ITSCT_UY(I,J)>IB_ITSCT_UYM1(I,J)+CRITERIA)THEN!-3-3-3-3-3
                         VALUE_X=X(I)
                         VALUE_Y=IB_ITSCT_UY(I,J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -203,8 +203,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_UYN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_UYN(I,J)-IB_ITSCT_UY(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_UYN(I,J)=IB_IPSVL_UYN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_UYM1(I,J)-IB_ITSCT_UY(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_UYN(I,J)=IB_IPSVL_UYM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEUY(I,J+1)==-10 .AND. TYPEUYM1(I,J+1)==-1 .AND. TYPEUYM1(I,J+2)==-10)THEN!-2-2-2-2-2
                     CALL LINEAR_INTERPOLATION(UN(I,J),IBN1_IPSVL_UYN(I,J),UN(I,J+1),YPU(J),IB_ITSCT_UY(I,J),YPU(J+1))
@@ -255,9 +255,9 @@
 
             ELSE IF(TYPEVX(I,J)==1)THEN
                 IF     (TYPEVX(I-1,J)==-10 .AND. TYPEVXM1(I,J)==1 .AND. TYPEVXM1(I-1,J)==-10)THEN
-                    IF     (IB_ITSCT_VXN(I,J)<IB_ITSCT_VX(I,J)-CRITERIA)THEN!+1+1+1+1+1
-                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),IB_IPSVL_VXN(I,J),XPV(I),IB_ITSCT_VX(I,J),IB_ITSCT_VXN(I,J))
-                    ELSE IF(IB_ITSCT_VXN(I,J)>IB_ITSCT_VX(I,J)+CRITERIA)THEN!+3+3+3+3+3
+                    IF     (IB_ITSCT_VXM1(I,J)<IB_ITSCT_VX(I,J)-CRITERIA)THEN!+1+1+1+1+1
+                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),IB_IPSVL_VXM1(I,J),XPV(I),IB_ITSCT_VX(I,J),IB_ITSCT_VXM1(I,J))
+                    ELSE IF(IB_ITSCT_VXM1(I,J)>IB_ITSCT_VX(I,J)+CRITERIA)THEN!+3+3+3+3+3
                         VALUE_X=IB_ITSCT_VX(I,J)
                         VALUE_Y=Y(J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -268,8 +268,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_VXN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_VXN(I,J)-IB_ITSCT_VX(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_VXN(I,J)=IB_IPSVL_VXN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_VXM1(I,J)-IB_ITSCT_VX(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_VXN(I,J)=IB_IPSVL_VXM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEVX(I-1,J)==-10 .AND. TYPEVXM1(I-1,J)==1 .AND. TYPEVXM1(I-2,J)==-10)THEN!+2+2+2+2+2
                     CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),VN(I-1,J),XPV(I),IB_ITSCT_VX(I,J),XPV(I-1))
@@ -308,9 +308,9 @@
 
             ELSE IF(TYPEVX(I,J)==-1)THEN!(条件改一下，内容只需改正负号)
                 IF     (TYPEVX(I+1,J)==-10 .AND. TYPEVXM1(I,J)==-1 .AND. TYPEVXM1(I+1,J)==-10)THEN
-                    IF     (IB_ITSCT_VX(I,J)<IB_ITSCT_VXN(I,J)-CRITERIA)THEN!-1-1-1-1-1
-                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),IB_IPSVL_VXN(I,J),XPV(I),IB_ITSCT_VX(I,J),IB_ITSCT_VXN(I,J))
-                    ELSE IF(IB_ITSCT_VX(I,J)>IB_ITSCT_VXN(I,J)+CRITERIA)THEN!-3-3-3-3-3
+                    IF     (IB_ITSCT_VX(I,J)<IB_ITSCT_VXM1(I,J)-CRITERIA)THEN!-1-1-1-1-1
+                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),IB_IPSVL_VXM1(I,J),XPV(I),IB_ITSCT_VX(I,J),IB_ITSCT_VXM1(I,J))
+                    ELSE IF(IB_ITSCT_VX(I,J)>IB_ITSCT_VXM1(I,J)+CRITERIA)THEN!-3-3-3-3-3
                         VALUE_X=IB_ITSCT_VX(I,J)
                         VALUE_Y=Y(J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -321,8 +321,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_VXN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_VXN(I,J)-IB_ITSCT_VX(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_VXN(I,J)=IB_IPSVL_VXN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_VXM1(I,J)-IB_ITSCT_VX(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_VXN(I,J)=IB_IPSVL_VXM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEVX(I+1,J)==-10 .AND. TYPEVXM1(I+1,J)==-1 .AND. TYPEVXM1(I+2,J)==-10)THEN!-2-2-2-2-2
                     CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VXN(I,J),VN(I+1,J),XPV(I),IB_ITSCT_VX(I,J),XPV(I+1))
@@ -367,9 +367,9 @@
 
             ELSE IF(TYPEVY(I,J)==1)THEN
                 IF     (TYPEVY(I,J-1)==-10 .AND. TYPEVYM1(I,J)==1 .AND. TYPEVYM1(I,J-1)==-10)THEN
-                    IF     (IB_ITSCT_VYN(I,J)<IB_ITSCT_VY(I,J)-CRITERIA)THEN!+1+1+1+1+1
-                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),IB_IPSVL_VYN(I,J),Y(J),IB_ITSCT_VY(I,J),IB_ITSCT_VYN(I,J))
-                    ELSE IF(IB_ITSCT_VYN(I,J)>IB_ITSCT_VY(I,J)+CRITERIA)THEN!+3+3+3+3+3
+                    IF     (IB_ITSCT_VYM1(I,J)<IB_ITSCT_VY(I,J)-CRITERIA)THEN!+1+1+1+1+1
+                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),IB_IPSVL_VYM1(I,J),Y(J),IB_ITSCT_VY(I,J),IB_ITSCT_VYM1(I,J))
+                    ELSE IF(IB_ITSCT_VYM1(I,J)>IB_ITSCT_VY(I,J)+CRITERIA)THEN!+3+3+3+3+3
                         VALUE_X=XPV(I)
                         VALUE_Y=IB_ITSCT_VY(I,J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -380,8 +380,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_VYN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_VYN(I,J)-IB_ITSCT_VY(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_VYN(I,J)=IB_IPSVL_VYN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_VYM1(I,J)-IB_ITSCT_VY(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_VYN(I,J)=IB_IPSVL_VYM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEVY(I,J-1)==-10 .AND. TYPEVYM1(I,J-1)==1 .AND. TYPEVYM1(I,J-2)==-10)THEN!+2+2+2+2+2
                     CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),VN(I,J-1),Y(J),IB_ITSCT_VY(I,J),Y(J-1))
@@ -420,9 +420,9 @@
 
             ELSE IF(TYPEVY(I,J)==-1)THEN!(条件改一下，内容只需改正负号)
                 IF     (TYPEVY(I,J+1)==-10 .AND. TYPEVYM1(I,J)==-1 .AND. TYPEVYM1(I,J+1)==-10)THEN
-                    IF     (IB_ITSCT_VY(I,J)<IB_ITSCT_VYN(I,J)-CRITERIA)THEN!-1-1-1-1-1
-                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),IB_IPSVL_VYN(I,J),Y(J),IB_ITSCT_VY(I,J),IB_ITSCT_VYN(I,J))
-                    ELSE IF(IB_ITSCT_VY(I,J)>IB_ITSCT_VYN(I,J)+CRITERIA)THEN!-3-3-3-3-3
+                    IF     (IB_ITSCT_VY(I,J)<IB_ITSCT_VYM1(I,J)-CRITERIA)THEN!-1-1-1-1-1
+                        CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),IB_IPSVL_VYM1(I,J),Y(J),IB_ITSCT_VY(I,J),IB_ITSCT_VYM1(I,J))
+                    ELSE IF(IB_ITSCT_VY(I,J)>IB_ITSCT_VYM1(I,J)+CRITERIA)THEN!-3-3-3-3-3
                         VALUE_X=XPV(I)
                         VALUE_Y=IB_ITSCT_VY(I,J)
                         CALL DETERMINE_BOUNDARY_ID(VALUE_X,VALUE_Y,BOUNDARY_ID)
@@ -433,8 +433,8 @@
                         ELSE IF( BOUNDARY_ID==0 )THEN
                             WRITE(992,*)"ERROR:IBN1_IPSVL_VYN",I,J
                         END IF
-                    ELSE IF(DABS(IB_ITSCT_VYN(I,J)-IB_ITSCT_VY(I,J))<=CRITERIA)THEN
-                        IBN1_IPSVL_VYN(I,J)=IB_IPSVL_VYN(I,J)!0000000
+                    ELSE IF(DABS(IB_ITSCT_VYM1(I,J)-IB_ITSCT_VY(I,J))<=CRITERIA)THEN
+                        IBN1_IPSVL_VYN(I,J)=IB_IPSVL_VYM1(I,J)!0000000
                     END IF
                 ELSE IF(TYPEVY(I,J+1)==-10 .AND. TYPEVYM1(I,J+1)==-1 .AND. TYPEVYM1(I,J+2)==-10)THEN!-2-2-2-2-2
                     CALL LINEAR_INTERPOLATION(VN(I,J),IBN1_IPSVL_VYN(I,J),VN(I,J+1),Y(J),IB_ITSCT_VY(I,J),Y(J+1))
