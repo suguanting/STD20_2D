@@ -2641,13 +2641,13 @@
     !------动边界形状------!1圆，2椭圆
     IB_SHAPE=1
     !------各种无量纲参数和准则数------!
-    Re=3000.0D0
+    Re=150.0D0
 
     !------计算域尺度量------!
-    LEFT=-10.0D0
-    RIGH= 20.0D0
-    BOTT=-10.0D0
-    TOPP= 10.0D0
+    LEFT=-50.0D0
+    RIGH= 100.0D0
+    BOTT=-50.0D0
+    TOPP= 50.0D0
 
     !LEM1=-4.0D0
     !RIM1= 4.0D0
@@ -2681,12 +2681,12 @@
         !DX21=0.0D0!中外层
         !DX22=0.0D0!中中层
         !DX23=0.0D0!中内层
-        DX3 =1.0D0/100.0D0!内层
+        DX3 =1.0D0/50.0D0!内层
     END IF
 
     !------迭代控制------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=400!1500!100的倍数
+        NCYCLE=100!1500!100的倍数
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN

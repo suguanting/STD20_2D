@@ -33,8 +33,9 @@
 
 
     DO NSUBSTEP=1,3,1
-        !------求解该时间步左端项系数和移到右端项的大小------!
-        CALL IBM_PRIMITIVE2DERIVATIVE_TRUECARTESIAN
+        !!------求解该时间步左端项系数和移到右端项的大小------!
+        !!运动边界算法中被废除
+        !CALL IBM_PRIMITIVE2DERIVATIVE_TRUECARTESIAN
 
         !------对RK-CN离散的动量方程进行时间推进得到UHAT------!
         CALL TIMEADVANCE1_ME_RK_CN
@@ -113,7 +114,6 @@
     WRITE(40,"( 'P：',3I6 )") PLOC
     WRITE(40,"( 'ERRORU：',3I6 )") EULOC
     WRITE(40,"( 'ERRORV：',3I6 )") EVLOC
-
 
     RETURN
     END SUBROUTINE
