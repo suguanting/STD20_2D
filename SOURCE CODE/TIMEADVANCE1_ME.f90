@@ -24,7 +24,17 @@
     REAL(KIND=8),ALLOCATABLE::BA_L(:),BA_R(:),BA_T(:),BA_B(:)
     REAL(KIND=8)::VELO_CORRECTION
     INTEGER::OUTLET_R,OUTLET_L,OUTLET_T,OUTLET_B
-
+    !------LHS系数相关------!
+    INTEGER::DELTA_TYPE_1
+    INTEGER::DELTA_TYPE_3
+    REAL(KIND=8)::ADDTO_1_BY_1
+    REAL(KIND=8)::ADDTO_2_BY_1
+    REAL(KIND=8)::ADDTO_3_BY_1
+    REAL(KIND=8)::ADDTO_R_BY_1
+    REAL(KIND=8)::ADDTO_1_BY_3
+    REAL(KIND=8)::ADDTO_2_BY_3
+    REAL(KIND=8)::ADDTO_3_BY_3
+    REAL(KIND=8)::ADDTO_R_BY_3
 
     ALLOCATE( RU(IM,0:JM),RV(0:IM,JM),DUP(IM,0:JM),DVP(0:IM,JM),DUH(IM,0:JM),DVH(0:IM,JM) )
     ALLOCATE( BA_L(JM-1),BA_R(JM-1),BA_T(IM-1),BA_B(IM-1) )
@@ -115,7 +125,12 @@
                     RVYK1=ALPHA(NSUBSTEP)*DT/Re*LAPLACE_VYM1(I,J)
                 END IF
 
-                RV(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1-GAMA(NSUBSTEP)*(RCXK1+RCYK1)-RHO(NSUBSTEP)*(RCXK2+RCYK2))+(RVXK1+RVYK1)
+                IF( TYPEVXM1(I,J)==-10 .AND. TYPEVYM1(I,J)==-10 )THEN
+                    RV(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1)
+                ELSE
+                    RV(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1-GAMA(NSUBSTEP)*(RCXK1+RCYK1)-RHO(NSUBSTEP)*(RCXK2+RCYK2))+(RVXK1+RVYK1)
+                END IF
+
             END IF
         END DO
     END DO
@@ -178,32 +193,34 @@
 
         ELSE!内部
             DO I=2,IM-2,1
-                IF(TYPEVX(I,J)==10)THEN
-                    TRIA(I)=A1(I,J)
-                    TRIB(I)=1.0D0-A2(I,J)
-                    TRIC(I)=A3(I,J)
-                    TRID(I)=RV(I,J)
-                ELSE IF(TYPEVX(I,J)==0)THEN
+                IF(TYPEVX(I,J)==0)THEN
                     TRIA(I)=0.0D0
                     TRIB(I)=1.0D0
                     TRIC(I)=0.0D0
-                    TRID(I)=IB_RVX(I,J)
-                ELSE IF(TYPEVX(I,J)==1)THEN
-                    TRIA(I)=0.0D0
-                    TRIB(I)=1.0D0+IB_CVX(I,J)
-                    TRIC(I)=IB_AVX(I,J)
-                    TRID(I)=RV(I,J)+IB_RVX(I,J)
-                ELSE IF(TYPEVX(I,J)==-1)THEN
-                    TRIA(I)=IB_AVX(I,J)
-                    TRIB(I)=1.0D0+IB_CVX(I,J)
-                    TRIC(I)=0.0D0
-                    TRID(I)=RV(I,J)+IB_RVX(I,J)
+                    TRID(I)=IB_IPSVL_VX(I,J)-VM1(I,J)
                 ELSE IF(TYPEVX(I,J)==-10)THEN
                     TRIA(I)=0.0D0
                     TRIB(I)=1.0D0
                     TRIC(I)=0.0D0
-                    TRID(I)=IB_RVX(I,J)
+                    TRID(I)=IB_IPSVL_VX(I,J)-VM1(I,J)
+                ELSE IF(TYPEVX(I,J)==10 .OR. IABS(TYPEVX(I,J))==1)THEN
+
+                    !判定离散模板内点处DELTA_VELO的含义
+                    CALL DTRMN_DELTA_VELO_1_TYPE(TYPEVX(I-1,J),TYPEVXM1(I-1,J),TYPEVXM1(I,J),DELTA_TYPE_1)
+                    CALL DTRMN_DELTA_VELO_3_TYPE(TYPEVX(I+1,J),TYPEVXM1(I+1,J),TYPEVXM1(I,J),DELTA_TYPE_3)
+                    !求解调整系数
+                    CALL CAL_ADDTO_VX_1(I,J,DELTA_TYPE_1,&
+                        ADDTO_1_BY_1,ADDTO_2_BY_1,ADDTO_3_BY_1,ADDTO_R_BY_1)
+                    CALL CAL_ADDTO_VX_3(I,J,DELTA_TYPE_3,&
+                        ADDTO_1_BY_3,ADDTO_2_BY_3,ADDTO_3_BY_3,ADDTO_R_BY_3)
+                    !求解线性系统的系数
+                    TRIA(I)=A1(I,J)*ADDTO_1_BY_1+A3(I,J)*ADDTO_1_BY_3
+                    TRIB(I)=1.0D0-A2(I,J)+A1(I,J)*ADDTO_2_BY_1+A3(I,J)*ADDTO_2_BY_3
+                    TRIC(I)=A1(I,J)*ADDTO_3_BY_1+A3(I,J)*ADDTO_3_BY_3
+                    TRID(I)=RV(I,J)+A1(I,J)*ADDTO_R_BY_1+A3(I,J)*ADDTO_R_BY_3
+
                 END IF
+                
             END DO
 
             I=1
@@ -298,34 +315,35 @@
 
         ELSE!内部
             DO J=3,JM-2,1
-                IF(TYPEVY(I,J)==10)THEN
-                    TRIA(J)=B1(I,J)
-                    TRIB(J)=1.0D0-B2(I,J)
-                    TRIC(J)=B3(I,J)
-                    TRID(J)=DVP(I,J)
-                ELSE IF(TYPEVY(I,J)==0)THEN
+                IF(TYPEVY(I,J)==0)THEN
                     TRIA(J)=0.0D0
                     TRIB(J)=1.0D0
                     TRIC(J)=0.0D0
-                    TRID(J)=IB_RVY(I,J)
-                ELSE IF(TYPEVY(I,J)==1)THEN
-                    TRIA(J)=0.0D0
-                    TRIB(J)=1.0D0+IB_CVY(I,J)
-                    TRIC(J)=IB_BVY(I,J)
-                    TRID(J)=DVP(I,J)+IB_RVY(I,J)
-                ELSE IF(TYPEVY(I,J)==-1)THEN
-                    TRIA(J)=IB_BVY(I,J)
-                    TRIB(J)=1.0D0+IB_CVY(I,J)
-                    TRIC(J)=0.0D0
-                    TRID(J)=DVP(I,J)+IB_RVY(I,J)
+                    TRID(J)=IB_IPSVL_VY(I,J)-VM1(I,J)
                 ELSE IF(TYPEVY(I,J)==-10)THEN
                     TRIA(J)=0.0D0
                     TRIB(J)=1.0D0
                     TRIC(J)=0.0D0
-                    TRID(J)=IB_RVY(I,J)
+                    TRID(J)=IB_IPSVL_VY(I,J)-VM1(I,J)
+                ELSE IF(TYPEVY(I,J)==10 .OR. IABS(TYPEVY(I,J))==1)THEN
+
+                    !判定离散模板内点处DELTA_VELO的含义
+                    CALL DTRMN_DELTA_VELO_1_TYPE(TYPEVY(I,J-1),TYPEVYM1(I,J-1),TYPEVYM1(I,J),DELTA_TYPE_1)
+                    CALL DTRMN_DELTA_VELO_3_TYPE(TYPEVY(I,J+1),TYPEVYM1(I,J+1),TYPEVYM1(I,J),DELTA_TYPE_3)
+                    !求解调整系数
+                    CALL CAL_ADDTO_VY_1(I,J,DELTA_TYPE_1,&
+                        ADDTO_1_BY_1,ADDTO_2_BY_1,ADDTO_3_BY_1,ADDTO_R_BY_1)
+                    CALL CAL_ADDTO_VY_3(I,J,DELTA_TYPE_3,&
+                        ADDTO_1_BY_3,ADDTO_2_BY_3,ADDTO_3_BY_3,ADDTO_R_BY_3)
+                    !求解线性系统的系数
+                    TRIA(J)=B1(I,J)*ADDTO_1_BY_1+B3(I,J)*ADDTO_1_BY_3
+                    TRIB(J)=1.0D0-B2(I,J)+B1(I,J)*ADDTO_2_BY_1+B3(I,J)*ADDTO_2_BY_3
+                    TRIC(J)=B1(I,J)*ADDTO_3_BY_1+B3(I,J)*ADDTO_3_BY_3
+                    TRID(J)=DVP(I,J)+B1(I,J)*ADDTO_R_BY_1+B3(I,J)*ADDTO_R_BY_3
+
                 END IF
             END DO
-
+            
             J=2
             TRIA(J)=0.0D0
             TRIB(J)=1.0D0-B2(I,J)+BCV_AB*B1(I,J)
@@ -442,7 +460,11 @@
                     RVYK1=ALPHA(NSUBSTEP)*DT/Re*LAPLACE_UYM1(I,J)
                 END IF
 
-                RU(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1-GAMA(NSUBSTEP)*(RCXK1+RCYK1)-RHO(NSUBSTEP)*(RCXK2+RCYK2))+(RVXK1+RVYK1)
+                IF( TYPEUXM1(I,J)==-10 .AND. TYPEUYM1(I,J)==-10 )THEN
+                    RU(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1)
+                ELSE
+                    RU(I,J)=DT*(-ALPHA(NSUBSTEP)*RPK1-GAMA(NSUBSTEP)*(RCXK1+RCYK1)-RHO(NSUBSTEP)*(RCXK2+RCYK2))+(RVXK1+RVYK1)
+                END IF
             END IF
         END DO
     END DO
@@ -504,31 +526,32 @@
 
         ELSE!内部
             DO I=3,IM-2,1
-                IF(TYPEUX(I,J)==10)THEN
-                    TRIA(I)=A1(I,J)
-                    TRIB(I)=1.0D0-A2(I,J)
-                    TRIC(I)=A3(I,J)
-                    TRID(I)=RU(I,J)
-                ELSE IF(TYPEUX(I,J)==0)THEN
+                IF(TYPEUX(I,J)==0)THEN
                     TRIA(I)=0.0D0
                     TRIB(I)=1.0D0
                     TRIC(I)=0.0D0
-                    TRID(I)=IB_RUX(I,J)
-                ELSE IF(TYPEUX(I,J)==1)THEN
-                    TRIA(I)=0.0D0
-                    TRIB(I)=1.0D0+IB_CUX(I,J)
-                    TRIC(I)=IB_AUX(I,J)
-                    TRID(I)=RU(I,J)+IB_RUX(I,J)
-                ELSE IF(TYPEUX(I,J)==-1)THEN
-                    TRIA(I)=IB_AUX(I,J)
-                    TRIB(I)=1.0D0+IB_CUX(I,J)
-                    TRIC(I)=0.0D0
-                    TRID(I)=RU(I,J)+IB_RUX(I,J)
+                    TRID(I)=IB_IPSVL_UX(I,J)-UM1(I,J)
                 ELSE IF(TYPEUX(I,J)==-10)THEN
                     TRIA(I)=0.0D0
                     TRIB(I)=1.0D0
                     TRIC(I)=0.0D0
-                    TRID(I)=IB_RUX(I,J)
+                    TRID(I)=IB_IPSVL_UX(I,J)-UM1(I,J)
+                ELSE IF(TYPEUX(I,J)==10 .OR. IABS(TYPEUX(I,J))==1)THEN
+
+                    !判定离散模板内点处DELTA_U的含义
+                    CALL DTRMN_DELTA_VELO_1_TYPE(TYPEUX(I-1,J),TYPEUXM1(I-1,J),TYPEUXM1(I,J),DELTA_TYPE_1)
+                    CALL DTRMN_DELTA_VELO_3_TYPE(TYPEUX(I+1,J),TYPEUXM1(I+1,J),TYPEUXM1(I,J),DELTA_TYPE_3)
+                    !求解调整系数
+                    CALL CAL_ADDTO_UX_1(I,J,DELTA_TYPE_1,&
+                        ADDTO_1_BY_1,ADDTO_2_BY_1,ADDTO_3_BY_1,ADDTO_R_BY_1)
+                    CALL CAL_ADDTO_UX_3(I,J,DELTA_TYPE_3,&
+                        ADDTO_1_BY_3,ADDTO_2_BY_3,ADDTO_3_BY_3,ADDTO_R_BY_3)
+                    !求解线性系统的系数
+                    TRIA(I)=A1(I,J)*ADDTO_1_BY_1+A3(I,J)*ADDTO_1_BY_3
+                    TRIB(I)=1.0D0-A2(I,J)+A1(I,J)*ADDTO_2_BY_1+A3(I,J)*ADDTO_2_BY_3
+                    TRIC(I)=A1(I,J)*ADDTO_3_BY_1+A3(I,J)*ADDTO_3_BY_3
+                    TRID(I)=RU(I,J)+A1(I,J)*ADDTO_R_BY_1+A3(I,J)*ADDTO_R_BY_3
+
                 END IF
             END DO
 
@@ -625,31 +648,32 @@
 
         ELSE!内部
             DO J=2,JM-2,1
-                IF(TYPEUY(I,J)==10)THEN
-                    TRIA(J)=B1(I,J)
-                    TRIB(J)=1.0D0-B2(I,J)
-                    TRIC(J)=B3(I,J)
-                    TRID(J)=DUP(I,J)
-                ELSE IF(TYPEUY(I,J)==0)THEN
+                IF(TYPEUY(I,J)==0)THEN
                     TRIA(J)=0.0D0
                     TRIB(J)=1.0D0
                     TRIC(J)=0.0D0
-                    TRID(J)=IB_RUY(I,J)
-                ELSE IF(TYPEUY(I,J)==1)THEN
-                    TRIA(J)=0.0D0
-                    TRIB(J)=1.0D0+IB_CUY(I,J)
-                    TRIC(J)=IB_BUY(I,J)
-                    TRID(J)=DUP(I,J)+IB_RUY(I,J)
-                ELSE IF(TYPEUY(I,J)==-1)THEN
-                    TRIA(J)=IB_BUY(I,J)
-                    TRIB(J)=1.0D0+IB_CUY(I,J)
-                    TRIC(J)=0.0D0
-                    TRID(J)=DUP(I,J)+IB_RUY(I,J)
+                    TRID(J)=IB_IPSVL_UY(I,J)-UM1(I,J)
                 ELSE IF(TYPEUY(I,J)==-10)THEN
                     TRIA(J)=0.0D0
                     TRIB(J)=1.0D0
                     TRIC(J)=0.0D0
-                    TRID(J)=IB_RUY(I,J)
+                    TRID(J)=IB_IPSVL_UY(I,J)-UM1(I,J)
+                ELSE IF(TYPEUY(I,J)==10 .OR. IABS(TYPEUY(I,J))==1)THEN
+
+                    !判定离散模板内点处DELTA_VELO的含义
+                    CALL DTRMN_DELTA_VELO_1_TYPE(TYPEUY(I,J-1),TYPEUYM1(I,J-1),TYPEUYM1(I,J),DELTA_TYPE_1)
+                    CALL DTRMN_DELTA_VELO_3_TYPE(TYPEUY(I,J+1),TYPEUYM1(I,J+1),TYPEUYM1(I,J),DELTA_TYPE_3)
+                    !求解调整系数
+                    CALL CAL_ADDTO_UY_1(I,J,DELTA_TYPE_1,&
+                        ADDTO_1_BY_1,ADDTO_2_BY_1,ADDTO_3_BY_1,ADDTO_R_BY_1)
+                    CALL CAL_ADDTO_UY_3(I,J,DELTA_TYPE_3,&
+                        ADDTO_1_BY_3,ADDTO_2_BY_3,ADDTO_3_BY_3,ADDTO_R_BY_3)
+                    !求解线性系统的系数
+                    TRIA(J)=B1(I,J)*ADDTO_1_BY_1+B3(I,J)*ADDTO_1_BY_3
+                    TRIB(J)=1.0D0-B2(I,J)+B1(I,J)*ADDTO_2_BY_1+B3(I,J)*ADDTO_2_BY_3
+                    TRIC(J)=B1(I,J)*ADDTO_3_BY_1+B3(I,J)*ADDTO_3_BY_3
+                    TRID(J)=DUP(I,J)+B1(I,J)*ADDTO_R_BY_1+B3(I,J)*ADDTO_R_BY_3
+
                 END IF
             END DO
 

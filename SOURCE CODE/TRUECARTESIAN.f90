@@ -24,6 +24,581 @@
     !RETURN
     !END SUBROUTINE
 
+    !****************************判定离散模板内点1处DELTA_U的含义******************************!
+    SUBROUTINE DTRMN_DELTA_VELO_1_TYPE(TYPE_I1,TYPE_I1_M1,TYPE_I_M1,DELTA_VELO_TYPE)
+    IMPLICIT NONE
+
+    INTEGER::TYPE_I1,TYPE_I1_M1,TYPE_I_M1,DELTA_VELO_TYPE
+
+    IF(TYPE_I1/=-10 .AND. TYPE_I1_M1/=-10)THEN
+        DELTA_VELO_TYPE=1
+    ELSE IF(TYPE_I1==-10 .AND. TYPE_I1_M1/=-10)THEN
+        DELTA_VELO_TYPE=2
+    ELSE IF(TYPE_I1/=-10 .AND. TYPE_I1_M1==-10)THEN
+        IF(TYPE_I_M1==-10 .OR. TYPE_I_M1==0)THEN
+            DELTA_VELO_TYPE=1
+        ELSE IF(TYPE_I_M1==+1)THEN
+            DELTA_VELO_TYPE=3
+        END IF
+    ELSE IF(TYPE_I1==-10 .AND. TYPE_I1_M1==-10)THEN
+        IF(TYPE_I_M1==-10 .OR. TYPE_I_M1==0)THEN
+            DELTA_VELO_TYPE=2
+        ELSE IF(TYPE_I_M1==+1)THEN
+            DELTA_VELO_TYPE=4
+        END IF
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !****************判定离散模板内点3处DELTA_U的含义************************!
+    SUBROUTINE DTRMN_DELTA_VELO_3_TYPE(TYPE_I1,TYPE_I1_M1,TYPE_I_M1,&
+        DELTA_VELO_TYPE)
+    IMPLICIT NONE
+
+    INTEGER::TYPE_I1,TYPE_I1_M1,TYPE_I_M1,DELTA_VELO_TYPE
+
+    IF(TYPE_I1/=-10 .AND. TYPE_I1_M1/=-10)THEN
+        DELTA_VELO_TYPE=1
+    ELSE IF(TYPE_I1==-10 .AND. TYPE_I1_M1/=-10)THEN
+        DELTA_VELO_TYPE=2
+    ELSE IF(TYPE_I1/=-10 .AND. TYPE_I1_M1==-10)THEN
+        IF(TYPE_I_M1==-10 .OR. TYPE_I_M1==0)THEN
+            DELTA_VELO_TYPE=1
+        ELSE IF(TYPE_I_M1==-1)THEN
+            DELTA_VELO_TYPE=3
+        END IF
+    ELSE IF(TYPE_I1==-10 .AND. TYPE_I1_M1==-10)THEN
+        IF(TYPE_I_M1==-10 .OR. TYPE_I_M1==0)THEN
+            DELTA_VELO_TYPE=2
+        ELSE IF(TYPE_I_M1==-1)THEN
+            DELTA_VELO_TYPE=4
+        END IF
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解V在X方向离散模板内点1处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_VX_1(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::V_PROBE_M1_1
+
+    I_1=I_2-1
+    J_1=J_2
+    I_3=I_2+1
+    J_3=J_2
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( XPV(I_3),XPV(I_2),IB_ITSCT_VX(I_2,J_2),XPV(I_1),&
+            CSE,CSI,CSB )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_VX(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_3,J_3)-VM1(I_1,J_1) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( VM1(I_3,J_3),VM1(I_2,J_2),&
+            IB_IPSVL_VXM1(I_2,J_2),V_PROBE_M1_1,&
+            XPV(I_3),XPV(I_2),IB_ITSCT_VXM1(I_2,J_2),XPV(I_1) )
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=-( VM1(I_1,J_1)-V_PROBE_M1_1 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( XPV(I_3),XPV(I_2),IB_ITSCT_VX(I_2,J_2),XPV(I_1),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( VM1(I_3,J_3),VM1(I_2,J_2),&
+            IB_IPSVL_VXM1(I_2,J_2),V_PROBE_M1_1,&
+            XPV(I_3),XPV(I_2),IB_ITSCT_VXM1(I_2,J_2),XPV(I_1) )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_VX(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_3,J_3)-V_PROBE_M1_1 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解V在X方向离散模板内点3处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_VX_3(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::V_PROBE_M1_3
+
+    I_1=I_2-1
+    J_1=J_2
+    I_3=I_2+1
+    J_3=J_2
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( XPV(I_1),XPV(I_2),IB_ITSCT_VX(I_2,J_2),XPV(I_3),&
+            CSE,CSI,CSB )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_VX(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_1,J_1)-VM1(I_3,J_3) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( VM1(I_1,J_1),VM1(I_2,J_2),&
+            IB_IPSVL_VXM1(I_2,J_2),V_PROBE_M1_3,&
+            XPV(I_1),XPV(I_2),IB_ITSCT_VXM1(I_2,J_2),XPV(I_3) )
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=-( VM1(I_3,J_3)-V_PROBE_M1_3 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( XPV(I_1),XPV(I_2),IB_ITSCT_VX(I_2,J_2),XPV(I_3),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( VM1(I_1,J_1),VM1(I_2,J_2),&
+            IB_IPSVL_VXM1(I_2,J_2),V_PROBE_M1_3,&
+            XPV(I_1),XPV(I_2),IB_ITSCT_VXM1(I_2,J_2),XPV(I_3) )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_VX(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_1,J_1)-V_PROBE_M1_3 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解V在Y方向离散模板内点1处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_VY_1(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::V_PROBE_M1_1
+
+    I_1=I_2
+    J_1=J_2-1
+    I_3=I_2
+    J_3=J_2+1
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( Y(J_3),Y(J_2),IB_ITSCT_VY(I_2,J_2),Y(J_1),&
+            CSE,CSI,CSB )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_VY(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_3,J_3)-VM1(I_1,J_1) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( VM1(I_3,J_3),VM1(I_2,J_2),&
+            IB_IPSVL_VYM1(I_2,J_2),V_PROBE_M1_1,&
+            Y(J_3),Y(J_2),IB_ITSCT_VYM1(I_2,J_2),Y(J_1) )
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=-( VM1(I_1,J_1)-V_PROBE_M1_1 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( Y(J_3),Y(J_2),IB_ITSCT_VY(I_2,J_2),Y(J_1),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( VM1(I_3,J_3),VM1(I_2,J_2),&
+            IB_IPSVL_VYM1(I_2,J_2),V_PROBE_M1_1,&
+            Y(J_3),Y(J_2),IB_ITSCT_VYM1(I_2,J_2),Y(J_1) )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_VY(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_3,J_3)-V_PROBE_M1_1 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解V在Y方向离散模板内点3处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_VY_3(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::V_PROBE_M1_3
+
+    I_1=I_2
+    J_1=J_2-1
+    I_3=I_2
+    J_3=J_2+1
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( Y(J_1),Y(J_2),IB_ITSCT_VY(I_2,J_2),Y(J_3),&
+            CSE,CSI,CSB )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_VY(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_1,J_1)-VM1(I_3,J_3) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( VM1(I_1,J_1),VM1(I_2,J_2),&
+            IB_IPSVL_VYM1(I_2,J_2),V_PROBE_M1_3,&
+            Y(J_1),Y(J_2),IB_ITSCT_VYM1(I_2,J_2),Y(J_3) )
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=-( VM1(I_3,J_3)-V_PROBE_M1_3 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( Y(J_1),Y(J_2),IB_ITSCT_VY(I_2,J_2),Y(J_3),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( VM1(I_1,J_1),VM1(I_2,J_2),&
+            IB_IPSVL_VYM1(I_2,J_2),V_PROBE_M1_3,&
+            Y(J_1),Y(J_2),IB_ITSCT_VYM1(I_2,J_2),Y(J_3) )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_VY(I_2,J_2)&
+            +CSI*VM1(I_2,J_2)+CSE*VM1(I_1,J_1)-V_PROBE_M1_3 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解U在X方向离散模板内点1处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_UX_1(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::U_PROBE_M1_1
+
+    I_1=I_2-1
+    J_1=J_2
+    I_3=I_2+1
+    J_3=J_2
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( X(I_3),X(I_2),IB_ITSCT_UX(I_2,J_2),X(I_1),&
+            CSE,CSI,CSB )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_UX(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_3,J_3)-UM1(I_1,J_1) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( UM1(I_3,J_3),UM1(I_2,J_2),&
+            IB_IPSVL_UXM1(I_2,J_2),U_PROBE_M1_1,&
+            X(I_3),X(I_2),IB_ITSCT_UXM1(I_2,J_2),X(I_1) )
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=-( UM1(I_1,J_1)-U_PROBE_M1_1 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( X(I_3),X(I_2),IB_ITSCT_UX(I_2,J_2),X(I_1),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( UM1(I_3,J_3),UM1(I_2,J_2),&
+            IB_IPSVL_UXM1(I_2,J_2),U_PROBE_M1_1,&
+            X(I_3),X(I_2),IB_ITSCT_UXM1(I_2,J_2),X(I_1) )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_UX(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_3,J_3)-U_PROBE_M1_1 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解U在X方向离散模板内点3处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_UX_3(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::U_PROBE_M1_3
+
+    I_1=I_2-1
+    J_1=J_2
+    I_3=I_2+1
+    J_3=J_2
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( X(I_1),X(I_2),IB_ITSCT_UX(I_2,J_2),X(I_3),&
+            CSE,CSI,CSB )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_UX(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_1,J_1)-UM1(I_3,J_3) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( UM1(I_1,J_1),UM1(I_2,J_2),&
+            IB_IPSVL_UXM1(I_2,J_2),U_PROBE_M1_3,&
+            X(I_1),X(I_2),IB_ITSCT_UXM1(I_2,J_2),X(I_3) )
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=-( UM1(I_3,J_3)-U_PROBE_M1_3 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( X(I_1),X(I_2),IB_ITSCT_UX(I_2,J_2),X(I_3),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( UM1(I_1,J_1),UM1(I_2,J_2),&
+            IB_IPSVL_UXM1(I_2,J_2),U_PROBE_M1_3,&
+            X(I_1),X(I_2),IB_ITSCT_UXM1(I_2,J_2),X(I_3) )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_UX(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_1,J_1)-U_PROBE_M1_3 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解U在Y方向离散模板内点1处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_UY_1(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::U_PROBE_M1_1
+
+    I_1=I_2
+    J_1=J_2-1
+    I_3=I_2
+    J_3=J_2+1
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( YPU(J_3),YPU(J_2),IB_ITSCT_UY(I_2,J_2),YPU(J_1),&
+            CSE,CSI,CSB )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_UY(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_3,J_3)-UM1(I_1,J_1) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( UM1(I_3,J_3),UM1(I_2,J_2),&
+            IB_IPSVL_UYM1(I_2,J_2),U_PROBE_M1_1,&
+            YPU(J_3),YPU(J_2),IB_ITSCT_UYM1(I_2,J_2),YPU(J_1) )
+        ADDTO_1=1.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=0.0D0
+        ADDTO_R=-( UM1(I_1,J_1)-U_PROBE_M1_1 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( YPU(J_3),YPU(J_2),IB_ITSCT_UY(I_2,J_2),YPU(J_1),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( UM1(I_3,J_3),UM1(I_2,J_2),&
+            IB_IPSVL_UYM1(I_2,J_2),U_PROBE_M1_1,&
+            YPU(J_3),YPU(J_2),IB_ITSCT_UYM1(I_2,J_2),YPU(J_1) )
+        ADDTO_1=0.0D0
+        ADDTO_2=CSI
+        ADDTO_3=CSE
+        ADDTO_R=-( CSB*IB_IPSVL_UY(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_3,J_3)-U_PROBE_M1_1 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !**************求解U在Y方向离散模板内点3处调整系数***********************!
+    SUBROUTINE CAL_ADDTO_UY_3(I_2,J_2,DELTA_VELO_TYPE,&
+        ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R)
+    USE DECLARATION
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::I_2,J_2,DELTA_VELO_TYPE
+    REAL(KIND=8)::ADDTO_1,ADDTO_2,ADDTO_3,ADDTO_R
+
+    INTEGER::I_1,J_1
+    INTEGER::I_3,J_3
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    REAL(KIND=8)::U_PROBE_M1_3
+
+    I_1=I_2
+    J_1=J_2-1
+    I_3=I_2
+    J_3=J_2+1
+
+    IF(DELTA_VELO_TYPE==1)THEN
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=0.0D0
+    ELSE IF(DELTA_VELO_TYPE==2)THEN
+        CALL CAL_PROB_COEF( YPU(J_1),YPU(J_2),IB_ITSCT_UY(I_2,J_2),YPU(J_3),&
+            CSE,CSI,CSB )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_UY(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_1,J_1)-UM1(I_3,J_3) )
+    ELSE IF(DELTA_VELO_TYPE==3)THEN
+        CALL VELOCITY_PROBING( UM1(I_1,J_1),UM1(I_2,J_2),&
+            IB_IPSVL_UYM1(I_2,J_2),U_PROBE_M1_3,&
+            YPU(J_1),YPU(J_2),IB_ITSCT_UYM1(I_2,J_2),YPU(J_3) )
+        ADDTO_1=0.0D0
+        ADDTO_2=0.0D0
+        ADDTO_3=1.0D0
+        ADDTO_R=-( UM1(I_3,J_3)-U_PROBE_M1_3 )
+    ELSE IF(DELTA_VELO_TYPE==4)THEN
+        CALL CAL_PROB_COEF( YPU(J_1),YPU(J_2),IB_ITSCT_UY(I_2,J_2),YPU(J_3),&
+            CSE,CSI,CSB )
+        CALL VELOCITY_PROBING( UM1(I_1,J_1),UM1(I_2,J_2),&
+            IB_IPSVL_UYM1(I_2,J_2),U_PROBE_M1_3,&
+            YPU(J_1),YPU(J_2),IB_ITSCT_UYM1(I_2,J_2),YPU(J_3) )
+        ADDTO_1=CSE
+        ADDTO_2=CSI
+        ADDTO_3=0.0D0
+        ADDTO_R=-( CSB*IB_IPSVL_UY(I_2,J_2)&
+            +CSI*UM1(I_2,J_2)+CSE*UM1(I_1,J_1)-U_PROBE_M1_3 )
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !****************************求解速度探测系数****************************!
+    SUBROUTINE CAL_PROB_COEF(POSI_E,POSI_I,POSI_B,POSI_S,CSE,CSI,CSB)
+    IMPLICIT NONE
+
+    REAL(KIND=8)::POSI_E,POSI_I,POSI_B,POSI_S
+    REAL(KIND=8)::DB!IB点到边界的距离
+    REAL(KIND=8)::DE!IB点到流域外点的距离
+    REAL(KIND=8)::DS!边界到固域内点的距离
+    REAL(KIND=8)::CSB,CSI,CSE!VELOCITY_PROBING系数
+
+    INTEGER::PROBING_METHOD!边界到固域内点的距离
+
+    DS=DABS(POSI_B-POSI_S)
+    DB=DABS(POSI_I-POSI_B)
+    DE=DABS(POSI_E-POSI_I)
+
+    !允许部分情况下采用单点probing时等于1
+    PROBING_METHOD=1
+
+    IF( DS <= DB .AND. PROBING_METHOD==1)THEN
+        CSB=1.0D0+DS/DB
+        CSI=-DS/DB
+        CSE=0.0D0
+    ELSE
+        CSB=2.0D0
+        CSI=-(DE+DB-DS)/DE
+        CSE=-(DS-DB)/DE
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
     !****************************进行一个方向的速度探测******************************!
     SUBROUTINE VELOCITY_PROBING(VELO_E,VELO_I,VELO_B,VELO_S,POSI_E,POSI_I,POSI_B,POSI_S)
     IMPLICIT NONE
@@ -341,9 +916,9 @@
 
 
     !*********计算K时间层非流体内场点的左端系数和移到右端项的大小*********!
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    !!!!!!!!!!!!!DELTA_VELO_BOUNDARY的取值现在严格按照静边界给定，适用于动边界的之后再想办法!!!!!!!!!!!!!
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!只适用于静止边界!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     SUBROUTINE IBM_PRIMITIVE2DERIVATIVE_TRUECARTESIAN
     USE IMMERSED_BOUNDARY
     USE DECLARATION
