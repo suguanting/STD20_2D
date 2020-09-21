@@ -795,6 +795,1708 @@
     RETURN
     END SUBROUTINE
 
+    !*********************求解升力推力（表面力积分法4）******************!
+    SUBROUTINE CAL_CLCT_SRFC_INTGRTN_SOME(BOUNDARY_GEOMETRICAL,&
+        BOUNDARY_KINETIC,BOUNDARY_ID)
+    USE DECLARATION
+    IMPLICIT NONE
+
+    REAL(KIND=8)::BOUNDARY_GEOMETRICAL(36),BOUNDARY_KINETIC(9)
+    INTEGER::BOUNDARY_ID
+    !---------输出相关---------!
+    CHARACTER(LEN=6)CHAR_STEP,CHAR_REYNOLDS
+    CHARACTER(LEN=2)CHAR_ID
+    INTEGER::REYNOLDS
+
+    !绝对坐标系下二次曲面的数学表达式系数
+    REAL(KIND=8)::COX2,COY2,COXY,COX,COY,COM,COZ2,COXZ,COYZ,COZ
+    !网格密度
+    REAL(KIND=8),ALLOCATABLE::DS(:)
+    !网格数
+    INTEGER::RSM
+    !插值涉及的绝对网格角点信息
+    INTEGER::IAU,JAU!左下角脚标值
+    INTEGER::IAV,JAV!左下角脚标值
+    INTEGER::IAP,JAP!左下角脚标值
+
+    !坐标值
+    REAL(KIND=8),ALLOCATABLE::X_SRFC(:),Y_SRFC(:),Z_SRFC(:)
+    REAL(KIND=8)::XA,YA
+    !法向量
+    REAL(KIND=8),ALLOCATABLE::N1X(:),N1Y(:),N1Z(:)
+    !偏导系数
+    REAL(KIND=8),ALLOCATABLE::AXX(:),AXY(:),AXZ(:)
+    REAL(KIND=8),ALLOCATABLE::AYX(:),AYY(:),AYZ(:)
+    REAL(KIND=8),ALLOCATABLE::AZX(:),AZY(:),AZZ(:)
+    !固壁处物理量
+    REAL(KIND=8),ALLOCATABLE::U_SRFC(:),V_SRFC(:),W_SRFC(:),P_SRFC(:)
+    !包括半径
+    REAL(KIND=8)::SEARCH_RADIUS_U,SEARCH_RADIUS_V
+    !包括点数
+    INTEGER::NUM_ELGBL_U,NUM_ELGBL_V,COUNT_ELGBL
+
+    !一些中间变量
+    REAL(KIND=8)::ELLIPTIC_H,ELLIPTIC_PERIMETER!椭圆周长
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_DA(:)!椭圆各段弧对应圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AS(:)!椭圆各段弧起始处的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AM(:)!椭圆各段弧中间的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_RADIUS(:)!椭圆弧长对应半径
+    REAL(KIND=8)::AVERAGE_RADIUS!椭圆平均半径
+    LOGICAL::ELIGIBILITY_U(-2:2,-2:2),ELIGIBILITY_V(-2:2,-2:2)!可视流体点
+    REAL(KIND=8)::DISTANCE_U(-2:2,-2:2),DISTANCE_V(-2:2,-2:2)!各点距离
+    INTEGER,ALLOCATABLE::INDEX_U(:,:),INDEX_V(:,:)!求解偏导的几个点的脚标
+    REAL(KIND=8),ALLOCATABLE::TEMP_1(:,:),TEMP_2(:,:)!偏导系数求解临时矩阵
+    REAL(KIND=8)::TEMP_SOLUTION(3,1)!求解结果临时矩阵
+    LOGICAL :: OK_FLAG
+    REAL(KIND=8)::DEVIATION_X,DEVIATION_Y!坐标偏移
+    REAL(KIND=8)::MAX_X,MAX_Y!坐标偏移
+    REAL(KIND=8)::MIN_X,MIN_Y!坐标偏移
+    REAL(KIND=8)::XATEMP,YATEMP
+
+    !对象特殊性
+    REAL(KIND=8)::RADIUS
+    REAL(KIND=8)::CEN_CRC(2)
+    REAL(KIND=8)::CEN_ELP(2)
+    REAL(KIND=8)::CEN_DEVIATION(2)
+    REAL(KIND=8)::LAXIS,SAXIS
+    !坐标转换矩阵
+    REAL(KIND=8)::MAT_ABS2REL(2,2),MAT_REL2ABS(2,2)
+
+    !力系数
+    REAL(KIND=8)::CXC_TOTAL,CYC_TOTAL,CZC_TOTAL!计算域绝对坐标系下的力
+    REAL(KIND=8)::CXP,CYP,CZP!压力
+    REAL(KIND=8)::CXV,CYV,CZV!粘性
+
+    !------初始化------!
+    COX2=BOUNDARY_GEOMETRICAL(7)
+    COY2=BOUNDARY_GEOMETRICAL(8)
+    COXY=BOUNDARY_GEOMETRICAL(9)
+    COX =BOUNDARY_GEOMETRICAL(10)
+    COY =BOUNDARY_GEOMETRICAL(11)
+    COM =BOUNDARY_GEOMETRICAL(13)
+    COZ2=0.0D0
+    COXZ=0.0D0
+    COYZ=0.0D0
+    COZ =0.0D0
+
+    CXC_TOTAL=0.0D0
+    CYC_TOTAL=0.0D0
+
+    !------离散界面------!
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+    IF(IB_SHAPE==1)THEN!1圆
+        RADIUS=((0.25D0*COX**2.0D0/COX2+0.25D0*COY**2.0D0/COY2-COM)/COX2)&
+            **0.5D0
+        RSM=IDNINT( 2.0D0*RADIUS*PI/DX3 )
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        DS=2.0D0*RADIUS*PI/DBLE(RSM)
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        CEN_CRC(1)=BOUNDARY_KINETIC(4)
+        CEN_CRC(2)=BOUNDARY_KINETIC(5)
+
+        DO I=1,RSM,1
+            X_SRFC(I)=CEN_CRC(1)+RADIUS*DCOS(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+            Y_SRFC(I)=CEN_CRC(2)+RADIUS*DSIN(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+        END DO
+
+    ELSE IF(IB_SHAPE==2)THEN!2椭圆
+        LAXIS=BOUNDARY_GEOMETRICAL(33)
+        SAXIS=BOUNDARY_GEOMETRICAL(34)
+
+        CEN_DEVIATION(1)=BOUNDARY_GEOMETRICAL(35)
+        CEN_DEVIATION(2)=BOUNDARY_GEOMETRICAL(36)
+
+        CEN_ELP(1)=BOUNDARY_KINETIC(4)
+        CEN_ELP(2)=BOUNDARY_KINETIC(5)
+
+        MAT_ABS2REL(1,1)=BOUNDARY_GEOMETRICAL(1)
+        MAT_ABS2REL(1,2)=BOUNDARY_GEOMETRICAL(2)
+        MAT_ABS2REL(2,1)=BOUNDARY_GEOMETRICAL(4)
+        MAT_ABS2REL(2,2)=BOUNDARY_GEOMETRICAL(5)
+        MAT_REL2ABS=TRANSPOSE(MAT_ABS2REL)
+
+        !估求椭圆周长
+        ELLIPTIC_H=((LAXIS-SAXIS)/(LAXIS+SAXIS))**2.0D0
+        ELLIPTIC_H=3.0D0*ELLIPTIC_H/(10.0D0+(4.0D0-3.0D0*ELLIPTIC_H)**0.5D0)
+        ELLIPTIC_PERIMETER=PI*(LAXIS+SAXIS)*(1.0D0+ELLIPTIC_H)
+        !确定网格数
+        RSM=IDNINT( ELLIPTIC_PERIMETER/DX3 )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( ELLIPTIC_DA(RSM) )
+        ALLOCATE( ELLIPTIC_AS(RSM),ELLIPTIC_AM(RSM),ELLIPTIC_RADIUS(RSM) )
+
+        DS=0.0D0
+        ELLIPTIC_DA=0.0D0
+        ELLIPTIC_AM=0.0D0
+        ELLIPTIC_AS=0.0D0
+
+        !确定平均半径周长/2PI
+        AVERAGE_RADIUS=ELLIPTIC_PERIMETER/PI/2.0D0
+
+        !初始化
+        !ELLIPTIC_A自x轴正方向为零，顺时针方向为正方向
+        DO I=1,RSM,1
+            ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)
+            ELLIPTIC_AS(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.5D0)
+            ELLIPTIC_AM(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.0D0)
+            ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+        END DO
+
+        !迭代确定各段弧
+        DO N=1,10,1
+
+            !修正圆心角
+            DO I=1,RSM,1
+                ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)*AVERAGE_RADIUS/ELLIPTIC_RADIUS(I)
+            END DO
+            ELLIPTIC_DA=ELLIPTIC_DA*2.0D0*PI/SUM(ELLIPTIC_DA)
+            !重新获得ELLIPTIC_AS和ELLIPTIC_AM
+            ELLIPTIC_AS(1)=-ELLIPTIC_DA(1)/2.0D0
+            ELLIPTIC_AM(1)=0.0D0
+            DO I=2,RSM,1
+                ELLIPTIC_AS(I)=ELLIPTIC_AS(I-1)+ELLIPTIC_DA(I-1)
+                ELLIPTIC_AM(I)=ELLIPTIC_AS(I)+ELLIPTIC_DA(I)/2.0D0
+            END DO
+            !先求起始点坐标
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AS(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AS(I)))**2.0D0 )**0.5D0
+            END DO
+            DO I=1,RSM,1
+                X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS( ELLIPTIC_AS(I) )
+                Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN( ELLIPTIC_AS(I) )
+            END DO
+            !求解弧长
+            DO I=1,RSM-1,1
+                DS(I)=DSQRT(&
+                    (X_SRFC(I+1)-X_SRFC(I))**2.0D0+&
+                    (Y_SRFC(I+1)-Y_SRFC(I))**2.0D0)
+            END DO
+            DS(RSM)=DSQRT(&
+                (X_SRFC(1)-X_SRFC(RSM))**2.0D0+&
+                (Y_SRFC(1)-Y_SRFC(RSM))**2.0D0)
+            !检查弧长差异,可以的话就跳出
+            IF(MAXVAL(DS)/MINVAL(DS)<1.1D0)EXIT
+
+            !不行的话再重新修正
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+            END DO
+
+        END DO
+        !检查弧长差异,太过了就报错
+        IF(MAXVAL(DS)>=2.0D0*DX3)THEN
+            WRITE(*,*)'too large max(ds)/dx=',MAXVAL(DS)/DX3
+            STOP
+        END IF
+        !求各弧中心点坐标
+        DO I=1,RSM,1
+            X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(1)
+            Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(2)
+            CALL CRDNT_TRANSFORM(MAT_REL2ABS,X_SRFC(I),Y_SRFC(I),&
+                XATEMP,YATEMP)
+            X_SRFC(I)=XATEMP+CEN_ELP(1)
+            Y_SRFC(I)=YATEMP+CEN_ELP(2)
+        END DO
+
+    END IF
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+
+    !------求解内法向量------!
+    DO I=1,RSM,1
+        CALL NORMALVECTOR_2D(BOUNDARY_GEOMETRICAL,X_SRFC(I),Y_SRFC(I),&
+            N1X(I),N1Y(I))
+        N1X(I)=-N1X(I)
+        N1Y(I)=-N1Y(I)
+        N1Z(I)=0.0D0
+    END DO
+    !------求解压力和偏导系数------!
+    DO N=1,RSM,1
+
+        !------求解点所处位置及压力------!
+        XA=X_SRFC(N)
+        YA=Y_SRFC(N)
+
+        IF( XA>LEIN-CRITERIA .AND. XA<RIIN+CRITERIA )THEN
+            IAU=IL+FLOOR( (XA-LEIN) / DX3  )
+            IAV=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+            IAP=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"XA OUT OF INNER REGION"
+            STOP
+        END IF
+        IF( YA>BOIN-CRITERIA .AND. YA<TOIN+CRITERIA )THEN
+            JAU=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+            JAV=JB+FLOOR( (YA-BOIN) / DX3  )
+            JAP=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"YA OUT OF INNER REGION"
+            STOP
+        END IF
+
+        CALL BILINEAR_INTERPOLATION(IAU,JAU,IAV,JAV,IAP,JAP,XA,YA,&
+            U_SRFC(N),V_SRFC(N),P_SRFC(N))
+
+        !------求解点刚体速度------!
+        CALL VELOCITY_LB(BOUNDARY_KINETIC,XA,YA,U_SRFC(N),V_SRFC(N))
+
+        !------获取附近符合要求的点------!
+        CALL DETERMINE_IF_ELIGIBLE_U(IAU,JAU,ELIGIBILITY_U)
+        CALL DETERMINE_IF_ELIGIBLE_V(IAV,JAV,ELIGIBILITY_V)
+
+        !------求解距离------!
+        DISTANCE_U=500.0D0
+        DISTANCE_V=500.0D0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    DISTANCE_U(I,J)=((X(IAU+I)-XA)**2.0D0&
+                        +(YPU(JAU+J)-YA)**2.0D0)**0.5D0
+                END IF
+                IF(ELIGIBILITY_V(I,J))THEN
+                    DISTANCE_V(I,J)=((XPV(IAV+I)-XA)**2.0D0&
+                        +(Y(JAV+J)-YA)**2.0D0)**0.5D0
+                END IF
+            END DO
+        END DO
+
+        !------确定搜索半径最小值------!
+        SEARCH_RADIUS_U=0.0D0
+        SEARCH_RADIUS_V=0.0D0
+        DO J=0,1,1
+            DO I=0,1,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    SEARCH_RADIUS_U=MAX(SEARCH_RADIUS_U,DISTANCE_U(I,J))
+                END IF
+                IF(ELIGIBILITY_V(I,J))THEN
+                    SEARCH_RADIUS_V=MAX(SEARCH_RADIUS_V,DISTANCE_V(I,J))
+                END IF
+            END DO
+        END DO
+
+        !------确定合理搜索半径及搜索半径之内的点------!
+        !还可以保证坐标偏移量
+        !U
+        DO WHILE (.TRUE.)
+
+            NUM_ELGBL_U=0
+            MAX_X=XA
+            MAX_Y=YA
+            MIN_X=XA
+            MIN_Y=YA
+            SEARCH_RADIUS_U=SEARCH_RADIUS_U+0.1D0*DX3
+            !确定点数
+            DO J=-2,+2,1
+                DO I=-2,+2,1
+
+                    IF(DISTANCE_U(I,J)<=SEARCH_RADIUS_U)THEN
+                        NUM_ELGBL_U=NUM_ELGBL_U+1
+                        ELIGIBILITY_U(I,J)=.TRUE.
+                        MAX_X=MAX(MAX_X,X  (I+IAU))
+                        MAX_Y=MAX(MAX_Y,YPU(J+JAU))
+                        MIN_X=MIN(MIN_X,X  (I+IAU))
+                        MIN_Y=MIN(MIN_Y,YPU(J+JAU))
+                    ELSE
+                        ELIGIBILITY_U(I,J)=.FALSE.
+                    END IF
+
+                END DO
+            END DO
+            IF ( NUM_ELGBL_U>=2 ) THEN
+                IF( MAX_X-MIN_X>=1000.0D0*CRITERIA .AND.&
+                    MAX_Y-MIN_Y>=1000.0D0*CRITERIA ) EXIT
+            END IF
+
+            IF ( SEARCH_RADIUS_U>2.1D0*DX3 ) THEN
+                WRITE(*,*)N,'u error: not enough eligible points'
+                STOP
+            END IF
+
+        END DO
+        !V
+        DO WHILE (.TRUE.)
+
+            NUM_ELGBL_V=0
+            MAX_X=XA
+            MAX_Y=YA
+            MIN_X=XA
+            MIN_Y=YA
+            SEARCH_RADIUS_V=SEARCH_RADIUS_V+0.1D0*DX3
+            !确定点数
+            DO J=-2,+2,1
+                DO I=-2,+2,1
+
+                    IF(DISTANCE_V(I,J)<=SEARCH_RADIUS_V)THEN
+                        NUM_ELGBL_V=NUM_ELGBL_V+1
+                        ELIGIBILITY_V(I,J)=.TRUE.
+                        MAX_X=MAX(MAX_X,XPV(I+IAV))
+                        MAX_Y=MAX(MAX_Y,Y  (J+JAV))
+                        MIN_X=MIN(MIN_X,XPV(I+IAV))
+                        MIN_Y=MIN(MIN_Y,Y  (J+JAV))
+                    ELSE
+                        ELIGIBILITY_V(I,J)=.FALSE.
+                    END IF
+
+                END DO
+            END DO
+            IF ( NUM_ELGBL_V>=2 ) THEN
+                IF( MAX_X-MIN_X>=1000.0D0*CRITERIA .AND.&
+                    MAX_Y-MIN_Y>=1000.0D0*CRITERIA ) EXIT
+            END IF
+
+            IF ( SEARCH_RADIUS_V>2.1D0*DX3 ) THEN
+                WRITE(*,*)N,'v error: not enough eligible points'
+                STOP
+            END IF
+
+        END DO
+        !分配矩阵
+        IF(ALLOCATED(INDEX_U)) DEALLOCATE(INDEX_U,INDEX_V)
+        ALLOCATE( INDEX_U(NUM_ELGBL_U,2),INDEX_V(NUM_ELGBL_V,2) )
+        !赋值矩阵
+        COUNT_ELGBL=0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    COUNT_ELGBL=COUNT_ELGBL+1
+                    INDEX_U(COUNT_ELGBL,1)=I
+                    INDEX_U(COUNT_ELGBL,2)=J
+                END IF
+            END DO
+        END DO
+        INDEX_U(:,1)=INDEX_U(:,1)+IAU
+        INDEX_U(:,2)=INDEX_U(:,2)+JAU
+
+        COUNT_ELGBL=0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_V(I,J))THEN
+                    COUNT_ELGBL=COUNT_ELGBL+1
+                    INDEX_V(COUNT_ELGBL,1)=I
+                    INDEX_V(COUNT_ELGBL,2)=J
+                END IF
+            END DO
+        END DO
+        INDEX_V(:,1)=INDEX_V(:,1)+IAV
+        INDEX_V(:,2)=INDEX_V(:,2)+JAV
+
+        !------构造系数矩阵并求解------!
+        !U
+        IF(ALLOCATED(TEMP_1)) DEALLOCATE(TEMP_1,TEMP_2)
+        ALLOCATE( TEMP_1(NUM_ELGBL_U+1,3),TEMP_2(NUM_ELGBL_U+1,1) )
+
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(1,3)=YA
+        DO COUNT_ELGBL=1,NUM_ELGBL_U,1
+            TEMP_1(1+COUNT_ELGBL,2)=X(INDEX_U(COUNT_ELGBL,1))
+            TEMP_1(1+COUNT_ELGBL,3)=YPU(INDEX_U(COUNT_ELGBL,2))
+        END DO
+        TEMP_2(1,1)=U_SRFC(N)
+        DO COUNT_ELGBL=1,NUM_ELGBL_U,1
+            TEMP_2(1+COUNT_ELGBL,1)=&
+                U(INDEX_U(COUNT_ELGBL,1),INDEX_U(COUNT_ELGBL,2))
+        END DO
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dy'
+        END IF
+        !求解
+        TEMP_SOLUTION=0.0D0
+        CALL SOLVE_LINEAR_SYSTEM(TEMP_1,TEMP_SOLUTION,TEMP_2,&
+            NUM_ELGBL_U+1,3,N)
+        AXX(N)=TEMP_SOLUTION(2,1)
+        AXY(N)=TEMP_SOLUTION(3,1)
+
+        !V
+        IF(ALLOCATED(TEMP_1)) DEALLOCATE(TEMP_1,TEMP_2)
+        ALLOCATE( TEMP_1(NUM_ELGBL_V+1,3),TEMP_2(NUM_ELGBL_V+1,1) )
+
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(1,3)=YA
+        DO COUNT_ELGBL=1,NUM_ELGBL_V,1
+            TEMP_1(1+COUNT_ELGBL,2)=XPV(INDEX_V(COUNT_ELGBL,1))
+            TEMP_1(1+COUNT_ELGBL,3)=Y(INDEX_V(COUNT_ELGBL,2))
+        END DO
+        TEMP_2(1,1)=V_SRFC(N)
+        DO COUNT_ELGBL=1,NUM_ELGBL_V,1
+            TEMP_2(1+COUNT_ELGBL,1)=&
+                V(INDEX_V(COUNT_ELGBL,1),INDEX_V(COUNT_ELGBL,2))
+        END DO
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dy'
+        END IF
+        !求解
+        TEMP_SOLUTION=0.0D0
+        CALL SOLVE_LINEAR_SYSTEM(TEMP_1,TEMP_SOLUTION,TEMP_2,&
+            NUM_ELGBL_V+1,3,N)
+        AYX(N)=TEMP_SOLUTION(2,1)
+        AYY(N)=TEMP_SOLUTION(3,1)
+
+    END DO
+
+    !------求解气动力------!
+    DO N=1,RSM,1
+
+        CXP=-P_SRFC(N)*N1X(N)
+        CYP=-P_SRFC(N)*N1Y(N)
+        CZP=0.0D0!-P_SRFC*N1Z(N)
+        CXV=(2.0D0*AXX(N)*N1X(N)+(AXY(N)+AYX(N))*N1Y(N))/Re
+        CYV=((AXY(N)+AYX(N))*N1X(N)+2.0D0*AYY(N)*N1Y(N))/Re
+        CZV=0.0D0
+
+        CXC_TOTAL=CXC_TOTAL+2.0D0*DS(N)*(CXP+CXV)
+        CYC_TOTAL=CYC_TOTAL+2.0D0*DS(N)*(CYP+CYV)
+
+    END DO
+
+    !------物体所受气动力为反作用力------!
+    CXC_TOTAL=-CXC_TOTAL
+    CYC_TOTAL=-CYC_TOTAL
+
+    !------输出系数------!
+    WRITE(360+BOUNDARY_ID*10,"( I6,2(1X,F9.5))")NSTEP,CXC_TOTAL,CYC_TOTAL
+    WRITE(361+BOUNDARY_ID*10,*)NSTEP,CXC_TOTAL,CYC_TOTAL
+
+    !------输出分布------!
+    WRITE(CHAR_STEP,'(I6.6)') NSTEP
+    REYNOLDS=IDNINT(Re)
+    WRITE(CHAR_REYNOLDS,'(I5.5)') REYNOLDS
+    WRITE(CHAR_ID,'(I2.2)') BOUNDARY_ID
+    IF( MOD(NSTEP,2000)==0 )THEN
+        OPEN(UNIT=10,FILE='SRFC_SOME_OBJECT_'//TRIM(CHAR_ID)&
+            //'_Re'//TRIM(CHAR_REYNOLDS)//'N'//TRIM(CHAR_STEP)//'.PLT')
+        WRITE(10,*) 'TITLE="NONAME"'
+        !WRITE(10,*) 'VARIABLES="X","Y","P","U","V","AXX","AXY","AXZ",'
+        !WRITE(10,*) '"AYX","AYY","AYZ","AZX","AZY","AZZ"'
+        WRITE(10,*) 'VARIABLES="X","Y","P","U","V","NX","NY","AXX","AXY",'
+        WRITE(10,*) '"AYX","AYY"'
+        WRITE(10,*) 'ZONE T="NONAME", I=',RSM,', J=',1,', F=POINT'
+        DO N=1,RSM,1
+            !WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+            !    P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+            !    AXX(N),AXY(N),AXZ(N),&
+            !    AYX(N),AYY(N),AYZ(N),&
+            !    AZX(N),AZY(N),AZZ(N)
+            WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+                P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+                N1X(N),N1Y(N),&
+                AXX(N),AXY(N),&
+                AYX(N),AYY(N)
+        END DO
+        CLOSE(10)
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !*********************求解升力推力（表面力积分法3）******************!
+    SUBROUTINE CAL_CLCT_SRFC_INTGRTN_ALL(BOUNDARY_GEOMETRICAL,&
+        BOUNDARY_KINETIC,BOUNDARY_ID)
+    USE DECLARATION
+    IMPLICIT NONE
+
+    REAL(KIND=8)::BOUNDARY_GEOMETRICAL(36),BOUNDARY_KINETIC(9)
+    INTEGER::BOUNDARY_ID
+    !---------输出相关---------!
+    CHARACTER(LEN=6)CHAR_STEP,CHAR_REYNOLDS
+    CHARACTER(LEN=2)CHAR_ID
+    INTEGER::REYNOLDS
+
+    !绝对坐标系下二次曲面的数学表达式系数
+    REAL(KIND=8)::COX2,COY2,COXY,COX,COY,COM,COZ2,COXZ,COYZ,COZ
+    !网格密度
+    REAL(KIND=8),ALLOCATABLE::DS(:)
+    !网格数
+    INTEGER::RSM
+    !插值涉及的绝对网格角点信息
+    INTEGER::IAU,JAU!左下角脚标值
+    INTEGER::IAV,JAV!左下角脚标值
+    INTEGER::IAP,JAP!左下角脚标值
+
+    !坐标值
+    REAL(KIND=8),ALLOCATABLE::X_SRFC(:),Y_SRFC(:),Z_SRFC(:)
+    REAL(KIND=8)::XA,YA
+    !法向量
+    REAL(KIND=8),ALLOCATABLE::N1X(:),N1Y(:),N1Z(:)
+    !偏导系数
+    REAL(KIND=8),ALLOCATABLE::AXX(:),AXY(:),AXZ(:)
+    REAL(KIND=8),ALLOCATABLE::AYX(:),AYY(:),AYZ(:)
+    REAL(KIND=8),ALLOCATABLE::AZX(:),AZY(:),AZZ(:)
+    !固壁处物理量
+    REAL(KIND=8),ALLOCATABLE::U_SRFC(:),V_SRFC(:),W_SRFC(:),P_SRFC(:)
+    !包括半径
+    REAL(KIND=8)::SEARCH_RADIUS
+    !包括点数
+    INTEGER::NUM_ELGBL_U,NUM_ELGBL_V,COUNT_ELGBL
+
+    !一些中间变量
+    REAL(KIND=8)::ELLIPTIC_H,ELLIPTIC_PERIMETER!椭圆周长
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_DA(:)!椭圆各段弧对应圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AS(:)!椭圆各段弧起始处的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AM(:)!椭圆各段弧中间的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_RADIUS(:)!椭圆弧长对应半径
+    REAL(KIND=8)::AVERAGE_RADIUS!椭圆平均半径
+    LOGICAL::ELIGIBILITY_U(-2:2,-2:2),ELIGIBILITY_V(-2:2,-2:2)!可视流体点
+    REAL(KIND=8)::DISTANCE_U(-2:2,-2:2),DISTANCE_V(-2:2,-2:2)!各点距离
+    INTEGER,ALLOCATABLE::INDEX_U(:,:),INDEX_V(:,:)!求解偏导的几个点的脚标
+    REAL(KIND=8),ALLOCATABLE::TEMP_1(:,:),TEMP_2(:,:)!偏导系数求解临时矩阵
+    REAL(KIND=8)::TEMP_SOLUTION(3,1)!求解结果临时矩阵
+    LOGICAL :: OK_FLAG
+    REAL(KIND=8)::DEVIATION_X,DEVIATION_Y!坐标偏移
+    REAL(KIND=8)::XATEMP,YATEMP
+
+    !对象特殊性
+    REAL(KIND=8)::RADIUS
+    REAL(KIND=8)::CEN_CRC(2)
+    REAL(KIND=8)::CEN_ELP(2)
+    REAL(KIND=8)::CEN_DEVIATION(2)
+    REAL(KIND=8)::LAXIS,SAXIS
+    !坐标转换矩阵
+    REAL(KIND=8)::MAT_ABS2REL(2,2),MAT_REL2ABS(2,2)
+
+    !力系数
+    REAL(KIND=8)::CXC_TOTAL,CYC_TOTAL,CZC_TOTAL!计算域绝对坐标系下的力
+    REAL(KIND=8)::CXP,CYP,CZP!压力
+    REAL(KIND=8)::CXV,CYV,CZV!粘性
+
+    !------初始化------!
+    COX2=BOUNDARY_GEOMETRICAL(7)
+    COY2=BOUNDARY_GEOMETRICAL(8)
+    COXY=BOUNDARY_GEOMETRICAL(9)
+    COX =BOUNDARY_GEOMETRICAL(10)
+    COY =BOUNDARY_GEOMETRICAL(11)
+    COM =BOUNDARY_GEOMETRICAL(13)
+    COZ2=0.0D0
+    COXZ=0.0D0
+    COYZ=0.0D0
+    COZ =0.0D0
+
+    CXC_TOTAL=0.0D0
+    CYC_TOTAL=0.0D0
+
+    SEARCH_RADIUS=(2.0D0)*DX3!(2.0D0)**0.5D0*DX3
+
+    !------离散界面------!
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+    IF(IB_SHAPE==1)THEN!1圆
+        RADIUS=((0.25D0*COX**2.0D0/COX2+0.25D0*COY**2.0D0/COY2-COM)/COX2)&
+            **0.5D0
+        RSM=IDNINT( 2.0D0*RADIUS*PI/DX3 )
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        DS=2.0D0*RADIUS*PI/DBLE(RSM)
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        CEN_CRC(1)=BOUNDARY_KINETIC(4)
+        CEN_CRC(2)=BOUNDARY_KINETIC(5)
+
+        DO I=1,RSM,1
+            X_SRFC(I)=CEN_CRC(1)+RADIUS*DCOS(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+            Y_SRFC(I)=CEN_CRC(2)+RADIUS*DSIN(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+        END DO
+
+    ELSE IF(IB_SHAPE==2)THEN!2椭圆
+        LAXIS=BOUNDARY_GEOMETRICAL(33)
+        SAXIS=BOUNDARY_GEOMETRICAL(34)
+
+        CEN_DEVIATION(1)=BOUNDARY_GEOMETRICAL(35)
+        CEN_DEVIATION(2)=BOUNDARY_GEOMETRICAL(36)
+
+        CEN_ELP(1)=BOUNDARY_KINETIC(4)
+        CEN_ELP(2)=BOUNDARY_KINETIC(5)
+
+        MAT_ABS2REL(1,1)=BOUNDARY_GEOMETRICAL(1)
+        MAT_ABS2REL(1,2)=BOUNDARY_GEOMETRICAL(2)
+        MAT_ABS2REL(2,1)=BOUNDARY_GEOMETRICAL(4)
+        MAT_ABS2REL(2,2)=BOUNDARY_GEOMETRICAL(5)
+        MAT_REL2ABS=TRANSPOSE(MAT_ABS2REL)
+
+        !估求椭圆周长
+        ELLIPTIC_H=((LAXIS-SAXIS)/(LAXIS+SAXIS))**2.0D0
+        ELLIPTIC_H=3.0D0*ELLIPTIC_H/(10.0D0+(4.0D0-3.0D0*ELLIPTIC_H)**0.5D0)
+        ELLIPTIC_PERIMETER=PI*(LAXIS+SAXIS)*(1.0D0+ELLIPTIC_H)
+        !确定网格数
+        RSM=IDNINT( ELLIPTIC_PERIMETER/DX3 )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( ELLIPTIC_DA(RSM) )
+        ALLOCATE( ELLIPTIC_AS(RSM),ELLIPTIC_AM(RSM),ELLIPTIC_RADIUS(RSM) )
+
+        DS=0.0D0
+        ELLIPTIC_DA=0.0D0
+        ELLIPTIC_AM=0.0D0
+        ELLIPTIC_AS=0.0D0
+
+        !确定平均半径周长/2PI
+        AVERAGE_RADIUS=ELLIPTIC_PERIMETER/PI/2.0D0
+
+        !初始化
+        !ELLIPTIC_A自x轴正方向为零，顺时针方向为正方向
+        DO I=1,RSM,1
+            ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)
+            ELLIPTIC_AS(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.5D0)
+            ELLIPTIC_AM(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.0D0)
+            ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+        END DO
+
+        !迭代确定各段弧
+        DO N=1,10,1
+
+            !修正圆心角
+            DO I=1,RSM,1
+                ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)*AVERAGE_RADIUS/ELLIPTIC_RADIUS(I)
+            END DO
+            ELLIPTIC_DA=ELLIPTIC_DA*2.0D0*PI/SUM(ELLIPTIC_DA)
+            !重新获得ELLIPTIC_AS和ELLIPTIC_AM
+            ELLIPTIC_AS(1)=-ELLIPTIC_DA(1)/2.0D0
+            ELLIPTIC_AM(1)=0.0D0
+            DO I=2,RSM,1
+                ELLIPTIC_AS(I)=ELLIPTIC_AS(I-1)+ELLIPTIC_DA(I-1)
+                ELLIPTIC_AM(I)=ELLIPTIC_AS(I)+ELLIPTIC_DA(I)/2.0D0
+            END DO
+            !先求起始点坐标
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AS(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AS(I)))**2.0D0 )**0.5D0
+            END DO
+            DO I=1,RSM,1
+                X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS( ELLIPTIC_AS(I) )
+                Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN( ELLIPTIC_AS(I) )
+            END DO
+            !求解弧长
+            DO I=1,RSM-1,1
+                DS(I)=DSQRT(&
+                    (X_SRFC(I+1)-X_SRFC(I))**2.0D0+&
+                    (Y_SRFC(I+1)-Y_SRFC(I))**2.0D0)
+            END DO
+            DS(RSM)=DSQRT(&
+                (X_SRFC(1)-X_SRFC(RSM))**2.0D0+&
+                (Y_SRFC(1)-Y_SRFC(RSM))**2.0D0)
+            !检查弧长差异,可以的话就跳出
+            IF(MAXVAL(DS)/MINVAL(DS)<1.1D0)EXIT
+
+            !不行的话再重新修正
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+            END DO
+
+        END DO
+        !检查弧长差异,太过了就报错
+        IF(MAXVAL(DS)>=2.0D0*DX3)THEN
+            WRITE(*,*)'too large max(ds)/dx=',MAXVAL(DS)/DX3
+            STOP
+        END IF
+        !求各弧中心点坐标
+        DO I=1,RSM,1
+            X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(1)
+            Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(2)
+            CALL CRDNT_TRANSFORM(MAT_REL2ABS,X_SRFC(I),Y_SRFC(I),&
+                XATEMP,YATEMP)
+            X_SRFC(I)=XATEMP+CEN_ELP(1)
+            Y_SRFC(I)=YATEMP+CEN_ELP(2)
+        END DO
+
+    END IF
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+
+    !------求解内法向量------!
+    DO I=1,RSM,1
+        CALL NORMALVECTOR_2D(BOUNDARY_GEOMETRICAL,X_SRFC(I),Y_SRFC(I),&
+            N1X(I),N1Y(I))
+        N1X(I)=-N1X(I)
+        N1Y(I)=-N1Y(I)
+        N1Z(I)=0.0D0
+    END DO
+    !------求解压力和偏导系数------!
+    DO N=1,RSM,1
+
+        !------求解点所处位置及压力------!
+        XA=X_SRFC(N)
+        YA=Y_SRFC(N)
+
+        IF( XA>LEIN-CRITERIA .AND. XA<RIIN+CRITERIA )THEN
+            IAU=IL+FLOOR( (XA-LEIN) / DX3  )
+            IAV=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+            IAP=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"XA OUT OF INNER REGION"
+            STOP
+        END IF
+        IF( YA>BOIN-CRITERIA .AND. YA<TOIN+CRITERIA )THEN
+            JAU=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+            JAV=JB+FLOOR( (YA-BOIN) / DX3  )
+            JAP=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"YA OUT OF INNER REGION"
+            STOP
+        END IF
+
+        CALL BILINEAR_INTERPOLATION(IAU,JAU,IAV,JAV,IAP,JAP,XA,YA,&
+            U_SRFC(N),V_SRFC(N),P_SRFC(N))
+
+        !------求解点刚体速度------!
+        CALL VELOCITY_LB(BOUNDARY_KINETIC,XA,YA,U_SRFC(N),V_SRFC(N))
+
+        !------获取附近符合要求的点------!
+        CALL DETERMINE_IF_ELIGIBLE_U(IAU,JAU,ELIGIBILITY_U)
+        CALL DETERMINE_IF_ELIGIBLE_V(IAV,JAV,ELIGIBILITY_V)
+
+        !------求解距离------!
+        DISTANCE_U=500.0D0
+        DISTANCE_V=500.0D0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    DISTANCE_U(I,J)=(X(IAU+I)-XA)**2.0D0&
+                        +(YPU(JAU+J)-YA)**2.0D0
+                END IF
+                IF(ELIGIBILITY_V(I,J))THEN
+                    DISTANCE_V(I,J)=(XPV(IAV+I)-XA)**2.0D0&
+                        +(Y(JAV+J)-YA)**2.0D0
+                END IF
+            END DO
+        END DO
+
+        !------确定2*DX3之内的点------!
+        NUM_ELGBL_U=0
+        NUM_ELGBL_V=0
+        !确定点数
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    IF(DISTANCE_U(I,J)**0.5D0<=SEARCH_RADIUS)THEN
+                        NUM_ELGBL_U=NUM_ELGBL_U+1
+                    ELSE
+                        ELIGIBILITY_U(I,J)=.FALSE.
+                    END IF
+                END IF
+                IF(ELIGIBILITY_V(I,J))THEN
+                    IF(DISTANCE_V(I,J)**0.5D0<=SEARCH_RADIUS)THEN
+                        NUM_ELGBL_V=NUM_ELGBL_V+1
+                    ELSE
+                        ELIGIBILITY_V(I,J)=.FALSE.
+                    END IF
+                END IF
+            END DO
+        END DO
+        IF ( NUM_ELGBL_U<2 ) THEN
+            WRITE(*,*)N,'u error: not enough eligible points'
+            STOP
+        END IF
+        IF ( NUM_ELGBL_V<2 ) THEN
+            WRITE(*,*)N,'v error: not enough eligible points'
+            STOP
+        END IF
+        !分配矩阵
+        IF(ALLOCATED(INDEX_U)) DEALLOCATE(INDEX_U,INDEX_V)
+        ALLOCATE( INDEX_U(NUM_ELGBL_U,2),INDEX_V(NUM_ELGBL_V,2) )
+        !赋值矩阵
+        COUNT_ELGBL=0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    COUNT_ELGBL=COUNT_ELGBL+1
+                    INDEX_U(COUNT_ELGBL,1)=I
+                    INDEX_U(COUNT_ELGBL,2)=J
+                END IF
+            END DO
+        END DO
+        INDEX_U(:,1)=INDEX_U(:,1)+IAU
+        INDEX_U(:,2)=INDEX_U(:,2)+JAU
+
+        COUNT_ELGBL=0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_V(I,J))THEN
+                    COUNT_ELGBL=COUNT_ELGBL+1
+                    INDEX_V(COUNT_ELGBL,1)=I
+                    INDEX_V(COUNT_ELGBL,2)=J
+                END IF
+            END DO
+        END DO
+        INDEX_V(:,1)=INDEX_V(:,1)+IAV
+        INDEX_V(:,2)=INDEX_V(:,2)+JAV
+
+        !------构造系数矩阵并求解------!
+        !U
+        IF(ALLOCATED(TEMP_1)) DEALLOCATE(TEMP_1,TEMP_2)
+        ALLOCATE( TEMP_1(NUM_ELGBL_U+1,3),TEMP_2(NUM_ELGBL_U+1,1) )
+
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(1,3)=YA
+        DO COUNT_ELGBL=1,NUM_ELGBL_U,1
+            TEMP_1(1+COUNT_ELGBL,2)=X(INDEX_U(COUNT_ELGBL,1))
+            TEMP_1(1+COUNT_ELGBL,3)=YPU(INDEX_U(COUNT_ELGBL,2))
+        END DO
+        TEMP_2(1,1)=U_SRFC(N)
+        DO COUNT_ELGBL=1,NUM_ELGBL_U,1
+            TEMP_2(1+COUNT_ELGBL,1)=&
+                U(INDEX_U(COUNT_ELGBL,1),INDEX_U(COUNT_ELGBL,2))
+        END DO
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dy'
+        END IF
+        !求解
+        TEMP_SOLUTION=0.0D0
+        CALL SOLVE_LINEAR_SYSTEM(TEMP_1,TEMP_SOLUTION,TEMP_2,&
+            NUM_ELGBL_U+1,3,N)
+        AXX(N)=TEMP_SOLUTION(2,1)
+        AXY(N)=TEMP_SOLUTION(3,1)
+
+        !V
+        IF(ALLOCATED(TEMP_1)) DEALLOCATE(TEMP_1,TEMP_2)
+        ALLOCATE( TEMP_1(NUM_ELGBL_V+1,3),TEMP_2(NUM_ELGBL_V+1,1) )
+
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(1,3)=YA
+        DO COUNT_ELGBL=1,NUM_ELGBL_V,1
+            TEMP_1(1+COUNT_ELGBL,2)=XPV(INDEX_V(COUNT_ELGBL,1))
+            TEMP_1(1+COUNT_ELGBL,3)=Y(INDEX_V(COUNT_ELGBL,2))
+        END DO
+        TEMP_2(1,1)=V_SRFC(N)
+        DO COUNT_ELGBL=1,NUM_ELGBL_V,1
+            TEMP_2(1+COUNT_ELGBL,1)=&
+                V(INDEX_V(COUNT_ELGBL,1),INDEX_V(COUNT_ELGBL,2))
+        END DO
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dy'
+        END IF
+        !求解
+        TEMP_SOLUTION=0.0D0
+        CALL SOLVE_LINEAR_SYSTEM(TEMP_1,TEMP_SOLUTION,TEMP_2,&
+            NUM_ELGBL_V+1,3,N)
+        AYX(N)=TEMP_SOLUTION(2,1)
+        AYY(N)=TEMP_SOLUTION(3,1)
+
+    END DO
+
+    !------求解气动力------!
+    DO N=1,RSM,1
+
+        CXP=-P_SRFC(N)*N1X(N)
+        CYP=-P_SRFC(N)*N1Y(N)
+        CZP=0.0D0!-P_SRFC*N1Z(N)
+        CXV=(2.0D0*AXX(N)*N1X(N)+(AXY(N)+AYX(N))*N1Y(N))/Re
+        CYV=((AXY(N)+AYX(N))*N1X(N)+2.0D0*AYY(N)*N1Y(N))/Re
+        CZV=0.0D0
+
+        CXC_TOTAL=CXC_TOTAL+2.0D0*DS(N)*(CXP+CXV)
+        CYC_TOTAL=CYC_TOTAL+2.0D0*DS(N)*(CYP+CYV)
+
+    END DO
+
+    !------物体所受气动力为反作用力------!
+    CXC_TOTAL=-CXC_TOTAL
+    CYC_TOTAL=-CYC_TOTAL
+
+    !------输出系数------!
+    WRITE(340+BOUNDARY_ID*10,"( I6,2(1X,F9.5))")NSTEP,CXC_TOTAL,CYC_TOTAL
+    WRITE(341+BOUNDARY_ID*10,*)NSTEP,CXC_TOTAL,CYC_TOTAL
+
+    !------输出分布------!
+    WRITE(CHAR_STEP,'(I6.6)') NSTEP
+    REYNOLDS=IDNINT(Re)
+    WRITE(CHAR_REYNOLDS,'(I5.5)') REYNOLDS
+    WRITE(CHAR_ID,'(I2.2)') BOUNDARY_ID
+    IF( MOD(NSTEP,2000)==0 )THEN
+        OPEN(UNIT=10,FILE='SRFC_ALL_OBJECT_'//TRIM(CHAR_ID)&
+            //'_Re'//TRIM(CHAR_REYNOLDS)//'N'//TRIM(CHAR_STEP)//'.PLT')
+        WRITE(10,*) 'TITLE="NONAME"'
+        !WRITE(10,*) 'VARIABLES="X","Y","P","U","V","AXX","AXY","AXZ",'
+        !WRITE(10,*) '"AYX","AYY","AYZ","AZX","AZY","AZZ"'
+        WRITE(10,*) 'VARIABLES="X","Y","P","U","V","NX","NY","AXX","AXY",'
+        WRITE(10,*) '"AYX","AYY"'
+        WRITE(10,*) 'ZONE T="NONAME", I=',RSM,', J=',1,', F=POINT'
+        DO N=1,RSM,1
+            !WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+            !    P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+            !    AXX(N),AXY(N),AXZ(N),&
+            !    AYX(N),AYY(N),AYZ(N),&
+            !    AZX(N),AZY(N),AZZ(N)
+            WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+                P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+                N1X(N),N1Y(N),&
+                AXX(N),AXY(N),&
+                AYX(N),AYY(N)
+        END DO
+        CLOSE(10)
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !*********************求解升力推力（表面力积分法2）******************!
+    SUBROUTINE CAL_CLCT_SRFC_INTGRTN_EXACT(BOUNDARY_GEOMETRICAL,&
+        BOUNDARY_KINETIC,BOUNDARY_ID)
+    USE DECLARATION
+    IMPLICIT NONE
+
+    REAL(KIND=8)::BOUNDARY_GEOMETRICAL(36),BOUNDARY_KINETIC(9)
+    INTEGER::BOUNDARY_ID
+    !---------输出相关---------!
+    CHARACTER(LEN=6)CHAR_STEP,CHAR_REYNOLDS
+    CHARACTER(LEN=2)CHAR_ID
+    INTEGER::REYNOLDS
+
+    !绝对坐标系下二次曲面的数学表达式系数
+    REAL(KIND=8)::COX2,COY2,COXY,COX,COY,COM,COZ2,COXZ,COYZ,COZ
+    !网格密度
+    REAL(KIND=8),ALLOCATABLE::DS(:)
+    !网格数
+    INTEGER::RSM
+    !插值涉及的绝对网格角点信息
+    INTEGER::IAU,JAU!左下角脚标值
+    INTEGER::IAV,JAV!左下角脚标值
+    INTEGER::IAP,JAP!左下角脚标值
+
+    !坐标值
+    REAL(KIND=8),ALLOCATABLE::X_SRFC(:),Y_SRFC(:),Z_SRFC(:)
+    REAL(KIND=8)::XA,YA
+    !法向量
+    REAL(KIND=8),ALLOCATABLE::N1X(:),N1Y(:),N1Z(:)
+    !偏导系数
+    REAL(KIND=8),ALLOCATABLE::AXX(:),AXY(:),AXZ(:)
+    REAL(KIND=8),ALLOCATABLE::AYX(:),AYY(:),AYZ(:)
+    REAL(KIND=8),ALLOCATABLE::AZX(:),AZY(:),AZZ(:)
+    !固壁处物理量
+    REAL(KIND=8),ALLOCATABLE::U_SRFC(:),V_SRFC(:),W_SRFC(:),P_SRFC(:)
+
+    !一些中间变量
+    REAL(KIND=8)::ELLIPTIC_H,ELLIPTIC_PERIMETER!椭圆周长
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_DA(:)!椭圆各段弧对应圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AS(:)!椭圆各段弧起始处的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_AM(:)!椭圆各段弧中间的圆心角
+    REAL(KIND=8),ALLOCATABLE::ELLIPTIC_RADIUS(:)!椭圆弧长对应半径
+    REAL(KIND=8)::AVERAGE_RADIUS!椭圆平均半径
+    LOGICAL::ELIGIBILITY_U(-2:2,-2:2),ELIGIBILITY_V(-2:2,-2:2)!可视流体点
+    REAL(KIND=8)::DISTANCE_U(-2:2,-2:2),DISTANCE_V(-2:2,-2:2)!各点距离
+    INTEGER::INDEX_U(2,2),INDEX_V(2,2)!最终求解偏导的两个点的脚标
+    REAL(KIND=8)::TEMP_1(3,3),TEMP_2(3,3),TEMP_3(3,1),TEMP_4(3,1)!偏导系数
+    LOGICAL :: OK_FLAG
+    REAL(KIND=8)::DEVIATION_X,DEVIATION_Y!坐标偏移
+    REAL(KIND=8)::XATEMP,YATEMP
+
+    !对象特殊性
+    REAL(KIND=8)::RADIUS
+    REAL(KIND=8)::CEN_CRC(2)
+    REAL(KIND=8)::CEN_ELP(2)
+    REAL(KIND=8)::CEN_DEVIATION(2)
+    REAL(KIND=8)::LAXIS,SAXIS
+    !坐标转换矩阵
+    REAL(KIND=8)::MAT_ABS2REL(2,2),MAT_REL2ABS(2,2)
+
+    !力系数
+    REAL(KIND=8)::CXC_TOTAL,CYC_TOTAL,CZC_TOTAL!计算域绝对坐标系下的力
+    REAL(KIND=8)::CXP,CYP,CZP!压力
+    REAL(KIND=8)::CXV,CYV,CZV!粘性
+
+    !------初始化------!
+    COX2=BOUNDARY_GEOMETRICAL(7)
+    COY2=BOUNDARY_GEOMETRICAL(8)
+    COXY=BOUNDARY_GEOMETRICAL(9)
+    COX =BOUNDARY_GEOMETRICAL(10)
+    COY =BOUNDARY_GEOMETRICAL(11)
+    COM =BOUNDARY_GEOMETRICAL(13)
+    COZ2=0.0D0
+    COXZ=0.0D0
+    COYZ=0.0D0
+    COZ =0.0D0
+
+    CXC_TOTAL=0.0D0
+    CYC_TOTAL=0.0D0
+
+    !------离散界面------!
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+    IF(IB_SHAPE==1)THEN!1圆
+        RADIUS=((0.25D0*COX**2.0D0/COX2+0.25D0*COY**2.0D0/COY2-COM)/COX2)&
+            **0.5D0
+        RSM=IDNINT( 2.0D0*RADIUS*PI/DX3 )
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        DS=2.0D0*RADIUS*PI/DBLE(RSM)
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        CEN_CRC(1)=BOUNDARY_KINETIC(4)
+        CEN_CRC(2)=BOUNDARY_KINETIC(5)
+
+        DO I=1,RSM,1
+            X_SRFC(I)=CEN_CRC(1)+RADIUS*DCOS(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+            Y_SRFC(I)=CEN_CRC(2)+RADIUS*DSIN(-2.0D0*PI*DBLE(I-1)/DBLE(RSM))
+        END DO
+
+    ELSE IF(IB_SHAPE==2)THEN!2椭圆
+        LAXIS=BOUNDARY_GEOMETRICAL(33)
+        SAXIS=BOUNDARY_GEOMETRICAL(34)
+
+        CEN_DEVIATION(1)=BOUNDARY_GEOMETRICAL(35)
+        CEN_DEVIATION(2)=BOUNDARY_GEOMETRICAL(36)
+
+        CEN_ELP(1)=BOUNDARY_KINETIC(4)
+        CEN_ELP(2)=BOUNDARY_KINETIC(5)
+
+        MAT_ABS2REL(1,1)=BOUNDARY_GEOMETRICAL(1)
+        MAT_ABS2REL(1,2)=BOUNDARY_GEOMETRICAL(2)
+        MAT_ABS2REL(2,1)=BOUNDARY_GEOMETRICAL(4)
+        MAT_ABS2REL(2,2)=BOUNDARY_GEOMETRICAL(5)
+        MAT_REL2ABS=TRANSPOSE(MAT_ABS2REL)
+
+        !估求椭圆周长
+        ELLIPTIC_H=((LAXIS-SAXIS)/(LAXIS+SAXIS))**2.0D0
+        ELLIPTIC_H=3.0D0*ELLIPTIC_H/(10.0D0+(4.0D0-3.0D0*ELLIPTIC_H)**0.5D0)
+        ELLIPTIC_PERIMETER=PI*(LAXIS+SAXIS)*(1.0D0+ELLIPTIC_H)
+        !确定网格数
+        RSM=IDNINT( ELLIPTIC_PERIMETER/DX3 )
+
+        ALLOCATE( X_SRFC(RSM),Y_SRFC(RSM),Z_SRFC(RSM) )
+        ALLOCATE( N1X(RSM),N1Y(RSM),N1Z(RSM) )
+
+        ALLOCATE( AXX(RSM),AXY(RSM),AXZ(RSM) )
+        ALLOCATE( AYX(RSM),AYY(RSM),AYZ(RSM) )
+        ALLOCATE( AZX(RSM),AZY(RSM),AZZ(RSM) )
+        ALLOCATE( U_SRFC(RSM),V_SRFC(RSM),W_SRFC(RSM),P_SRFC(RSM) )
+
+        X_SRFC=0.0D0
+        Y_SRFC=0.0D0
+        Z_SRFC=0.0D0
+        N1X=0.0D0
+        N1Y=0.0D0
+        N1Z=0.0D0
+
+        AXX=0.0D0
+        AXY=0.0D0
+        AXZ=0.0D0
+        AYX=0.0D0
+        AYY=0.0D0
+        AYZ=0.0D0
+        AZX=0.0D0
+        AZY=0.0D0
+        AZZ=0.0D0
+        U_SRFC=0.0D0
+        V_SRFC=0.0D0
+        W_SRFC=0.0D0
+        P_SRFC=0.0D0
+
+        ALLOCATE( DS(RSM) )
+
+        ALLOCATE( ELLIPTIC_DA(RSM) )
+        ALLOCATE( ELLIPTIC_AS(RSM),ELLIPTIC_AM(RSM),ELLIPTIC_RADIUS(RSM) )
+
+        DS=0.0D0
+        ELLIPTIC_DA=0.0D0
+        ELLIPTIC_AM=0.0D0
+        ELLIPTIC_AS=0.0D0
+
+        !确定平均半径周长/2PI
+        AVERAGE_RADIUS=ELLIPTIC_PERIMETER/PI/2.0D0
+
+        !初始化
+        !ELLIPTIC_A自x轴正方向为零，顺时针方向为正方向
+        DO I=1,RSM,1
+            ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)
+            ELLIPTIC_AS(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.5D0)
+            ELLIPTIC_AM(I)=2.0D0*PI/DBLE(RSM)*(DBLE(I)-1.0D0)
+            ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+        END DO
+
+        !迭代确定各段弧
+        DO N=1,10,1
+
+            !修正圆心角
+            DO I=1,RSM,1
+                ELLIPTIC_DA(I)=2.0D0*PI/DBLE(RSM)*AVERAGE_RADIUS/ELLIPTIC_RADIUS(I)
+            END DO
+            ELLIPTIC_DA=ELLIPTIC_DA*2.0D0*PI/SUM(ELLIPTIC_DA)
+            !重新获得ELLIPTIC_AS和ELLIPTIC_AM
+            ELLIPTIC_AS(1)=-ELLIPTIC_DA(1)/2.0D0
+            ELLIPTIC_AM(1)=0.0D0
+            DO I=2,RSM,1
+                ELLIPTIC_AS(I)=ELLIPTIC_AS(I-1)+ELLIPTIC_DA(I-1)
+                ELLIPTIC_AM(I)=ELLIPTIC_AS(I)+ELLIPTIC_DA(I)/2.0D0
+            END DO
+            !先求起始点坐标
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AS(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AS(I)))**2.0D0 )**0.5D0
+            END DO
+            DO I=1,RSM,1
+                X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS( ELLIPTIC_AS(I) )
+                Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN( ELLIPTIC_AS(I) )
+            END DO
+            !求解弧长
+            DO I=1,RSM-1,1
+                DS(I)=DSQRT(&
+                    (X_SRFC(I+1)-X_SRFC(I))**2.0D0+&
+                    (Y_SRFC(I+1)-Y_SRFC(I))**2.0D0)
+            END DO
+            DS(RSM)=DSQRT(&
+                (X_SRFC(1)-X_SRFC(RSM))**2.0D0+&
+                (Y_SRFC(1)-Y_SRFC(RSM))**2.0D0)
+            !检查弧长差异,可以的话就跳出
+            IF(MAXVAL(DS)/MINVAL(DS)<1.1D0)EXIT
+
+            !不行的话再重新修正
+            DO I=1,RSM,1
+                ELLIPTIC_RADIUS(I)=LAXIS*SAXIS/&
+                    ( (SAXIS*DCOS(ELLIPTIC_AM(I)))**2.0D0  &
+                    + (LAXIS*DSIN(ELLIPTIC_AM(I)))**2.0D0 )**0.5D0
+            END DO
+
+        END DO
+        !检查弧长差异,太过了就报错
+        IF(MAXVAL(DS)>=2.0D0*DX3)THEN
+            WRITE(*,*)'too large max(ds)/dx=',MAXVAL(DS)/DX3
+            STOP
+        END IF
+        !求各弧中心点坐标
+        DO I=1,RSM,1
+            X_SRFC(I)=ELLIPTIC_RADIUS(I)*DCOS(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(1)
+            Y_SRFC(I)=ELLIPTIC_RADIUS(I)*DSIN(ELLIPTIC_AM(I))&
+                +CEN_DEVIATION(2)
+            CALL CRDNT_TRANSFORM(MAT_REL2ABS,X_SRFC(I),Y_SRFC(I),&
+                XATEMP,YATEMP)
+            X_SRFC(I)=XATEMP+CEN_ELP(1)
+            Y_SRFC(I)=YATEMP+CEN_ELP(2)
+        END DO
+
+    END IF
+    !---!!!!!!!!!!!!!!!!!!---这之间带有对象特殊性---!!!!!!!!!!!!!!!!!!---!
+
+    !------求解内法向量------!
+    DO I=1,RSM,1
+        CALL NORMALVECTOR_2D(BOUNDARY_GEOMETRICAL,X_SRFC(I),Y_SRFC(I),&
+            N1X(I),N1Y(I))
+        N1X(I)=-N1X(I)
+        N1Y(I)=-N1Y(I)
+        N1Z(I)=0.0D0
+    END DO
+    !------求解压力和偏导系数------!
+    DO N=1,RSM,1
+
+        !------求解点所处位置及压力------!
+        XA=X_SRFC(N)
+        YA=Y_SRFC(N)
+
+        IF( XA>LEIN-CRITERIA .AND. XA<RIIN+CRITERIA )THEN
+            IAU=IL+FLOOR( (XA-LEIN) / DX3  )
+            IAV=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+            IAP=IL+FLOOR( (XA-LEIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"XA OUT OF INNER REGION"
+            STOP
+        END IF
+        IF( YA>BOIN-CRITERIA .AND. YA<TOIN+CRITERIA )THEN
+            JAU=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+            JAV=JB+FLOOR( (YA-BOIN) / DX3  )
+            JAP=JB+FLOOR( (YA-BOIN) / DX3 - 0.5D0  )
+        ELSE
+            WRITE(*,*)"YA OUT OF INNER REGION"
+            STOP
+        END IF
+
+        CALL BILINEAR_INTERPOLATION(IAU,JAU,IAV,JAV,IAP,JAP,XA,YA,&
+            U_SRFC(N),V_SRFC(N),P_SRFC(N))
+
+        !------求解点刚体速度------!
+        CALL VELOCITY_LB(BOUNDARY_KINETIC,XA,YA,U_SRFC(N),V_SRFC(N))
+
+        !------获取附近符合要求的点------!
+        CALL DETERMINE_IF_ELIGIBLE_U(IAU,JAU,ELIGIBILITY_U)
+        CALL DETERMINE_IF_ELIGIBLE_V(IAV,JAV,ELIGIBILITY_V)
+
+        !------求解距离------!
+        DISTANCE_U=500.0D0
+        DISTANCE_V=500.0D0
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(ELIGIBILITY_U(I,J))THEN
+                    DISTANCE_U(I,J)=(X(IAU+I)-XA)**2.0D0&
+                        +(YPU(JAU+J)-YA)**2.0D0
+                END IF
+                IF(ELIGIBILITY_V(I,J))THEN
+                    DISTANCE_V(I,J)=(XPV(IAV+I)-XA)**2.0D0&
+                        +(Y(JAV+J)-YA)**2.0D0
+                END IF
+            END DO
+        END DO
+
+        !------确定最近的两个点------!
+        !刨去重合点
+        DO J=-2,+2,1
+            DO I=-2,+2,1
+                IF(DISTANCE_U(I,J)<CRITERIA)THEN
+                    DISTANCE_U(I,J)=500.0D0
+                END IF
+                IF(DISTANCE_V(I,J)<CRITERIA)THEN
+                    DISTANCE_V(I,J)=500.0D0
+                END IF
+            END DO
+        END DO
+
+        DO WHILE (.TRUE.)
+
+            IF ( MINVAL(DISTANCE_U)>=500.0D0 ) THEN
+                WRITE(*,*)N,'u error: no eligible points'
+                EXIT
+            END IF
+
+            CALL FIND_2SMALLEST_LOC(DISTANCE_U,INDEX_U)
+
+            !检查坐标偏移量
+            TEMP_1(1,2)=XA
+            TEMP_1(2,2)=X(INDEX_U(1,1)+IAU)
+            TEMP_1(3,2)=X(INDEX_U(2,1)+IAU)
+            TEMP_1(1,3)=YA
+            TEMP_1(2,3)=YPU(INDEX_U(1,2)+JAU)
+            TEMP_1(3,3)=YPU(INDEX_U(2,2)+JAU)
+
+            DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+            DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+            IF (DEVIATION_X<1000.0D0*CRITERIA .OR.&
+                DEVIATION_Y<1000.0D0*CRITERIA ) THEN
+                DISTANCE_U(INDEX_U(2,1),INDEX_U(2,2))=500.0D0
+            ELSE
+                EXIT
+            END IF
+
+        END DO
+
+        INDEX_U(:,1)=INDEX_U(:,1)+IAU
+        INDEX_U(:,2)=INDEX_U(:,2)+JAU
+
+        DO WHILE (.TRUE.)
+
+            IF ( MINVAL(DISTANCE_V)>=500.0D0 ) THEN
+                WRITE(*,*)N,'v error: no eligible points'
+                EXIT
+            END IF
+
+            CALL FIND_2SMALLEST_LOC(DISTANCE_V,INDEX_V)
+
+            !检查坐标偏移量
+            TEMP_1(1,2)=XA
+            TEMP_1(2,2)=XPV(INDEX_V(1,1)+IAV)
+            TEMP_1(3,2)=XPV(INDEX_V(2,1)+IAV)
+            TEMP_1(1,3)=YA
+            TEMP_1(2,3)=Y(INDEX_V(1,2)+JAV)
+            TEMP_1(3,3)=Y(INDEX_V(2,2)+JAV)
+
+            DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+            DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+            IF (DEVIATION_X<1000.0D0*CRITERIA .OR.&
+                DEVIATION_Y<1000.0D0*CRITERIA ) THEN
+                DISTANCE_V(INDEX_V(2,1),INDEX_V(2,2))=500.0D0
+            ELSE
+                EXIT
+            END IF
+
+        END DO
+
+        INDEX_V(:,1)=INDEX_V(:,1)+IAV
+        INDEX_V(:,2)=INDEX_V(:,2)+JAV
+
+        !------求解偏导系数------!
+        !U
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(2,2)=X(INDEX_U(1,1))
+        TEMP_1(3,2)=X(INDEX_U(2,1))
+        TEMP_1(1,3)=YA
+        TEMP_1(2,3)=YPU(INDEX_U(1,2))
+        TEMP_1(3,3)=YPU(INDEX_U(2,2))
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'u error: negligible dy'
+        END IF
+
+        CALL M33INV (TEMP_1, TEMP_2, OK_FLAG)
+        IF (.NOT. OK_FLAG) THEN
+            WRITE(*,*) N,'u error: singular matrix'
+        END IF
+
+        TEMP_3(1,1)=U_SRFC(N)
+        TEMP_3(2,1)=U(INDEX_U(1,1),INDEX_U(1,2))
+        TEMP_3(3,1)=U(INDEX_U(2,1),INDEX_U(2,2))
+
+        TEMP_4=MATMUL(TEMP_2,TEMP_3)
+
+        AXX(N)=TEMP_4(2,1)
+        AXY(N)=TEMP_4(3,1)
+
+        !V
+        TEMP_1(:,1)=1.0D0
+        TEMP_1(1,2)=XA
+        TEMP_1(2,2)=XPV(INDEX_V(1,1))
+        TEMP_1(3,2)=XPV(INDEX_V(2,1))
+        TEMP_1(1,3)=YA
+        TEMP_1(2,3)=Y(INDEX_V(1,2))
+        TEMP_1(3,3)=Y(INDEX_V(2,2))
+        !检查坐标偏移量
+        DEVIATION_X=MAXVAL(TEMP_1(:,2))-MINVAL(TEMP_1(:,2))
+        IF (DEVIATION_X<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dx'
+        END IF
+        DEVIATION_Y=MAXVAL(TEMP_1(:,3))-MINVAL(TEMP_1(:,3))
+        IF (DEVIATION_Y<1000.0D0*CRITERIA) THEN
+            WRITE(*,*) N,'v error: negligible dy'
+        END IF
+
+        CALL M33INV (TEMP_1, TEMP_2, OK_FLAG)
+        IF (.NOT. OK_FLAG) THEN
+            WRITE(*,*) N,'v error: singular matrix'
+        END IF
+
+        TEMP_3(1,1)=V_SRFC(N)
+        TEMP_3(2,1)=V(INDEX_V(1,1),INDEX_V(1,2))
+        TEMP_3(3,1)=V(INDEX_V(2,1),INDEX_V(2,2))
+
+        TEMP_4=MATMUL(TEMP_2,TEMP_3)
+
+        AYX(N)=TEMP_4(2,1)
+        AYY(N)=TEMP_4(3,1)
+
+    END DO
+
+    !------求解气动力------!
+    DO N=1,RSM,1
+
+        CXP=-P_SRFC(N)*N1X(N)
+        CYP=-P_SRFC(N)*N1Y(N)
+        CZP=0.0D0!-P_SRFC*N1Z(N)
+        CXV=(2.0D0*AXX(N)*N1X(N)+(AXY(N)+AYX(N))*N1Y(N))/Re
+        CYV=((AXY(N)+AYX(N))*N1X(N)+2.0D0*AYY(N)*N1Y(N))/Re
+        CZV=0.0D0
+
+        CXC_TOTAL=CXC_TOTAL+2.0D0*DS(N)*(CXP+CXV)
+        CYC_TOTAL=CYC_TOTAL+2.0D0*DS(N)*(CYP+CYV)
+
+    END DO
+
+    !------物体所受气动力为反作用力------!
+    CXC_TOTAL=-CXC_TOTAL
+    CYC_TOTAL=-CYC_TOTAL
+
+    !------输出系数------!
+    WRITE(320+BOUNDARY_ID*10,"( I6,2(1X,F9.5))")NSTEP,CXC_TOTAL,CYC_TOTAL
+    WRITE(321+BOUNDARY_ID*10,*)NSTEP,CXC_TOTAL,CYC_TOTAL
+
+    !------输出分布------!
+    WRITE(CHAR_STEP,'(I6.6)') NSTEP
+    REYNOLDS=IDNINT(Re)
+    WRITE(CHAR_REYNOLDS,'(I5.5)') REYNOLDS
+    WRITE(CHAR_ID,'(I2.2)') BOUNDARY_ID
+    IF( MOD(NSTEP,2000)==0 )THEN
+        OPEN(UNIT=10,FILE='SRFC_EXACT_OBJECT_'//TRIM(CHAR_ID)&
+            //'_Re'//TRIM(CHAR_REYNOLDS)//'N'//TRIM(CHAR_STEP)//'.PLT')
+        WRITE(10,*) 'TITLE="NONAME"'
+        !WRITE(10,*) 'VARIABLES="X","Y","P","U","V","AXX","AXY","AXZ",'
+        !WRITE(10,*) '"AYX","AYY","AYZ","AZX","AZY","AZZ"'
+        WRITE(10,*) 'VARIABLES="X","Y","P","U","V","NX","NY","AXX","AXY",'
+        WRITE(10,*) '"AYX","AYY"'
+        WRITE(10,*) 'ZONE T="NONAME", I=',RSM,', J=',1,', F=POINT'
+        DO N=1,RSM,1
+            !WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+            !    P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+            !    AXX(N),AXY(N),AXZ(N),&
+            !    AYX(N),AYY(N),AYZ(N),&
+            !    AZX(N),AZY(N),AZZ(N)
+            WRITE(10,*) X_SRFC(N),Y_SRFC(N),&
+                P_SRFC(N),U_SRFC(N),V_SRFC(N),&
+                N1X(N),N1Y(N),&
+                AXX(N),AXY(N),&
+                AYX(N),AYY(N)
+        END DO
+        CLOSE(10)
+    END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !****************判断周围点是否为可视流体点（简易版）***************!
+    SUBROUTINE DETERMINE_IF_ELIGIBLE_U(IAU,JAU,ELIGIBILITY_U)
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::IAU,JAU
+    INTEGER::I,J
+    LOGICAL::ELIGIBILITY_U(-2:2,-2:2)
+
+    DO J=-2,+2,1
+        DO I=-2,+2,1
+
+            IF( TYPEUX(IAU+I,JAU+J)==-10 .AND. &
+                TYPEUY(IAU+I,JAU+J)==-10 )THEN
+                ELIGIBILITY_U(I,J)=.FALSE.
+            ELSE
+                ELIGIBILITY_U(I,J)=.TRUE.
+            END IF
+
+        END DO
+    END DO
+
+    RETURN
+    END SUBROUTINE
+
+    !****************判断周围点是否为可视流体点（简易版）***************!
+    SUBROUTINE DETERMINE_IF_ELIGIBLE_V(IAV,JAV,ELIGIBILITY_V)
+    USE IMMERSED_BOUNDARY
+    IMPLICIT NONE
+
+    INTEGER::IAV,JAV
+    INTEGER::I,J
+    LOGICAL::ELIGIBILITY_V(-2:2,-2:2)
+
+    DO J=-2,+2,1
+        DO I=-2,+2,1
+
+            IF( TYPEVX(IAV+I,JAV+J)==-10 .AND. &
+                TYPEVY(IAV+I,JAV+J)==-10 )THEN
+                ELIGIBILITY_V(I,J)=.FALSE.
+            ELSE
+                ELIGIBILITY_V(I,J)=.TRUE.
+            END IF
+
+        END DO
+    END DO
+
+    RETURN
+    END SUBROUTINE
+
+    !***************找出离边界点最近的两个可视流体点********************!
+    SUBROUTINE FIND_2SMALLEST_LOC(DISTANCE,INDEX_1)
+    IMPLICIT NONE
+
+    INTEGER::INDEX_1(2,2)
+    INTEGER::I,J
+    REAL(KIND=8)::DISTANCE(-2:2,-2:2)
+    REAL(KIND=8)::SMALLEST_1ST,SMALLEST_2ND
+
+    SMALLEST_1ST=MAXVAL(DISTANCE)
+    SMALLEST_2ND=MAXVAL(DISTANCE)
+    INDEX_1(1,:)=MAXLOC(DISTANCE)
+    INDEX_1(2,:)=MAXLOC(DISTANCE)
+
+    DO J=-2,+2,1
+        DO I=-2,+2,1
+
+            IF(DISTANCE(I,J)<SMALLEST_1ST)THEN
+                SMALLEST_2ND=SMALLEST_1ST
+                SMALLEST_1ST=DISTANCE(I,J)
+                INDEX_1(2,1)=INDEX_1(1,1)
+                INDEX_1(2,2)=INDEX_1(1,2)
+                INDEX_1(1,1)=I
+                INDEX_1(1,2)=J
+            ELSE IF(DISTANCE(I,J)<SMALLEST_2ND)THEN
+                SMALLEST_2ND=DISTANCE(I,J)
+                INDEX_1(2,1)=I
+                INDEX_1(2,2)=J
+            END IF
+
+        END DO
+    END DO
+
+    RETURN
+    END SUBROUTINE
+
     !*********************求解升力推力（表面力积分法）**********************!
     SUBROUTINE CAL_CLCT_2DCURVE
     USE DECLARATION
@@ -992,7 +2694,7 @@
 
     WRITE(322,"( I6,2(1X,F9.5))")NSTEP,CXC_TOTAL,CYC_TOTAL
     WRITE(323,*)NSTEP,CXC_TOTAL,CYC_TOTAL
-    
+
     RETURN
     END SUBROUTINE
 

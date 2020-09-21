@@ -13,9 +13,10 @@
     LOGICAL::PDIS_PROCESSED=.FALSE.
 
     NPDIS=NCYCLE
-    !------输出圆柱压力分布------!
-    IF( MOD( NSTEP,IDNINT( DBLE(NCYCLE)/DBLE(NPDIS) ) )==0 ) CALL OUTPUT_PRESSURE_DISTRIBUTION(PDIS_PROCESSED)
-
+    IF(IB_LOCOMOTION==-1)THEN
+        !------输出圆柱压力分布------!
+        IF( MOD( NSTEP,IDNINT( DBLE(NCYCLE)/DBLE(NPDIS) ) )==0 ) CALL OUTPUT_PRESSURE_DISTRIBUTION(PDIS_PROCESSED)
+    END IF
 
     RETURN
     END SUBROUTINE
@@ -177,7 +178,7 @@
         WRITE(500,"( 1X,F9.5)")PRESSURE_COEFFICIENT(BFI)
     END DO
     WRITE(500,"( 1X,F9.5)")PRESSURE_COEFFICIENT(1)
-    
+
     !---------------------------------试验2---------------------------------------------
     DN1=DX3!y值最小值，保证流场变量的二线性插值只受流场本侧影响
     DO BFJ=1,BFJM,1
@@ -252,7 +253,7 @@
         WRITE(502,"( 1X,F9.5)")PRESSURE_COEFFICIENT(BFI)
     END DO
     WRITE(502,"( 1X,F9.5)")PRESSURE_COEFFICIENT(1)
-    
+
     !---------------------------------试验3---------------------------------------------
     DN1=0.5D0*DX3!y值最小值，保证流场变量的二线性插值只受流场本侧影响
     DO BFJ=1,BFJM,1
