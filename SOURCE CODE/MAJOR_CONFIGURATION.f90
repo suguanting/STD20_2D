@@ -2071,10 +2071,10 @@
     !------边界条件系数------!
     !1-进口,2-出口,3-固壁（无滑移）,4-无剪切（自由滑移）,5-出口（对流边条）
     !（左为进口，上下右为出口）
-    BCTYPE_L=2
-    BCTYPE_R=2
-    BCTYPE_B=2
-    BCTYPE_T=2
+    BCTYPE_L=5
+    BCTYPE_R=5
+    BCTYPE_B=5
+    BCTYPE_T=5
 
     !BC_A*U+BC_B
     !BC_A*DU
@@ -2344,12 +2344,12 @@
         !DX21=0.0D0!中外层
         !DX22=0.0D0!中中层
         !DX23=0.0D0!中内层
-        DX3 =1.0D0/50.0D0!内层
+        DX3 =1.0D0/80.0D0!内层
     END IF
 
     !------迭代控制------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=5000!100的倍数
+        NCYCLE=8000!100的倍数
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -2641,7 +2641,7 @@
     !------动边界形状------!1圆，2椭圆
     IB_SHAPE=1
     !------各种无量纲参数和准则数------!
-    Re=150.0D0
+    Re=80.0D0
 
     !------计算域尺度量------!
     LEFT=-50.0D0

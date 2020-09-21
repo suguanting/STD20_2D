@@ -1,0 +1,40 @@
+    SUBROUTINE SOLVE_LINEAR_SYSTEM(A,X,B,N_ROW,N_COL,INDEX_1)
+    IMPLICIT NONE
+
+    INTEGER::N_ROW,N_COL,INDEX_1
+    REAL(KIND=8)::A(N_ROW,N_COL),X(N_COL,1),B(N_ROW,1)
+
+    !dgels定义
+    CHARACTER::TRANS
+    INTEGER::M
+    INTEGER::N
+    INTEGER::NRHS
+    INTEGER::LDA
+    INTEGER::LDB
+    REAL(KIND=8),ALLOCATABLE::WORK(:)
+    INTEGER::LWORK
+    INTEGER::INFO
+
+    !初始化
+    TRANS='N'
+    M=N_ROW
+    N=N_COL
+    NRHS=1
+    LDA=M
+    LDB=M
+    LWORK= MAX( 1, M*N + MAX( M*N, NRHS )*N_ROW )
+    ALLOCATE( WORK(LWORK) )
+
+    CALL DGELS(	TRANS,M,N,NRHS,A,LDA,B,LDB,WORK,LWORK,INFO)
+
+    IF(INFO==0)THEN
+        X(1:N_COL,1)=B(1:N_COL,1)
+    ELSE IF(INFO<0)THEN
+        WRITE(*,*)INDEX_1,'SOLVE error: illegal value',INFO
+    ELSE IF(INFO>0)THEN
+        WRITE(*,*)INDEX_1,'SOLVE error: A does not have full rank',INFO
+    END IF
+
+
+    RETURN
+    END SUBROUTINE

@@ -27,6 +27,8 @@
 		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<Filter Name="MAT_INV">
+		<File RelativePath="..\SOURCE CODE\MAT_INV\m33inv.f90"/></Filter>
 		<File RelativePath="..\ABANDONED_AND_DEBUGGING.f90"/>
 		<File RelativePath="..\SOURCE CODE\ALLOCATION_VARIABLE_FILE.f90"/>
 		<File RelativePath="..\SOURCE CODE\ANALYTICAL_CASES.f90"/>
