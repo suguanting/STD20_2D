@@ -202,6 +202,7 @@
     !时间和角度定量
     REAL(KIND=8)::TAUC!周期时长
     REAL(KIND=8)::TAU!周期内时刻
+    REAL(KIND=8)::TAU_R!正弦翻转时翻转运动与拍动运动的时间差
     REAL(KIND=8)::TAU_R1,TAU_R2!两个翻转开始的时刻
     REAL(KIND=8)::DTAUR!单次翻转时长
     REAL(KIND=8)::PHIM!最大拍动角
