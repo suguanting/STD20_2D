@@ -52,6 +52,14 @@
             CEN_TRANSLATION(1)=-0.6D0!转动中心绝对坐标系下振荡中心X
             CEN_TRANSLATION(2)=0.0D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC(T)
+        ELSE IF(IB_LOCOMOTION==11)THEN!模拟1请确认符合模拟目标
+            PHASE_DIFFERENCE=0.0D0!-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_INITIATION=90.0D0
+            CEN_DEVIATION(1)=0.5D0-0.5D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_TRANSLATION(1)=0.0D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=0.0D0 !转动中心绝对坐标系下振荡中心Y
+            CALL POSE_VELO_QUADRIC_2D_PERIODIC_WANG(T)
         ELSE IF(IB_LOCOMOTION==2)THEN
             PHASE_DIFFERENCE=-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=90.0D0
@@ -533,17 +541,17 @@
     !模拟1请确认符合模拟目标
     !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
     !--------------------周期性拍动基本参数---------------------!
-    TAUC=10.30007311D0!7.725054831D0!周期时长
+    TAUC=8.623671834D0!7.725054831D0!周期时长
     !旋转时间/刻
-    TAU_R1=0.0625D0*TAUC
-    TAU_R2=0.5625D0*TAUC!两个翻转开始的时刻
+    TAU_R1=0.125D0*TAUC!0.0625D0*TAUC
+    TAU_R2=0.625D0*TAUC!0.5625D0*TAUC!两个翻转开始的时刻
     DTAUR=0.25D0*TAUC!单次翻转时长
     !几何信息
-    PHIM=60.0D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
+    PHIM=45.0D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
     PSIM=45.0D0/180.0D0*PI!翻转振幅
     PSI0=-15.0D0/180.0D0*PI!初始翻转角
 
-    SPAN=2.458961324D0!展长
+    SPAN=2.745D0!展长
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
 
     TAU_INIT=PHASE_INITIATION/360.0D0*TAUC!由起始相位角推得起始时间
@@ -615,9 +623,13 @@
         VELO_TRAN_R(2)=2.0D0*PI*PHIM/TAUC*DCOS(2.0D0*PI*TAU/TAUC)*SPAN
         VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
         !转动
-        CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
-        CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+        !CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+        !CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
         CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
         IF(TAU>=0.0D0 .AND. TAU<=TAU_R1)THEN!ψw翻转角
             VELO_ANGL=0.0D0
         ELSE IF(TAU>TAU_R1 .AND. TAU<TAU_R1+DTAUR)THEN
@@ -630,6 +642,67 @@
             VELO_ANGL=0.0D0
         END IF
     END IF
+
+    RETURN
+    END SUBROUTINE
+
+    !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
+    SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_WANG(TIME)
+    USE QUADRIC_PARAMETER
+    USE DECLARATION
+
+    USE CAL_QUADRIC_DECLARATION
+    IMPLICIT NONE
+    REAL(KIND=8)::TIME
+
+    !模拟1请确认符合模拟目标
+    !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
+    !--------------------周期性拍动基本参数---------------------!
+    TAUC=2.8D0*PI!7.725054831D0!周期时长
+    !旋转时间/刻
+    TAU_R=-TAUC/8.0D0
+    !几何信息
+    PHIM=1.0!拍动振幅
+    PSIM=PI/4.0D0!翻转振幅
+    PSI0=0.0D0*PI!初始翻转角
+
+    SPAN=1.4D0!展长
+    !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
+
+    TAU_INIT=PHASE_INITIATION/360.0D0*TAUC!由起始相位角推得起始时间
+    !--------------------周期内时刻TAU---------------------!
+    TAU=DMOD(TIME+PHASE_DIFFERENCE/360.0D0*TAUC+TAU_INIT,TAUC)
+
+    !--------------------根据TAU确定各角度大小（周期性）---------------------!
+    PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
+    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+    THETAW=0.0D0!θw偏离角/偏移角
+    PHIW=PHIM*DSIN(2.0D0*PI*TAU/TAUC)!ϕw拍动角
+    PSIW=PSI0-PSIM*DCOS(2.0D0*PI*(TAU-TAU_R)/TAUC)!ψw翻转角
+
+    !--------------------根据各角度确定坐标转换矩阵---------------------!
+    CALL CAL_TRANMAT(PSI,MATP)
+    CALL CAL_TRANMAT(PSIW,MATW)
+
+    TRANMAT=MATMUL( MATW,MATP )
+    TRANMAT_INVERSE=TRANSPOSE(TRANMAT)
+
+    !坐标转换矩阵系数
+    T11=TRANMAT(1,1)
+    T12=TRANMAT(1,2)
+    T21=TRANMAT(2,1)
+    T22=TRANMAT(2,2)
+
+    !--------------------确定平动转动速度和中心（周期性）---------------------!
+    !平动
+    VELO_TRAN_R(1)=0.0D0
+    VELO_TRAN_R(2)=2.0D0*PI*PHIM/TAUC*DCOS(2.0D0*PI*TAU/TAUC)*SPAN
+    VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+    !转动
+    CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+    CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+    CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+    VELO_ANGL= 2.0D0*PI*PSIM/TAUC*DSIN(2.0D0*PI*(TAU-TAU_R)/TAUC)
 
     RETURN
     END SUBROUTINE
@@ -1062,6 +1135,17 @@
         RCOM=CEN_DEVIATION(1)**2.0D0+100D0*CEN_DEVIATION(2)**2.0D0-0.25D0!
         LAXIS=0.5D0
         SAXIS=0.05D0
+        IF(IB_LOCOMOTION==11)THEN!WANG
+            LAXIS=1.0D0/2.0D0
+            SAXIS=0.125D0/2.0D0
+            RCOX2=1.0D0/LAXIS**2.0D0
+            RCOY2=1.0D0/SAXIS**2.0D0
+            RCOXY=0.0D0
+            RCOX=-2.0D0*CEN_DEVIATION(1)/LAXIS**2.0D0
+            RCOY=-2.0D0*CEN_DEVIATION(2)/SAXIS**2.0D0
+            RCOM=CEN_DEVIATION(1)**2.0D0/LAXIS**2.0D0&
+                +CEN_DEVIATION(2)**2.0D0/SAXIS**2.0D0-1.0D0
+        END IF
     END IF
 
     !根据坐标转换系数确定绝对坐标系下二次曲面的数学表达式系数
