@@ -559,7 +559,7 @@
     TAU=DMOD(TIME+PHASE_DIFFERENCE/360.0D0*TAUC+TAU_INIT,TAUC)
 
     !--------------------根据TAU确定各角度大小（周期性）---------------------!
-    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<CRITERIA)THEN
+    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
         PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
         !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
         THETAW=0.0D0!θw偏离角/偏移角
@@ -607,15 +607,17 @@
     T22=TRANMAT(2,2)
 
     !--------------------确定平动转动速度和中心（周期性）---------------------!
-    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<CRITERIA)THEN
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
         !平动
         VELO_TRAN_R(1)=0.0D0
         VELO_TRAN_R(2)=0.0D0
         VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
         !转动
-        CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
-        CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
         CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
         VELO_ANGL=0.0D0
     ELSE
         !平动
@@ -739,7 +741,7 @@
     T22=TRANMAT(2,2)
 
     !--------------------确定平动转动速度和中心（周期性）---------------------!
-    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<CRITERIA)THEN
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
         !平动
         VELO_TRAN_R(1)=0.0D0
         VELO_TRAN_R(2)=0.0D0
@@ -796,7 +798,7 @@
     T22=TRANMAT(2,2)
 
     !--------------------确定平动转动速度和中心（周期性）---------------------!
-    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<CRITERIA)THEN
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
         !平动
         VELO_TRAN_R(1)=0.0D0
         VELO_TRAN_R(2)=0.0D0
@@ -853,7 +855,7 @@
     T22=TRANMAT(2,2)
 
     !--------------------确定平动转动速度和中心（周期性）---------------------!
-    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<CRITERIA)THEN
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
         !平动
         VELO_TRAN_R(1)=0.0D0
         VELO_TRAN_R(2)=0.0D0
@@ -910,7 +912,7 @@
     T22=TRANMAT(2,2)
 
     !--------------------确定平动转动速度和中心（周期性）---------------------!
-    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<CRITERIA)THEN
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
         !平动
         VELO_TRAN_R(1)=0.0D0
         VELO_TRAN_R(2)=0.0D0
