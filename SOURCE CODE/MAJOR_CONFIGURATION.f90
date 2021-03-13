@@ -2304,7 +2304,7 @@
     !------动边界形状------!1圆，2椭圆
     IB_SHAPE=2
     !------各种无量纲参数和准则数------!
-    Re=150.0D0!1750.938894D0!模拟1请确认符合模拟目标
+    Re=1167.292596!1750.938894D0!150.0D0!模拟1请确认符合模拟目标
 
     !------计算域尺度量------!
     LEFT=-15.0D0
@@ -2344,19 +2344,19 @@
         !DX21=0.0D0!中外层
         !DX22=0.0D0!中中层
         !DX23=0.0D0!中内层
-        DX3 =1.0D0/50.0D0!内层
+        DX3 =1.0D0/80.0D0!内层
     END IF
 
     !------迭代控制------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=2000!1600!100的倍数
+        NCYCLE=8000!1600!100的倍数
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
         NCYCLE=400
     END IF
     IF(TASK_TYPE==1)THEN
-        NDURATION=20*NCYCLE
+        NDURATION=15*NCYCLE
     ELSE IF(TASK_TYPE==0)THEN
         NDURATION=NCYCLE
     ELSE IF(TASK_TYPE==2)THEN
@@ -2364,7 +2364,7 @@
     END IF
 
     !------确定时间步------!
-    DT=8.623671834D0/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!模拟1请确认符合模拟目标
+    DT=5.749114556D0/DBLE(NCYCLE)!8.623671834D0/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!模拟1请确认符合模拟目标
 
     !------续算文件名------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
@@ -2372,12 +2372,12 @@
     !------调用输出次数控制------!
     NPROBE=200
     NCLCT=NCYCLE
-    NPLT=1
+    NPLT=16
     NIB=100
 
     !------激活边界------!1-存在，0-不存在
     BOUNDARY_EXISTENCE_1=1!模拟1请确认符合模拟目标
-    BOUNDARY_EXISTENCE_2=1!模拟1请确认符合模拟目标
+    BOUNDARY_EXISTENCE_2=0!模拟1请确认符合模拟目标
 
     !------扑翼坐标系旋转相关------!
     FREESTREAM_TILT=0.0D0!只能为0
