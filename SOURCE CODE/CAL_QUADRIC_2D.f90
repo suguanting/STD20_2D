@@ -49,8 +49,8 @@
             PHASE_INITIATION=90.0D0
             CEN_DEVIATION(1)=0.5D0-0.3D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
             CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
-            CEN_TRANSLATION(1)=-0.6D0!转动中心绝对坐标系下振荡中心X
-            CEN_TRANSLATION(2)=0.0D0 !转动中心绝对坐标系下振荡中心Y
+            CEN_TRANSLATION(1)=0.0D0 !-0.6D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=0.6D0 ! 0.0D0!转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC(T)
         ELSE IF(IB_LOCOMOTION==11)THEN!模拟1请确认符合模拟目标
             PHASE_DIFFERENCE=0.0D0!-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
@@ -543,13 +543,16 @@
     !--------------------周期性拍动基本参数---------------------!
     TAUC=5.749114556!8.623671834D0!7.725054831D0!周期时长
     !旋转时间/刻
-    TAU_R1=0.125D0*TAUC!0.0625D0*TAUC
-    TAU_R2=0.625D0*TAUC!0.5625D0*TAUC!两个翻转开始的时刻
-    DTAUR=0.25D0*TAUC!单次翻转时长
+    TAU_R1=0.05D0*TAUC!0.0625D0*TAUC
+    TAU_R2=0.55D0*TAUC!0.5625D0*TAUC!两个翻转开始的时刻
+    DTAUR=0.4D0*TAUC!单次翻转时长
     !几何信息
     PHIM=30.0D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
-    PSIM=50.0D0/180.0D0*PI!翻转振幅
-    PSI0=-10.0D0/180.0D0*PI!初始翻转角
+    ALPHAD=30.0D0/180.0D0*PI!αd下拍攻角
+    ALPHAU=30.0D0/180.0D0*PI!αu上拍攻角
+    
+    PSIM=(PI-ALPHAU-ALPHAD)/2!翻转振幅
+    PSI0=(ALPHAU-ALPHAD)/2!初始翻转角
 
     SPAN=2.745D0!展长
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
@@ -1137,9 +1140,9 @@
         RCOM=CEN_DEVIATION(1)**2.0D0+100D0*CEN_DEVIATION(2)**2.0D0-0.25D0!
         LAXIS=0.5D0
         SAXIS=0.05D0
-        IF(IB_LOCOMOTION==11)THEN!WANG
+        IF(IB_LOCOMOTION==11)THEN!WANG，实际改为Eldredge的1/10
             LAXIS=1.0D0/2.0D0
-            SAXIS=0.125D0/2.0D0
+            SAXIS=0.1D0/2.0D0
             RCOX2=1.0D0/LAXIS**2.0D0
             RCOY2=1.0D0/SAXIS**2.0D0
             RCOXY=0.0D0

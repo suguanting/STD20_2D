@@ -193,7 +193,6 @@
     REAL(KIND=8)::PSI!ψ拍动平面夹角，此类算例中应为0°
     REAL(KIND=8)::PHIW!ϕw拍动角
     REAL(KIND=8)::PSIW!ψw翻转角
-    REAL(KIND=8)::PSI0!ψ0初始翻转角
     REAL(KIND=8)::THETAW!θw偏离角/偏移角
     REAL(KIND=8)::PHASE_DIFFERENCE!前后翅相位差,谁大谁提前
     REAL(KIND=8)::PHASE_INITIATION!前后翅相位差,谁大谁提前
@@ -205,9 +204,12 @@
     REAL(KIND=8)::TAU_R!正弦翻转时翻转运动与拍动运动的时间差
     REAL(KIND=8)::TAU_R1,TAU_R2!两个翻转开始的时刻
     REAL(KIND=8)::DTAUR!单次翻转时长
-    REAL(KIND=8)::PHIM!最大拍动角
+    REAL(KIND=8)::PHIM!ϕm拍动幅值
     REAL(KIND=8)::PHIA!拍动角平均值
-    REAL(KIND=8)::PSIM!最大攻角
+    REAL(KIND=8)::PSIM!ψm翻转幅值
+    REAL(KIND=8)::PSI0!ψ0初始翻转角
+    REAL(KIND=8)::ALPHAD!αd下拍攻角
+    REAL(KIND=8)::ALPHAU!αu上拍攻角
 
     !坐标转换矩阵
     REAL(KIND=8)::TRANMAT(2,2)

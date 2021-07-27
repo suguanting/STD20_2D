@@ -2290,10 +2290,10 @@
     !------网格种类------!1-连续网格；0-分级网格（某些只使用均匀网格算例，置0并更改LEM1等数值）
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
-        BL=1.03D0
-        BR=1.03D0
+        BL=1.02D0
+        BR=1.02D0
         BB=1.03D0
-        BT=1.03D0
+        BT=1.01D0
     END IF
     !------算例种类------!1初场为均匀流场的算例，2初场为真实流场的算例
     CASE_TYPE=1
@@ -2327,10 +2327,10 @@
     !BOM3=-3.0D0
     !TOM3= 3.0D0
 
-    LEIN=-2.0D0!-0.7D0!-1.2D0
+    LEIN=-2.5D0!-0.7D0!-1.2D0
     RIIN= 2.5D0! 0.7D0! 1.2D0
-    BOIN=-3.0D0!-1.0D0!-2.5D0
-    TOIN= 3.0D0! 1.0D0! 2.5D0
+    BOIN=-1.0D0!-1.0D0!-2.5D0
+    TOIN= 1.5D0! 1.0D0! 2.5D0
 
     !------网格密度量------!
     IF(CONTINUOUS_MESH==0)THEN
@@ -2349,14 +2349,14 @@
 
     !------迭代控制------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=8000!1600!100的倍数
+        NCYCLE=2400!1600!100的倍数
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
         NCYCLE=400
     END IF
     IF(TASK_TYPE==1)THEN
-        NDURATION=15*NCYCLE
+        NDURATION=20*NCYCLE
     ELSE IF(TASK_TYPE==0)THEN
         NDURATION=NCYCLE
     ELSE IF(TASK_TYPE==2)THEN
@@ -2380,8 +2380,8 @@
     BOUNDARY_EXISTENCE_2=0!模拟1请确认符合模拟目标
 
     !------扑翼坐标系旋转相关------!
-    FREESTREAM_TILT=0.0D0!只能为0
-    ABSX_UPSTROKE_ANGLE=60.0D0/180.0D0*PI!67.0D0/180.0D0*PI!模拟1请确认符合模拟目标
+    FREESTREAM_TILT=90.0D0/180.0D0*PI!只能为0
+    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!模拟1请确认符合模拟目标
     TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!模拟1请确认符合模拟目标
     ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!模拟1请确认符合模拟目标
 
@@ -2389,7 +2389,7 @@
     VELO_RATIO=0.0D0!0.399262959D0!模拟1请确认符合模拟目标
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
-    V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
+    V_FREESTREAM=-1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
     !------布置探针（最多四个）------!
     PROBE_X1=1.2D0
