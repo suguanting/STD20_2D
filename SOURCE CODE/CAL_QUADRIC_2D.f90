@@ -543,13 +543,13 @@
     !--------------------周期性拍动基本参数---------------------!
     TAUC=5.749114556!8.623671834D0!7.725054831D0!周期时长
     !旋转时间/刻
-    TAU_R1=0.05D0*TAUC!0.0625D0*TAUC
-    TAU_R2=0.55D0*TAUC!0.5625D0*TAUC!两个翻转开始的时刻
-    DTAUR=0.4D0*TAUC!单次翻转时长
+    TAU_R1=0.25D0*TAUC!0.0625D0*TAUC
+    TAU_R2=0.75D0*TAUC!0.5625D0*TAUC!两个翻转开始的时刻
+    DTAUR=0.0D0*TAUC!单次翻转时长
     !几何信息
     PHIM=30.0D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
-    ALPHAD=30.0D0/180.0D0*PI!αd下拍攻角
-    ALPHAU=30.0D0/180.0D0*PI!αu上拍攻角
+    ALPHAD=10.0D0/180.0D0*PI!αd下拍攻角
+    ALPHAU=10.0D0/180.0D0*PI!αu上拍攻角
     
     PSIM=(PI-ALPHAU-ALPHAD)/2!翻转振幅
     PSI0=(ALPHAU-ALPHAD)/2!初始翻转角

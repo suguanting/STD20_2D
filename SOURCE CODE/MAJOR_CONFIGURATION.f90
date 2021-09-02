@@ -2356,7 +2356,7 @@
         NCYCLE=400
     END IF
     IF(TASK_TYPE==1)THEN
-        NDURATION=20*NCYCLE
+        NDURATION=0.5*NCYCLE
     ELSE IF(TASK_TYPE==0)THEN
         NDURATION=NCYCLE
     ELSE IF(TASK_TYPE==2)THEN
@@ -2372,7 +2372,7 @@
     !------调用输出次数控制------!
     NPROBE=200
     NCLCT=NCYCLE
-    NPLT=16
+    NPLT=20
     NIB=100
 
     !------激活边界------!1-存在，0-不存在
