@@ -68,6 +68,14 @@
             CEN_TRANSLATION(1)=-1.016096476D0!转动中心绝对坐标系下振荡中心X
             CEN_TRANSLATION(2)=-0.093174856D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_FORE(T)
+        ELSE IF(IB_LOCOMOTION==13)THEN!模拟1请确认符合模拟目标
+            PHASE_DIFFERENCE=-62.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_INITIATION=0.0D0
+            CEN_DEVIATION(1)=0.5D0-0.24D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_TRANSLATION(1)=-0.990926813D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=0.243305681D0 !转动中心绝对坐标系下振荡中心Y
+            CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_FORE(T)
         ELSE IF(IB_LOCOMOTION==2)THEN
             PHASE_DIFFERENCE=-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=90.0D0
@@ -144,7 +152,8 @@
             .OR. IB_LOCOMOTION==2 &
             .OR. IB_LOCOMOTION==11 &
             .OR. IB_LOCOMOTION==12 &
-            .OR. IB_LOCOMOTION==13)THEN
+            .OR. IB_LOCOMOTION==13 &
+            .OR. IB_LOCOMOTION==14)THEN
             WRITE(190,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,VELO_TRAN_R(2),VELO_ANGL
         ELSE
             WRITE(190,"( I6,(1X,F9.5),3(1X,F14.10))") NSTEP,TAU/TAUC,VELO_TRAN_A,VELO_ANGL
@@ -221,6 +230,14 @@
             CEN_TRANSLATION(1)=0.639526811D0!转动中心绝对坐标系下振荡中心X
             CEN_TRANSLATION(2)=0.093174856D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HIND(T)
+        ELSE IF(IB_LOCOMOTION==13)THEN!模拟1请确认符合模拟目标
+            PHASE_DIFFERENCE=0.0D0!-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_INITIATION=0.0D0
+            CEN_DEVIATION(1)=0.5D0-0.24D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_TRANSLATION(1)=0.634946945D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=-0.120492627D0 !转动中心绝对坐标系下振荡中心Y
+            CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_HIND(T)
         ELSE IF(IB_LOCOMOTION==2)THEN
             PHASE_DIFFERENCE=0.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=90.0D0
@@ -687,7 +704,97 @@
     TAUC=5.412684889D0!周期时长
     SPAN=2.501D0!展长
     PSI=(43.0D0-90.0D0)/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，&
-    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°，也是PSIP-90°
+
+    !拍动
+    DTAUD=0.555656279D0
+    PHI0 =-4.196451299D0/180.0D0*PI
+    PHIM =30.54877142D0/180.0D0*PI
+    GAMMA_W=PHASE_DIFFERENCE
+    !翻转
+    TAU_0  =0.593442765D0
+    DTAUP  =0.27295585D0
+    DTAUS  =0.540158569D0
+    GAMMA_R=26.31139939D0/180.0D0*PI
+    PSI0   =9.723940932D0/180.0D0*PI
+    PSIM   =42.25206072D0/180.0D0*PI
+    !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
+
+    !--------------------周期内时刻TAU---------------------!输出用
+    TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
+    
+    !--------------------周期内时刻THAT---------------------!
+    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
+        THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
+    ELSE
+        THAT=MODULO(TIME/TAUC+GAMMA_W/360.0D0+PHASE_INITIATION/360.0D0,1.0D0)
+    END IF
+    !--------------------根据THAT确定各角度大小（周期性）---------------------!
+    THETAW=0.0D0!θw偏离角/偏移角
+    PHIW=STROKE_ANGLE_ASYM(THAT,DTAUD,PHI0,PHIM)!ϕw拍动角
+    PSIW=PITCH_ANGLE_TRAP_ASYM(THAT,DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0)!ψw翻转角
+
+    !--------------------根据各角度确定坐标转换矩阵---------------------!
+    CALL CAL_TRANMAT(PSI,MATP)
+    CALL CAL_TRANMAT(PSIW,MATW)
+
+    TRANMAT=MATMUL( MATW,MATP )
+    TRANMAT_INVERSE=TRANSPOSE(TRANMAT)
+
+    !坐标转换矩阵系数
+    T11=TRANMAT(1,1)
+    T12=TRANMAT(1,2)
+    T21=TRANMAT(2,1)
+    T22=TRANMAT(2,2)
+
+    !--------------------确定平动转动速度和中心（周期性）---------------------!
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=0.0D0
+        !转动
+        VELO_ANGL=0.0D0
+    ELSE
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=SPAN*( &
+            STROKE_ANGLE_ASYM(MODULO(THAT+0.001D0,1.0D0),DTAUD,PHI0,PHIM)-&
+            STROKE_ANGLE_ASYM(MODULO(THAT-0.001D0,1.0D0),DTAUD,PHI0,PHIM))/0.002D0/TAUC
+        !转动
+        VELO_ANGL=( &
+            PITCH_ANGLE_TRAP_ASYM(MODULO(THAT+0.001D0,1.0D0),DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0)-&
+            PITCH_ANGLE_TRAP_ASYM(MODULO(THAT-0.001D0,1.0D0),DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0))/0.002D0/TAUC
+    END IF
+
+    VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+    CEN_P(1)=0.0D0
+    CEN_P(2)=0.0D0+PHIW*SPAN
+    !CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+    !CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+    CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+    CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+    CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+
+    RETURN
+    END SUBROUTINE
+    
+    !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
+    SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_FORE(TIME)
+    USE QUADRIC_PARAMETER
+    USE DECLARATION
+
+    USE CAL_QUADRIC_DECLARATION
+    IMPLICIT NONE
+    REAL(KIND=8)::TIME
+    REAL(KIND=8)::THAT,STROKE_ANGLE_ASYM,PITCH_ANGLE_TRAP_ASYM
+
+    !模拟1请确认符合模拟目标
+    !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
+    !--------------------周期性拍动基本参数---------------------!
+    TAUC=5.412684889D0!周期时长
+    SPAN=2.501D0!展长
+    PSI=(43.0D0-90.0D0-19.03443435D0)/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，&
+    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°，也是PSIP-90°-气流角
 
     !拍动
     DTAUD=0.555656279D0
@@ -777,7 +884,97 @@
     TAUC=5.412684889D0!周期时长
     SPAN=2.501D0!展长
     PSI=(58.0D0-90.0D0)/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，&
-    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°，也是PSIP-90°
+
+    !拍动
+    DTAUD=0.656726248D0
+    PHI0 =3.077137085D0/180.0D0*PI
+    PHIM =22.65443912D0/180.0D0*PI
+    GAMMA_W=PHASE_DIFFERENCE
+    !翻转
+    TAU_0  =0.628109942D0
+    DTAUP  =0.258363036D0
+    DTAUS  =0.485415381D0
+    GAMMA_R=-10.02822399D0/180.0D0*PI
+    PSI0   =-2.973544732D0/180.0D0*PI
+    PSIM   =39.80685734D0/180.0D0*PI
+    !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
+
+    !--------------------周期内时刻TAU---------------------!输出用
+    TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
+    
+    !--------------------周期内时刻THAT---------------------!
+    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
+        THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
+    ELSE
+        THAT=MODULO(TIME/TAUC+GAMMA_W/360.0D0+PHASE_INITIATION/360.0D0,1.0D0)
+    END IF
+    !--------------------根据THAT确定各角度大小（周期性）---------------------!
+    THETAW=0.0D0!θw偏离角/偏移角
+    PHIW=STROKE_ANGLE_ASYM(THAT,DTAUD,PHI0,PHIM)!ϕw拍动角
+    PSIW=PITCH_ANGLE_TRAP_ASYM(THAT,DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0)!ψw翻转角
+
+    !--------------------根据各角度确定坐标转换矩阵---------------------!
+    CALL CAL_TRANMAT(PSI,MATP)
+    CALL CAL_TRANMAT(PSIW,MATW)
+
+    TRANMAT=MATMUL( MATW,MATP )
+    TRANMAT_INVERSE=TRANSPOSE(TRANMAT)
+
+    !坐标转换矩阵系数
+    T11=TRANMAT(1,1)
+    T12=TRANMAT(1,2)
+    T21=TRANMAT(2,1)
+    T22=TRANMAT(2,2)
+
+    !--------------------确定平动转动速度和中心（周期性）---------------------!
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=0.0D0
+        !转动
+        VELO_ANGL=0.0D0
+    ELSE
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=SPAN*( &
+            STROKE_ANGLE_ASYM(MODULO(THAT+0.001D0,1.0D0),DTAUD,PHI0,PHIM)-&
+            STROKE_ANGLE_ASYM(MODULO(THAT-0.001D0,1.0D0),DTAUD,PHI0,PHIM))/0.002D0/TAUC
+        !转动
+        VELO_ANGL=( &
+            PITCH_ANGLE_TRAP_ASYM(MODULO(THAT+0.001D0,1.0D0),DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0)-&
+            PITCH_ANGLE_TRAP_ASYM(MODULO(THAT-0.001D0,1.0D0),DTAUP,DTAUS,GAMMA_R,PSI0,PSIM,TAU_0))/0.002D0/TAUC
+    END IF
+
+    VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+    CEN_P(1)=0.0D0
+    CEN_P(2)=0.0D0+PHIW*SPAN
+    !CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+    !CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+    CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+    CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+    CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+
+    RETURN
+    END SUBROUTINE
+    
+    !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
+    SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_HIND(TIME)
+    USE QUADRIC_PARAMETER
+    USE DECLARATION
+
+    USE CAL_QUADRIC_DECLARATION
+    IMPLICIT NONE
+    REAL(KIND=8)::TIME
+    REAL(KIND=8)::THAT,STROKE_ANGLE_ASYM,PITCH_ANGLE_TRAP_ASYM
+
+    !模拟1请确认符合模拟目标
+    !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
+    !--------------------周期性拍动基本参数---------------------!
+    TAUC=5.412684889D0!周期时长
+    SPAN=2.501D0!展长
+    PSI=(58.0D0-90.0D0-19.03443435D0)/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，&
+    !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°，也是PSIP-90°-气流角
 
     !拍动
     DTAUD=0.656726248D0
