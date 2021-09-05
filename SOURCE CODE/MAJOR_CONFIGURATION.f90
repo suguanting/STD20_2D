@@ -2626,7 +2626,7 @@
     !------网格种类------!1-连续网格；0-分级网格（某些只使用均匀网格算例，置0并更改LEM1等数值）
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
-        BL=1.01D0
+        BL=1.02D0
         BR=1.03D0
         BB=1.03D0
         BT=1.02D0
@@ -2665,8 +2665,8 @@
 
     LEIN=-2.5D0!
     RIIN= 2.5D0!
-    BOIN=-4.0D0!
-    TOIN= 4.0D0!
+    BOIN=-2.0D0!
+    TOIN= 1.5D0!
 
     !------网格密度量------!
     IF(CONTINUOUS_MESH==0)THEN
@@ -2716,7 +2716,7 @@
     BOUNDARY_EXISTENCE_2=1!模拟1请确认符合模拟目标
 
     !------扑翼坐标系旋转相关------!
-    FREESTREAM_TILT=19.03443435D0/180.0D0*PI!
+    FREESTREAM_TILT=-19.03443435D0/180.0D0*PI!
     ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!模拟1请确认符合模拟目标
     TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!模拟1请确认符合模拟目标
     ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!模拟1请确认符合模拟目标

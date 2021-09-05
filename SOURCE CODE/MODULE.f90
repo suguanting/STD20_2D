@@ -190,12 +190,12 @@
     MODULE CAL_QUADRIC_DECLARATION
 
     !三个欧拉角和一个拍动平面角
-    REAL(KIND=8)::PSI!ψ拍动平面夹角，此类算例中应为0°
+    REAL(KIND=8)::PSI!ψ拍动平面夹角
     REAL(KIND=8)::PHIW!ϕw拍动角
     REAL(KIND=8)::PSIW!ψw翻转角
     REAL(KIND=8)::THETAW!θw偏离角/偏移角
     REAL(KIND=8)::PHASE_DIFFERENCE!前后翅相位差,谁大谁提前
-    REAL(KIND=8)::PHASE_INITIATION!前后翅相位差,谁大谁提前
+    REAL(KIND=8)::PHASE_INITIATION!起始时刻对应相位
     REAL(KIND=8)::TAU_INIT!由起始相位角推得起始时间
 
     !时间和角度定量
@@ -210,6 +210,10 @@
     REAL(KIND=8)::PSI0!ψ0初始翻转角
     REAL(KIND=8)::ALPHAD!αd下拍攻角
     REAL(KIND=8)::ALPHAU!αu上拍攻角
+    
+    !极限负载飞行过程运动规律
+    REAL(KIND=8)::DTAUD,PHI0,GAMMA_W
+    REAL(KIND=8)::DTAUP,DTAUS,GAMMA_R,TAU_0
 
     !坐标转换矩阵
     REAL(KIND=8)::TRANMAT(2,2)
