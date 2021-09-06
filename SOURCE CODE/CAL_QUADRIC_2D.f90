@@ -76,6 +76,14 @@
             CEN_TRANSLATION(1)=-0.990926813D0!转动中心绝对坐标系下振荡中心X
             CEN_TRANSLATION(2)=0.243305681D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_FORE(T)
+        ELSE IF(IB_LOCOMOTION==14)THEN!模拟1请确认符合模拟目标
+            PHASE_DIFFERENCE=-0.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_INITIATION=90.0D0
+            CEN_DEVIATION(1)=0.5D0-0.24D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_TRANSLATION(1)=-0.7D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=0.0D0 !转动中心绝对坐标系下振荡中心Y
+            CALL POSE_VELO_QUADRIC_2D_PERIODIC_FORWARD_SUN_FORE(T)
         ELSE IF(IB_LOCOMOTION==2)THEN
             PHASE_DIFFERENCE=-75.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=90.0D0
@@ -238,6 +246,14 @@
             CEN_TRANSLATION(1)=0.634946945D0!转动中心绝对坐标系下振荡中心X
             CEN_TRANSLATION(2)=-0.120492627D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_HIND(T)
+        ELSE IF(IB_LOCOMOTION==14)THEN!模拟1请确认符合模拟目标
+            PHASE_DIFFERENCE=0.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_INITIATION=90.0D0
+            CEN_DEVIATION(1)=0.5D0-0.24D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
+            CEN_TRANSLATION(1)=0.7D0!转动中心绝对坐标系下振荡中心X
+            CEN_TRANSLATION(2)=0.0D0 !转动中心绝对坐标系下振荡中心Y
+            CALL POSE_VELO_QUADRIC_2D_PERIODIC_FORWARD_SUN_HIND(T)
         ELSE IF(IB_LOCOMOTION==2)THEN
             PHASE_DIFFERENCE=0.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=90.0D0
@@ -688,6 +704,250 @@
     RETURN
     END SUBROUTINE
 
+    SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_FORWARD_SUN_FORE(TIME)
+    USE QUADRIC_PARAMETER
+    USE DECLARATION
+
+    USE CAL_QUADRIC_DECLARATION
+    IMPLICIT NONE
+    REAL(KIND=8)::TIME
+
+    !模拟1请确认符合模拟目标
+    !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
+    !--------------------周期性拍动基本参数---------------------!
+    TAUC=8.525093052D0!周期时长
+    !旋转时间/刻
+    TAU_R1=0.25D0*TAUC-3.36D0/2.0D0!0.0625D0*TAUC
+    TAU_R2=0.75D0*TAUC-3.36D0/2.0D0!0.5625D0*TAUC!两个翻转开始的时刻
+    DTAUR=3.36D0!单次翻转时长
+    !几何信息
+    PHIA=5.5D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动角均值
+    PHIM=34.5D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
+    ALPHAD=31.5D0/180.0D0*PI!αd下拍攻角
+    ALPHAU=48.5D0/180.0D0*PI!αu上拍攻角
+
+    PSIM=(PI-ALPHAU-ALPHAD)/2!翻转振幅
+    PSI0=(ALPHAU-ALPHAD)/2!初始翻转角
+
+    SPAN=3.539506173D0!展长
+    !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
+
+    TAU_INIT=PHASE_INITIATION/360.0D0*TAUC!由起始相位角推得起始时间
+    !--------------------周期内时刻TAU---------------------!
+    TAU=DMOD(TIME+PHASE_DIFFERENCE/360.0D0*TAUC+TAU_INIT,TAUC)
+
+    !--------------------根据TAU确定各角度大小（周期性）---------------------!
+    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
+        PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
+        !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+        THETAW=0.0D0!θw偏离角/偏移角
+        PHIW=PHIA+PHIM*DSIN(2.0D0*PI*TAU_INIT/TAUC)!ϕw拍动角
+        IF     (TAU_INIT>=0.0D0 .AND. TAU_INIT<=TAU_R1)THEN!ψw翻转角
+            PSIW=PSI0-PSIM
+        ELSE IF(TAU_INIT>TAU_R1 .AND. TAU_INIT<TAU_R1+DTAUR)THEN
+            PSIW=PSI0-PSIM*DCOS(PI*(TAU_INIT-TAU_R1)/DTAUR)
+        ELSE IF(TAU_INIT>=TAU_R1+DTAUR .AND. TAU_INIT<=TAU_R2)THEN
+            PSIW=PSI0+PSIM
+        ELSE IF(TAU_INIT>TAU_R2 .AND. TAU_INIT<TAU_R2+DTAUR)THEN
+            PSIW=PSI0+PSIM*DCOS(PI*(TAU_INIT-TAU_R2)/DTAUR)
+        ELSE IF(TAU_INIT>=TAU_R2+DTAUR .AND. TAU_INIT<TAUC)THEN
+            PSIW=PSI0-PSIM
+        END IF
+    ELSE
+        PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
+        !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+        THETAW=0.0D0!θw偏离角/偏移角
+        PHIW=PHIA+PHIM*DSIN(2.0D0*PI*TAU/TAUC)!ϕw拍动角
+        IF(TAU>=0.0D0 .AND. TAU<=TAU_R1)THEN!ψw翻转角
+            PSIW=PSI0-PSIM
+        ELSE IF(TAU>TAU_R1 .AND. TAU<TAU_R1+DTAUR)THEN
+            PSIW=PSI0-PSIM*DCOS(PI*(TAU-TAU_R1)/DTAUR)
+        ELSE IF(TAU>=TAU_R1+DTAUR .AND. TAU<=TAU_R2)THEN
+            PSIW=PSI0+PSIM
+        ELSE IF(TAU>TAU_R2 .AND. TAU<TAU_R2+DTAUR)THEN
+            PSIW=PSI0+PSIM*DCOS(PI*(TAU-TAU_R2)/DTAUR)
+        ELSE IF(TAU>=TAU_R2+DTAUR .AND. TAU<TAUC)THEN
+            PSIW=PSI0-PSIM
+        END IF
+    END IF
+
+    !--------------------根据各角度确定坐标转换矩阵---------------------!
+    CALL CAL_TRANMAT(PSI,MATP)
+    CALL CAL_TRANMAT(PSIW,MATW)
+
+    TRANMAT=MATMUL( MATW,MATP )
+    TRANMAT_INVERSE=TRANSPOSE(TRANMAT)
+
+    !坐标转换矩阵系数
+    T11=TRANMAT(1,1)
+    T12=TRANMAT(1,2)
+    T21=TRANMAT(2,1)
+    T22=TRANMAT(2,2)
+
+    !--------------------确定平动转动速度和中心（周期性）---------------------!
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=0.0D0
+        VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+        !转动
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
+        CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+        VELO_ANGL=0.0D0
+    ELSE
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=2.0D0*PI*PHIM/TAUC*DCOS(2.0D0*PI*TAU/TAUC)*SPAN
+        VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+        !转动
+        !CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+        !CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
+        CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+        IF(TAU>=0.0D0 .AND. TAU<=TAU_R1)THEN!ψw翻转角
+            VELO_ANGL=0.0D0
+        ELSE IF(TAU>TAU_R1 .AND. TAU<TAU_R1+DTAUR)THEN
+            VELO_ANGL= PI*PSIM/DTAUR*DSIN(PI*(TAU-TAU_R1)/DTAUR)
+        ELSE IF(TAU>=TAU_R1+DTAUR .AND. TAU<=TAU_R2)THEN
+            VELO_ANGL=0.0D0
+        ELSE IF(TAU>TAU_R2 .AND. TAU<TAU_R2+DTAUR)THEN
+            VELO_ANGL=-PI*PSIM/DTAUR*DSIN(PI*(TAU-TAU_R2)/DTAUR)
+        ELSE IF(TAU>=TAU_R2+DTAUR .AND. TAU<TAUC)THEN
+            VELO_ANGL=0.0D0
+        END IF
+    END IF
+
+    RETURN
+    END SUBROUTINE
+    
+    SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_FORWARD_SUN_HIND(TIME)
+    USE QUADRIC_PARAMETER
+    USE DECLARATION
+
+    USE CAL_QUADRIC_DECLARATION
+    IMPLICIT NONE
+    REAL(KIND=8)::TIME
+
+    !模拟1请确认符合模拟目标
+    !--------------------本子函数根据不同扑翼规律需改变下方---------------------!
+    !--------------------周期性拍动基本参数---------------------!
+    TAUC=8.525093052D0!周期时长
+    !旋转时间/刻
+    TAU_R1=0.25D0*TAUC-3.36D0/2.0D0!0.0625D0*TAUC
+    TAU_R2=0.75D0*TAUC-3.36D0/2.0D0!0.5625D0*TAUC!两个翻转开始的时刻
+    DTAUR=3.36D0!单次翻转时长
+    !几何信息
+    PHIA=17.5D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动角均值
+    PHIM=34.5D0/180.0D0*PI!45.0D0/180.0D0*PI!拍动振幅
+    ALPHAD=31.5D0/180.0D0*PI!αd下拍攻角
+    ALPHAU=48.5D0/180.0D0*PI!αu上拍攻角
+
+    PSIM=(PI-ALPHAU-ALPHAD)/2!翻转振幅
+    PSI0=(ALPHAU-ALPHAD)/2!初始翻转角
+
+    SPAN=3.539506173D0!展长
+    !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
+
+    TAU_INIT=PHASE_INITIATION/360.0D0*TAUC!由起始相位角推得起始时间
+    !--------------------周期内时刻TAU---------------------!
+    TAU=DMOD(TIME+PHASE_DIFFERENCE/360.0D0*TAUC+TAU_INIT,TAUC)
+
+    !--------------------根据TAU确定各角度大小（周期性）---------------------!
+    IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
+        PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
+        !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+        THETAW=0.0D0!θw偏离角/偏移角
+        PHIW=PHIA+PHIM*DSIN(2.0D0*PI*TAU_INIT/TAUC)!ϕw拍动角
+        IF     (TAU_INIT>=0.0D0 .AND. TAU_INIT<=TAU_R1)THEN!ψw翻转角
+            PSIW=PSI0-PSIM
+        ELSE IF(TAU_INIT>TAU_R1 .AND. TAU_INIT<TAU_R1+DTAUR)THEN
+            PSIW=PSI0-PSIM*DCOS(PI*(TAU_INIT-TAU_R1)/DTAUR)
+        ELSE IF(TAU_INIT>=TAU_R1+DTAUR .AND. TAU_INIT<=TAU_R2)THEN
+            PSIW=PSI0+PSIM
+        ELSE IF(TAU_INIT>TAU_R2 .AND. TAU_INIT<TAU_R2+DTAUR)THEN
+            PSIW=PSI0+PSIM*DCOS(PI*(TAU_INIT-TAU_R2)/DTAUR)
+        ELSE IF(TAU_INIT>=TAU_R2+DTAUR .AND. TAU_INIT<TAUC)THEN
+            PSIW=PSI0-PSIM
+        END IF
+    ELSE
+        PSI=ABSX_UPSTROKE_ANGLE-90.0D0/180.0D0*PI!ψ拍动平面夹角，默认0°时上拍方向与绝对坐标系，
+        !即计算坐标系Y轴正方向重合，即为ABSX_UPSTROKE_ANGLE-90°
+        THETAW=0.0D0!θw偏离角/偏移角
+        PHIW=PHIA+PHIM*DSIN(2.0D0*PI*TAU/TAUC)!ϕw拍动角
+        IF(TAU>=0.0D0 .AND. TAU<=TAU_R1)THEN!ψw翻转角
+            PSIW=PSI0-PSIM
+        ELSE IF(TAU>TAU_R1 .AND. TAU<TAU_R1+DTAUR)THEN
+            PSIW=PSI0-PSIM*DCOS(PI*(TAU-TAU_R1)/DTAUR)
+        ELSE IF(TAU>=TAU_R1+DTAUR .AND. TAU<=TAU_R2)THEN
+            PSIW=PSI0+PSIM
+        ELSE IF(TAU>TAU_R2 .AND. TAU<TAU_R2+DTAUR)THEN
+            PSIW=PSI0+PSIM*DCOS(PI*(TAU-TAU_R2)/DTAUR)
+        ELSE IF(TAU>=TAU_R2+DTAUR .AND. TAU<TAUC)THEN
+            PSIW=PSI0-PSIM
+        END IF
+    END IF
+
+    !--------------------根据各角度确定坐标转换矩阵---------------------!
+    CALL CAL_TRANMAT(PSI,MATP)
+    CALL CAL_TRANMAT(PSIW,MATW)
+
+    TRANMAT=MATMUL( MATW,MATP )
+    TRANMAT_INVERSE=TRANSPOSE(TRANMAT)
+
+    !坐标转换矩阵系数
+    T11=TRANMAT(1,1)
+    T12=TRANMAT(1,2)
+    T21=TRANMAT(2,1)
+    T22=TRANMAT(2,2)
+
+    !--------------------确定平动转动速度和中心（周期性）---------------------!
+    IF(TIME+PHASE_DIFFERENCE/360.0D0*TAUC<-CRITERIA)THEN
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=0.0D0
+        VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+        !转动
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
+        CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+        VELO_ANGL=0.0D0
+    ELSE
+        !平动
+        VELO_TRAN_R(1)=0.0D0
+        VELO_TRAN_R(2)=2.0D0*PI*PHIM/TAUC*DCOS(2.0D0*PI*TAU/TAUC)*SPAN
+        VELO_TRAN_A=MATMUL( TRANSPOSE(MATP),VELO_TRAN_R )
+        !转动
+        !CEN_P(1)=CEN_TRANSLATION(1)+0.0D0!-0.8D0
+        !CEN_P(2)=CEN_TRANSLATION(2)+0.0D0+PHIW*SPAN
+        CEN_P(1)=0.0D0
+        CEN_P(2)=0.0D0+PHIW*SPAN
+        CEN=MATMUL( TRANSPOSE(MATP),CEN_P )
+        CEN(1)=CEN(1)+CEN_TRANSLATION(1)
+        CEN(2)=CEN(2)+CEN_TRANSLATION(2)
+        IF(TAU>=0.0D0 .AND. TAU<=TAU_R1)THEN!ψw翻转角
+            VELO_ANGL=0.0D0
+        ELSE IF(TAU>TAU_R1 .AND. TAU<TAU_R1+DTAUR)THEN
+            VELO_ANGL= PI*PSIM/DTAUR*DSIN(PI*(TAU-TAU_R1)/DTAUR)
+        ELSE IF(TAU>=TAU_R1+DTAUR .AND. TAU<=TAU_R2)THEN
+            VELO_ANGL=0.0D0
+        ELSE IF(TAU>TAU_R2 .AND. TAU<TAU_R2+DTAUR)THEN
+            VELO_ANGL=-PI*PSIM/DTAUR*DSIN(PI*(TAU-TAU_R2)/DTAUR)
+        ELSE IF(TAU>=TAU_R2+DTAUR .AND. TAU<TAUC)THEN
+            VELO_ANGL=0.0D0
+        END IF
+    END IF
+
+    RETURN
+    END SUBROUTINE
+    
     !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
     SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_FORE(TIME)
     USE QUADRIC_PARAMETER
@@ -722,7 +982,7 @@
 
     !--------------------周期内时刻TAU---------------------!输出用
     TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
-    
+
     !--------------------周期内时刻THAT---------------------!
     IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
         THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
@@ -777,7 +1037,7 @@
 
     RETURN
     END SUBROUTINE
-    
+
     !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
     SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_FORE(TIME)
     USE QUADRIC_PARAMETER
@@ -812,7 +1072,7 @@
 
     !--------------------周期内时刻TAU---------------------!输出用
     TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
-    
+
     !--------------------周期内时刻THAT---------------------!
     IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
         THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
@@ -867,7 +1127,7 @@
 
     RETURN
     END SUBROUTINE
-    
+
     !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
     SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HIND(TIME)
     USE QUADRIC_PARAMETER
@@ -902,7 +1162,7 @@
 
     !--------------------周期内时刻TAU---------------------!输出用
     TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
-    
+
     !--------------------周期内时刻THAT---------------------!
     IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
         THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
@@ -957,7 +1217,7 @@
 
     RETURN
     END SUBROUTINE
-    
+
     !***************************************************转动中心位置；平转动速度；坐标转换所需（周期性拍动）******************************************************!
     SUBROUTINE POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_HORI_HIND(TIME)
     USE QUADRIC_PARAMETER
@@ -992,7 +1252,7 @@
 
     !--------------------周期内时刻TAU---------------------!输出用
     TAU=MODULO(TIME+(PHASE_DIFFERENCE+PHASE_INITIATION)/360.0D0*TAUC,TAUC)
-    
+
     !--------------------周期内时刻THAT---------------------!
     IF( (TIME+PHASE_DIFFERENCE/360.0D0*TAUC)<-CRITERIA)THEN
         THAT=MODULO(PHASE_INITIATION/360.0D0,1.0D0)!因相位原因未开始拍动时保持在起始时刻
