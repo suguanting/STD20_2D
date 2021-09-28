@@ -69,7 +69,7 @@
             CEN_TRANSLATION(2)=-0.093174856D0 !转动中心绝对坐标系下振荡中心Y
             CALL POSE_VELO_QUADRIC_2D_PERIODIC_MAXIMUM_FORE(T)
         ELSE IF(IB_LOCOMOTION==13)THEN!模拟1请确认符合模拟目标
-            PHASE_DIFFERENCE=-62.0D0!0.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
+            PHASE_DIFFERENCE=-62.0D0!此时以后翼为基准，相应地前翼有一个负的相位差值
             PHASE_INITIATION=0.0D0
             CEN_DEVIATION(1)=0.5D0-0.24D0!转动中心在弦向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
             CEN_DEVIATION(2)=0.5D0-0.5D0!转动中心在拍动向相对二次图形几何图形中心偏移量，更改第二个数字为转动中心相对位置
@@ -163,7 +163,7 @@
             CALL POSE_VELO_QUADRIC_2D_PURE_ROTATING_STEADY(T)
         END IF
 
-        WRITE(180,"( I6,3(1X,F15.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
+        WRITE(180,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
         IF(IB_LOCOMOTION==1 &
             .OR. IB_LOCOMOTION==2 &
             .OR. IB_LOCOMOTION==11 &
@@ -282,7 +282,7 @@
             CALL POSE_VELO_QUADRIC_2D_INTERMITTENT_HIND(T)
         END IF
 
-        WRITE(200,"( I6,3(1X,F15.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
+        WRITE(200,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
         WRITE(210,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,VELO_TRAN_R(2),VELO_ANGL
         WRITE(230,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,CEN(1),CEN(2)
 
@@ -1083,20 +1083,6 @@
     DTAUP  =0.27295585D0
     DTAUS  =0.540158569D0
     GAMMA_R=26.31139939D0
-    PSI0   =9.723940932D0/180.0D0*PI!-60.0D0/180.0D0*PI!
-    PSIM   =42.25206072D0/180.0D0*PI
-    !!翻转 上拍最大攻角提前0.1
-    !TAU_0  =0.593442765D0-0.05D0
-    !DTAUP  =0.27295585D0+0.1D0
-    !DTAUS  =0.540158569D0-0.1D0
-    !GAMMA_R=26.31139939D0
-    !PSI0   =9.723940932D0/180.0D0*PI
-    !PSIM   =42.25206072D0/180.0D0*PI
-    !翻转 上拍最大攻角滞后0.1
-    TAU_0  =0.593442765D0+0.05D0
-    DTAUP  =0.27295585D0-0.1D0
-    DTAUS  =0.540158569D0+0.1D0
-    GAMMA_R=26.31139939D0
     PSI0   =9.723940932D0/180.0D0*PI
     PSIM   =42.25206072D0/180.0D0*PI
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
@@ -1371,11 +1357,6 @@
     GAMMA_R=-10.02822399D0
     PSI0   =-2.973544732D0/180.0D0*PI
     PSIM   =39.80685734D0/180.0D0*PI
-    !翻转(前翅的时间规律)
-    TAU_0  =0.593442765D0
-    DTAUP  =0.27295585D0
-    DTAUS  =0.540158569D0
-    GAMMA_R=26.31139939D0
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
 
     !--------------------周期内时刻TAU---------------------!输出用
