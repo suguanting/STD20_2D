@@ -3044,12 +3044,12 @@
     !------调用输出次数控制------!
     NPROBE=200
     NCLCT=NCYCLE
-    NPLT=4
+    NPLT=20
     NIB=100
 
     !------激活边界------!1-存在，0-不存在
     BOUNDARY_EXISTENCE_1=1!模拟1请确认符合模拟目标
-    BOUNDARY_EXISTENCE_2=1!模拟1请确认符合模拟目标
+    BOUNDARY_EXISTENCE_2=0!模拟1请确认符合模拟目标
 
     !------扑翼坐标系旋转相关------!
     FREESTREAM_TILT=0.0D0/180.0D0*PI!
