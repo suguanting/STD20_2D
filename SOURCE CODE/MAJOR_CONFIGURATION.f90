@@ -1,10 +1,10 @@
     !######################################################################!
     !#                                                                    #!
-    !#                              ²½Öè×Óº¯Êý                            #!
+    !#                              æ­¥éª¤å­å‡½æ•°                            #!
     !#                                                                    #!
     !######################################################################!
 
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ£¨Ä¸°æ£©**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®ï¼ˆæ¯ç‰ˆï¼‰**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -13,7 +13,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -21,24 +21,24 @@
         BB=1.01D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------ÄÚ±ß½çÔË¶¯Çé¿ö------!0-¾²Ö¹±ß½ç£¬1-ÖÜÆÚÔË¶¯£¬2-¼äÐªÐÔ·ÉÐÐ£¬3-Ô²ÖùÍ»È»Æô¶¯,4-HEAVING&PLUNGING,5-CAVITY_OSCILLATING
+    !------å†…è¾¹ç•Œè¿åŠ¨æƒ…å†µ------!0-é™æ­¢è¾¹ç•Œï¼Œ1-å‘¨æœŸè¿åŠ¨ï¼Œ2-é—´æ­‡æ€§é£žè¡Œï¼Œ3-åœ†æŸ±çªç„¶å¯åŠ¨,4-HEAVING&PLUNGING,5-CAVITY_OSCILLATING
     IF(IB_LOCOMOTION>=4)THEN
         KH=0.8D0
         K=8.0D0
         H=KH/K
     END IF
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=500.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-7.5D0
     RIGH=15.0D0
     BOTT=-7.5D0
@@ -64,24 +64,24 @@
     BOIN=-0.7D0!-1.0D0!-2.5D0
     TOIN= 0.7D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/100.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/100.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=1600!1500!100µÄ±¶Êý
+        NCYCLE=1600!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -95,35 +95,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     !DTC=CFLC*DX3/( MAXVAL(DABS(U)) + MAXVAL(DABS(V)) )
     !DTV=CFLV*Re*DX3/2.0D0
     !DT=DMIN1(DTV,DTC)
     DT=2.0D0*PI/K/DBLE(NCYCLE)!1.0D0/DBLE(NCYCLE)!
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=200
     NPLT=20
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
-    FREESTREAM_TILT=0.0D0!23.0D0/180.0D0*PI!ÒÔÄ¿Ç°µÄËã·¨Ö»ÄÜÎª0
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
+    FREESTREAM_TILT=0.0D0!23.0D0/180.0D0*PI!ä»¥ç›®å‰çš„ç®—æ³•åªèƒ½ä¸º0
     ABSX_UPSTROKE_ANGLE=67.0D0/180.0D0*PI!0.0D0!90.0D0/180.0D0*PI!
     TRUX_FLIGHT_ANGLE=113.0D0/180.0D0*PI!90.0D0/180.0D0*PI!23.0D0/180.0D0*PI!
     ABSX_TRUX_ANGLE=67.0D0/180.0D0*PI!
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=1.0D0!
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=0.4D0
 
@@ -136,12 +136,12 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-0.4D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
     !BC_A*U+BC_B
     !BC_A*DU
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=0£¬BC_B=U_FREESTREAM£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0/×óÓÒBC_A=0£¬BC_B=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A=1£¬BC_B=0           £»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0/×óÓÒBC_A=0£¬BC_B=0
-    !£¨ÉÏÏÂ×óÓÒÎªÔ¶³¡Ìõ¼þ£©
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=0ï¼ŒBC_B=U_FREESTREAMï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0/å·¦å³BC_A=0ï¼ŒBC_B=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A=1ï¼ŒBC_B=0           ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0/å·¦å³BC_A=0ï¼ŒBC_B=0
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºè¿œåœºæ¡ä»¶ï¼‰
     BCU_AL=1.0D0
     BCU_BL=0.0D0
     BCU_AR=1.0D0
@@ -150,7 +150,7 @@
     BCU_BB=0.0D0
     BCU_AT=1.0D0
     BCU_BT=0.0D0
-    !£¨×ó½ø¿Ú£¬ÉÏÏÂÎÞ¼ôÇÐÁ÷£¬ÓÒ³ö¿Ú£©
+    !ï¼ˆå·¦è¿›å£ï¼Œä¸Šä¸‹æ— å‰ªåˆ‡æµï¼Œå³å‡ºå£ï¼‰
     !BCU_AL=0.0D0
     !BCU_BL=U_FREESTREAM
     !BCU_AR=1.0D0
@@ -159,7 +159,7 @@
     !BCU_BB=0.0D0
     !BCU_AT=1.0D0
     !BCU_BT=0.0D0
-    !£¨ÉÏÏÂ×óÓÒÎªÎÞ»¬ÒÆ¹Ì±Ú±ßÌõ£©
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºæ— æ»‘ç§»å›ºå£è¾¹æ¡ï¼‰
     !BCU_AL=0.0D0
     !BCU_BL=0.0D0
     !BCU_AR=0.0D0
@@ -170,9 +170,9 @@
     !BCU_BT=0.0D0
     !BC_A*V+BC_B
     !BC_A*DV
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0/ÉÏÏÂBC_A=0£¬BC_B=V_FREESTREAM/0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0/ÉÏÏÂBC_A=0£¬BC_B=0
-    !£¨ÉÏÏÂ×óÓÒÎªÔ¶³¡Ìõ¼þ£©
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=V_FREESTREAM/0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºè¿œåœºæ¡ä»¶ï¼‰
     BCV_AL=1.0D0
     BCV_BL=0.0D0
     BCV_AR=1.0D0
@@ -181,7 +181,7 @@
     BCV_BB=0.0D0
     BCV_AT=1.0D0
     BCV_BT=0.0D0
-    !£¨×ó½ø¿Ú£¬ÉÏÏÂÎÞ¼ôÇÐÁ÷£¬ÓÒ³ö¿Ú£©
+    !ï¼ˆå·¦è¿›å£ï¼Œä¸Šä¸‹æ— å‰ªåˆ‡æµï¼Œå³å‡ºå£ï¼‰
     !BCV_AL=-1.0D0
     !BCV_BL=2.0D0*V_FREESTREAM
     !BCV_AR=1.0D0
@@ -190,7 +190,7 @@
     !BCV_BB=V_FREESTREAM
     !BCV_AT=0.0D0
     !BCV_BT=V_FREESTREAM
-    !£¨ÉÏÏÂ×óÓÒÎªÎÞ»¬ÒÆ¹Ì±Ú±ßÌõ£©
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºæ— æ»‘ç§»å›ºå£è¾¹æ¡ï¼‰
     !BCV_AL=-1.0D0
     !BCV_BL=0.0D0
     !BCV_AR=-1.0D0
@@ -201,8 +201,8 @@
     !BCV_BT=0.0D0
 
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0£»Ñ¹Á¦³ö¿Ú:BC_A=0£¬BC_B=0
-    !£¨ÉÏÏÂ×óÓÒÎªÔ¶³¡Ìõ¼þ£©
+    !åŽ‹åŠ›è¿›å£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0ï¼›åŽ‹åŠ›å‡ºå£:BC_A=0ï¼ŒBC_B=0
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºè¿œåœºæ¡ä»¶ï¼‰
     BCPHI_AL=0.0D0
     BCPHI_BL=0.0D0
     BCPHI_AR=0.0D0
@@ -211,7 +211,7 @@
     BCPHI_BB=0.0D0
     BCPHI_AT=0.0D0
     BCPHI_BT=0.0D0
-    !£¨×ó½ø¿Ú£¬ÉÏÏÂÎÞ¼ôÇÐÁ÷£¬ÓÒ³ö¿Ú£©
+    !ï¼ˆå·¦è¿›å£ï¼Œä¸Šä¸‹æ— å‰ªåˆ‡æµï¼Œå³å‡ºå£ï¼‰
     !BCPHI_AL=1.0D0
     !BCPHI_BL=0.0D0
     !BCPHI_AR=0.0D0
@@ -220,7 +220,7 @@
     !BCPHI_BB=0.0D0
     !BCPHI_AT=1.0D0
     !BCPHI_BT=0.0D0
-    !£¨ÉÏÏÂ×óÓÒÎªÎÞ»¬ÒÆ¹Ì±Ú±ßÌõ£©
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºæ— æ»‘ç§»å›ºå£è¾¹æ¡ï¼‰
     !BCPHI_AL=1.0D0
     !BCPHI_BL=0.0D0
     !BCPHI_AR=1.0D0
@@ -234,7 +234,7 @@
     RETURN
     END SUBROUTINE
 
-    !********************************************Ö÷ÒªËãÀýÉèÖÃ(3-Ô²ÖùÍ»È»Æô¶¯)****************************************************!
+    !********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(3-åœ†æŸ±çªç„¶å¯åŠ¨)****************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_IMPULSIVE_STARTED_CIRCULAR_CYLINDER
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -243,7 +243,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.03D0
@@ -251,18 +251,18 @@
         BB=1.02D0
         BT=1.02D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=2
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î£¬5Êä³öÒ»ÁÐËÙ¶È·Ö²¼
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®ï¼Œ5è¾“å‡ºä¸€åˆ—é€Ÿåº¦åˆ†å¸ƒ
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=1
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=3000.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-5.0D0!-7.5D0!-5.0D0!-10.0D0
     RIGH=10.0D0!15.0D0!10.0D0! 20.0D0
     BOTT=-5.0D0!-7.5D0!-5.0D0!-10.0D0
@@ -288,24 +288,24 @@
     BOIN=-0.7D0!-0.7D0!-1.0D0!-2.5D0
     TOIN= 0.7D0! 0.7D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/120.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/120.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1 .OR. TASK_TYPE==5)THEN
-        NCYCLE=600!1500!100µÄ±¶Êý
+        NCYCLE=600!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -319,35 +319,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     DT=1.0D0/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00550N000100.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
     NPLT=20
     NIB=200
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=0.0D0
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -360,9 +360,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=2
     BCTYPE_R=2
     BCTYPE_B=2
@@ -370,19 +370,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -391,7 +391,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -400,7 +400,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -409,7 +409,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -418,7 +418,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -428,7 +428,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -437,7 +437,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -446,7 +446,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -455,7 +455,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -464,7 +464,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -474,7 +474,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -483,7 +483,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -492,7 +492,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -501,7 +501,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -510,7 +510,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -520,7 +520,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -529,7 +529,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -538,7 +538,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -547,7 +547,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -556,7 +556,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -571,7 +571,7 @@
     RETURN
     END SUBROUTINE
 
-    !**********************Ö÷ÒªËãÀýÉèÖÃ(5-CAVITY_OSCILLATING,7-PURE_ROTATING(UNSTEADY),8-PURE_ROTATING(STEADY))*******************!
+    !**********************ä¸»è¦ç®—ä¾‹è®¾ç½®(5-CAVITY_OSCILLATING,7-PURE_ROTATING(UNSTEADY),8-PURE_ROTATING(STEADY))*******************!
     SUBROUTINE MAJOR_CONFIGURATION_CAVITY_CIRCULAR_CYLINDER
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -580,7 +580,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=0
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -588,25 +588,25 @@
         BB=1.01D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=2
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=4
-    !------ÄÚ±ß½çÔË¶¯Çé¿ö------!5-CAVITY_OSCILLATING,7-PURE_ROTATING
+    !------å†…è¾¹ç•Œè¿åŠ¨æƒ…å†µ------!5-CAVITY_OSCILLATING,7-PURE_ROTATING
     IF(IB_LOCOMOTION==5)THEN
         KH=1.0D0
         H=0.125D0
         K=KH/H
         !K=4.0D0/PI
     END IF
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=100.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-1.0D0
     RIGH= 1.0D0
     BOTT=-1.0D0
@@ -632,24 +632,24 @@
     BOIN=-1.0D0
     TOIN= 1.0D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/225.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/225.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/100.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/100.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=3600!1500!100µÄ±¶Êý
+        NCYCLE=3600!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -667,15 +667,15 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     IF(IB_LOCOMOTION==5) DT=2.0D0*PI/K/DBLE(NCYCLE)
     IF(IB_LOCOMOTION==7) DT=PI**2.0D0/DBLE(NCYCLE)
     IF(IB_LOCOMOTION==8) DT=PI/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00100N008000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     IF(IB_LOCOMOTION==7)THEN
@@ -685,23 +685,23 @@
     END IF
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=0.0D0
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=0.75D0
     PROBE_Y1=0.0D0
 
@@ -714,9 +714,9 @@
     PROBE_X4=0.0D0
     PROBE_Y4=-0.75D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨ÉÏÏÂ×óÓÒÎª¹Ì±Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆä¸Šä¸‹å·¦å³ä¸ºå›ºå£ï¼‰
     BCTYPE_L=3
     BCTYPE_R=3
     BCTYPE_B=3
@@ -724,19 +724,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -745,7 +745,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -754,7 +754,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -763,7 +763,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -772,7 +772,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -782,7 +782,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -791,7 +791,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -800,7 +800,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -809,7 +809,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -818,7 +818,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -828,7 +828,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -837,7 +837,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -846,7 +846,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -855,7 +855,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -864,7 +864,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -874,7 +874,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -883,7 +883,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -892,7 +892,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -901,7 +901,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -910,7 +910,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -925,7 +925,7 @@
     RETURN
     END SUBROUTINE
 
-    !*********************************Ö÷ÒªËãÀýÉèÖÃ(-3-DRIVEN_CAVITY)*****************************************!
+    !*********************************ä¸»è¦ç®—ä¾‹è®¾ç½®(-3-DRIVEN_CAVITY)*****************************************!
     SUBROUTINE MAJOR_CONFIGURATION_DRIVEN_CAVITY
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -934,20 +934,20 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=0
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=2
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î£¬5Êä³öÒ»ÁÐËÙ¶È·Ö²¼
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®ï¼Œ5è¾“å‡ºä¸€åˆ—é€Ÿåº¦åˆ†å¸ƒ
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=20.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT= 0.0D0
     RIGH= 1.0D0
     BOTT= 0.0D0
@@ -986,18 +986,18 @@
         BOIN= -1.0D0
     END IF
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/25.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/25.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=1000!1500!100µÄ±¶Êý
+        NCYCLE=1000!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -1011,37 +1011,37 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     DT=1.0D0/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00400N012608.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=10
     IF(IB_LOCOMOTION==-4) NPLT=10
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=0
     BOUNDARY_EXISTENCE_2=0
     IF(IB_LOCOMOTION==-4) BOUNDARY_EXISTENCE_1=1
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=0.0D0
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=0.75D0
     PROBE_Y1=0.0D0
 
@@ -1054,9 +1054,9 @@
     PROBE_X4=0.0D0
     PROBE_Y4=-0.75D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨ÏÂ×óÓÒÎªÎÞ»¬ÒÆ¹Ì±Ú±ßÌõ,ÉÏÎªÇý¶¯±ß½çÌõ¼þ£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆä¸‹å·¦å³ä¸ºæ— æ»‘ç§»å›ºå£è¾¹æ¡,ä¸Šä¸ºé©±åŠ¨è¾¹ç•Œæ¡ä»¶ï¼‰
     BCTYPE_L=3
     BCTYPE_R=3
     BCTYPE_B=3
@@ -1067,19 +1067,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -1088,7 +1088,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1097,7 +1097,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1106,7 +1106,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1115,7 +1115,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -1125,7 +1125,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -1134,7 +1134,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1143,7 +1143,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1152,7 +1152,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1161,7 +1161,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -1171,7 +1171,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -1180,7 +1180,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1189,7 +1189,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1198,7 +1198,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1207,7 +1207,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -1217,7 +1217,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -1226,7 +1226,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1235,7 +1235,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1244,7 +1244,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1253,7 +1253,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -1268,7 +1268,7 @@
     RETURN
     END SUBROUTINE
 
-    !*********************************Ö÷ÒªËãÀýÉèÖÃ(-2-ANALYTICAL_CASES)*****************************************!
+    !*********************************ä¸»è¦ç®—ä¾‹è®¾ç½®(-2-ANALYTICAL_CASES)*****************************************!
     SUBROUTINE MAJOR_CONFIGURATION_ANALYTICAL_CASES
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -1277,20 +1277,20 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=0
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=1
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=256.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-PI
     RIGH= PI
     BOTT=-PI
@@ -1316,16 +1316,16 @@
     BOIN=-PI
     TOIN= PI
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
-    DX1 =1.0D0/ 3.0D0!Íâ²ã
-    DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-    DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-    DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-    DX3 =PI/16.0D0!ÄÚ²ã
+    !------ç½‘æ ¼å¯†åº¦é‡------!
+    DX1 =1.0D0/ 3.0D0!å¤–å±‚
+    DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+    DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+    DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+    DX3 =PI/16.0D0!å†…å±‚
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=64!1500!100µÄ±¶Êý
+        NCYCLE=64!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -1339,35 +1339,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     DT=PI**2.0D0/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00100N008000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=4!NCYCLE
     NIB=NCYCLE
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=0
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=0.0D0
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=0.75D0
     PROBE_Y1=0.0D0
 
@@ -1380,9 +1380,9 @@
     PROBE_X4=0.0D0
     PROBE_Y4=-0.75D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨ÉÏÏÂ×óÓÒÎÞ¼ôÇÐ£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆä¸Šä¸‹å·¦å³æ— å‰ªåˆ‡ï¼‰
     BCTYPE_L=4
     BCTYPE_R=4
     BCTYPE_B=4
@@ -1390,19 +1390,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -1411,7 +1411,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1420,7 +1420,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1429,7 +1429,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1438,7 +1438,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -1448,7 +1448,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -1457,7 +1457,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1466,7 +1466,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1475,7 +1475,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1484,7 +1484,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -1494,7 +1494,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -1503,7 +1503,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1512,7 +1512,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1521,7 +1521,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1530,7 +1530,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -1540,7 +1540,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -1549,7 +1549,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1558,7 +1558,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1567,7 +1567,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1576,7 +1576,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -1591,7 +1591,7 @@
     RETURN
     END SUBROUTINE
 
-    !***********************************************Ö÷ÒªËãÀýÉèÖÃ(HEAVING&PLUNGING)************************************************************!
+    !***********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(HEAVING&PLUNGING)************************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_HEAVING_PLUNGING
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -1600,7 +1600,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.02D0
@@ -1608,29 +1608,29 @@
         BB=1.02D0
         BT=1.02D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     IF(IB_LOCOMOTION==41)THEN
         CASE_TYPE=1
     ELSE IF(IB_LOCOMOTION==42)THEN
         CASE_TYPE=2
     END IF
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î£¬5Êä³öÒ»ÁÐËÙ¶È·Ö²¼
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®ï¼Œ5è¾“å‡ºä¸€åˆ—é€Ÿåº¦åˆ†å¸ƒ
     TASK_TYPE=1
-    !------ÄÚ±ß½çÔË¶¯Çé¿ö------!
-    !KH=1.0D0!±íÕ÷ËÙ¶È×î´óÖµ
-    !H=1.0D0!5.0D0/(2.0D0*PI)!±íÕ÷ÎÞÁ¿¸Ù»¯Õñ·ùKH/K
-    !K=KH/H!±íÕ÷ÎÞÁ¿¸Ù»¯ÆµÂÊ
-    H=1.0D0!5.0D0/(2.0D0*PI)!±íÕ÷ÎÞÁ¿¸Ù»¯Õñ·ùKH/K
-    K=1.0D0!±íÕ÷ÎÞÁ¿¸Ù»¯ÆµÂÊ
-    KH=K*H!±íÕ÷ËÙ¶È×î´óÖµ
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------å†…è¾¹ç•Œè¿åŠ¨æƒ…å†µ------!
+    !KH=1.0D0!è¡¨å¾é€Ÿåº¦æœ€å¤§å€¼
+    !H=1.0D0!5.0D0/(2.0D0*PI)!è¡¨å¾æ— é‡çº²åŒ–æŒ¯å¹…KH/K
+    !K=KH/H!è¡¨å¾æ— é‡çº²åŒ–é¢‘çŽ‡
+    H=1.0D0!5.0D0/(2.0D0*PI)!è¡¨å¾æ— é‡çº²åŒ–æŒ¯å¹…KH/K
+    K=1.0D0!è¡¨å¾æ— é‡çº²åŒ–é¢‘çŽ‡
+    KH=K*H!è¡¨å¾é€Ÿåº¦æœ€å¤§å€¼
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=1
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=500.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-7.5D0!-10.0D0!-15.0D0!-10.0D0!-20.0D0!
     RIGH=15.0D0! 10.0D0! 15.0D0! 10.0D0! 20.0D0!
     BOTT=-7.5D0!-10.0D0!-15.0D0!-10.0D0!-20.0D0!
@@ -1656,22 +1656,22 @@
     BOIN=-1.8D0!-0.7D0!-1.0D0!-2.5D0
     TOIN= 1.8D0! 0.7D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1 .OR. TASK_TYPE==5)THEN
         NCYCLE=1000
     ELSE IF(TASK_TYPE==0)THEN
@@ -1687,35 +1687,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     DT=2.0D0*PI/K/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00500N029775.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=20
     NIB=NCYCLE
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=1.0D0!
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=0.4D0
 
@@ -1728,9 +1728,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-0.4D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=2
     BCTYPE_B=2
@@ -1738,19 +1738,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -1759,7 +1759,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1768,7 +1768,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1777,7 +1777,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -1786,7 +1786,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -1796,7 +1796,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -1805,7 +1805,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1814,7 +1814,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1823,7 +1823,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -1832,7 +1832,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -1842,7 +1842,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -1851,7 +1851,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1860,7 +1860,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1869,7 +1869,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -1878,7 +1878,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -1888,7 +1888,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -1897,7 +1897,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1906,7 +1906,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1915,7 +1915,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -1924,7 +1924,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -1938,7 +1938,7 @@
     RETURN
     END SUBROUTINE
 
-    !***********************************************Ö÷ÒªËãÀýÉèÖÃ************************************************************!
+    !***********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®************************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_X_OSCILLATING_CYLINDER
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -1947,7 +1947,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.02D0
@@ -1955,22 +1955,22 @@
         BB=1.02D0
         BT=1.02D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=2
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î£¬5Êä³öÒ»ÁÐËÙ¶È·Ö²¼
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®ï¼Œ5è¾“å‡ºä¸€åˆ—é€Ÿåº¦åˆ†å¸ƒ
     TASK_TYPE=1
-    !------ÄÚ±ß½çÔË¶¯Çé¿ö------!
+    !------å†…è¾¹ç•Œè¿åŠ¨æƒ…å†µ------!
     KH=1.0D0!0.8D0
     H=5.0D0/(2.0D0*PI)!KH/K
     K=KH/H!0.4D0*PI!8.0D0
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=1
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=100.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-25.0D0!-15.0D0!-10.0D0!-7.5D0!-20.0D0!
     RIGH= 25.0D0! 15.0D0! 10.0D0!15.0D0! 20.0D0!
     BOTT=-15.0D0!-15.0D0!-10.0D0!-7.5D0!-20.0D0!
@@ -1996,24 +1996,24 @@
     BOIN=-2.0D0!-0.7D0!-1.0D0!-2.5D0
     TOIN= 2.0D0! 0.7D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1 .OR. TASK_TYPE==5)THEN
-        NCYCLE=600!1500!100µÄ±¶Êý
+        NCYCLE=600!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -2027,35 +2027,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     DT=2.0D0*PI/K/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00100N015300.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=60
     NIB=NCYCLE
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=0.0D0!1.0D0!
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=0.4D0
 
@@ -2068,9 +2068,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-0.4D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=5
     BCTYPE_R=5
     BCTYPE_B=5
@@ -2078,19 +2078,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -2099,7 +2099,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2108,7 +2108,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2117,7 +2117,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2126,7 +2126,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -2136,7 +2136,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -2145,7 +2145,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2154,7 +2154,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2163,7 +2163,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2172,7 +2172,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -2182,7 +2182,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -2191,7 +2191,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2200,7 +2200,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2209,7 +2209,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2218,7 +2218,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -2228,7 +2228,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -2237,7 +2237,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2246,7 +2246,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2255,7 +2255,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2264,7 +2264,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -2278,7 +2278,7 @@
     RETURN
     END SUBROUTINE
 
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ(1-¾²Ö¹³õ³¡£¬2,8-¼äÐªÐÔ·ÉÐÐ£¨ÆËÒí£©)**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(1-é™æ­¢åˆåœºï¼Œ2,8-é—´æ­‡æ€§é£žè¡Œï¼ˆæ‰‘ç¿¼ï¼‰)**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_WING_FLAPPING
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -2287,7 +2287,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.02D0
@@ -2295,18 +2295,18 @@
         BB=1.03D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=2
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
-    Re=1167.292596!1750.938894D0!150.0D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
+    Re=1167.292596!1750.938894D0!150.0D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 15.0D0
     BOTT=-15.0D0
@@ -2332,24 +2332,24 @@
     BOIN=-1.0D0!-1.0D0!-2.5D0
     TOIN= 1.5D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=2400!1600!100µÄ±¶Êý
+        NCYCLE=2400!1600!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -2363,35 +2363,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
-    DT=5.749114556D0/DBLE(NCYCLE)!8.623671834D0/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------ç¡®å®šæ—¶é—´æ­¥------!
+    DT=5.749114556D0/DBLE(NCYCLE)!8.623671834D0/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
     NPLT=20
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
-    BOUNDARY_EXISTENCE_1=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    BOUNDARY_EXISTENCE_2=0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
+    BOUNDARY_EXISTENCE_1=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    BOUNDARY_EXISTENCE_2=0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
-    FREESTREAM_TILT=90.0D0/180.0D0*PI!Ö»ÄÜÎª0
-    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
+    FREESTREAM_TILT=90.0D0/180.0D0*PI!åªèƒ½ä¸º0
+    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
-    VELO_RATIO=0.0D0!0.399262959D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
+    VELO_RATIO=0.0D0!0.399262959D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=-1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -2404,9 +2404,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=5
     BCTYPE_R=5
     BCTYPE_B=5
@@ -2414,19 +2414,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -2435,7 +2435,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2444,7 +2444,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2453,7 +2453,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2462,7 +2462,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -2472,7 +2472,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -2481,7 +2481,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2490,7 +2490,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2499,7 +2499,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2508,7 +2508,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -2518,7 +2518,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -2527,7 +2527,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2536,7 +2536,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2545,7 +2545,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2554,7 +2554,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -2564,7 +2564,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -2573,7 +2573,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2582,7 +2582,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2591,7 +2591,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2600,7 +2600,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -2614,7 +2614,7 @@
     RETURN
     END SUBROUTINE
 
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ(12-¼«ÏÞ¸ºÔØ·ÉÐÐ)**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(12-æžé™è´Ÿè½½é£žè¡Œ)**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_WING_FLAPPING_MAXIMUM
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -2623,7 +2623,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -2631,18 +2631,18 @@
         BB=1.01D0
         BT=1.02D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=2
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
-    Re=1348.087485D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
+    Re=1348.087485D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 30.0D0
     BOTT=-15.0D0
@@ -2668,24 +2668,24 @@
     BOIN=-2.0D0!
     TOIN= 1.5D0!
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=2400!100µÄ±¶Êý
+        NCYCLE=2400!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -2699,35 +2699,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
-    DT=5.412684889D0/DBLE(NCYCLE)!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------ç¡®å®šæ—¶é—´æ­¥------!
+    DT=5.412684889D0/DBLE(NCYCLE)!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
     NPLT=4
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
-    BOUNDARY_EXISTENCE_1=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    BOUNDARY_EXISTENCE_2=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
+    BOUNDARY_EXISTENCE_1=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    BOUNDARY_EXISTENCE_2=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=19.03443435D0/180.0D0*PI!
-    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
-    VELO_RATIO=1.062158495D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
+    VELO_RATIO=1.062158495D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -2740,9 +2740,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=5
     BCTYPE_B=1
@@ -2750,19 +2750,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -2771,7 +2771,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2780,7 +2780,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2789,7 +2789,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -2798,7 +2798,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -2808,7 +2808,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -2817,7 +2817,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2826,7 +2826,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2835,7 +2835,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -2844,7 +2844,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -2854,7 +2854,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -2863,7 +2863,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2872,7 +2872,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2881,7 +2881,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -2890,7 +2890,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -2900,7 +2900,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -2909,7 +2909,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2918,7 +2918,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2927,7 +2927,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -2936,7 +2936,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -2950,7 +2950,7 @@
     RETURN
     END SUBROUTINE
     
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ(12-¼«ÏÞ¸ºÔØ·ÉÐÐ)**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(12-æžé™è´Ÿè½½é£žè¡Œ)**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_WING_FLAPPING_MAXIMUM_HORI
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -2959,7 +2959,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -2967,18 +2967,18 @@
         BB=1.01D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=2
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
-    Re=1348.087485D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
+    Re=1348.087485D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 30.0D0
     BOTT=-15.0D0
@@ -3004,24 +3004,24 @@
     BOIN=-2.0D0!
     TOIN= 1.2D0!
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=2400!100µÄ±¶Êý
+        NCYCLE=2400!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=200
     ELSE IF(TASK_TYPE==2)THEN
@@ -3035,35 +3035,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
-    DT=5.412684889D0/DBLE(NCYCLE)!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------ç¡®å®šæ—¶é—´æ­¥------!
+    DT=5.412684889D0/DBLE(NCYCLE)!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
-    NPLT=4
+    NPLT=20
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
-    BOUNDARY_EXISTENCE_1=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    BOUNDARY_EXISTENCE_2=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
+    BOUNDARY_EXISTENCE_1=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    BOUNDARY_EXISTENCE_2=0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0/180.0D0*PI!
-    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!60.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
-    VELO_RATIO=1.062158495D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
+    VELO_RATIO=1.062158495D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -3076,9 +3076,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=5
     BCTYPE_B=4
@@ -3086,19 +3086,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -3107,7 +3107,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3116,7 +3116,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3125,7 +3125,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3134,7 +3134,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -3144,7 +3144,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -3153,7 +3153,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3162,7 +3162,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3171,7 +3171,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3180,7 +3180,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -3190,7 +3190,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -3199,7 +3199,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3208,7 +3208,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3217,7 +3217,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3226,7 +3226,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -3236,7 +3236,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -3245,7 +3245,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3254,7 +3254,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3263,7 +3263,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3272,7 +3272,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -3286,7 +3286,7 @@
     RETURN
     END SUBROUTINE
     
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ(12-¼«ÏÞ¸ºÔØ·ÉÐÐ)**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(12-æžé™è´Ÿè½½é£žè¡Œ)**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_WING_FLAPPING_FORWARD_SUN
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -3295,7 +3295,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -3303,18 +3303,18 @@
         BB=1.01D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=2
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
-    Re=1362.79076D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
+    Re=1362.79076D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 30.0D0
     BOTT=-15.0D0
@@ -3340,24 +3340,24 @@
     BOIN=-2.2D0!
     TOIN= 3.0D0!
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=2400!100µÄ±¶Êý
+        NCYCLE=2400!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -3371,35 +3371,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
-    DT=8.525093052D0/DBLE(NCYCLE)!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------ç¡®å®šæ—¶é—´æ­¥------!
+    DT=8.525093052D0/DBLE(NCYCLE)!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
     NPLT=4
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
-    BOUNDARY_EXISTENCE_1=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    BOUNDARY_EXISTENCE_2=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
+    BOUNDARY_EXISTENCE_1=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    BOUNDARY_EXISTENCE_2=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0/180.0D0*PI!
-    ABSX_UPSTROKE_ANGLE=52.0D0/180.0D0*PI!60.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    ABSX_UPSTROKE_ANGLE=52.0D0/180.0D0*PI!60.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
-    VELO_RATIO=0.993597078D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
+    VELO_RATIO=0.993597078D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -3412,9 +3412,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=5
     BCTYPE_B=4
@@ -3422,19 +3422,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -3443,7 +3443,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3452,7 +3452,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3461,7 +3461,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3470,7 +3470,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -3480,7 +3480,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -3489,7 +3489,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3498,7 +3498,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3507,7 +3507,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3516,7 +3516,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -3526,7 +3526,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -3535,7 +3535,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3544,7 +3544,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3553,7 +3553,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3562,7 +3562,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -3572,7 +3572,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -3581,7 +3581,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3590,7 +3590,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3599,7 +3599,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3608,7 +3608,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -3622,7 +3622,7 @@
     RETURN
     END SUBROUTINE
     
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ(1-¾²Ö¹³õ³¡£¬2,8-¼äÐªÐÔ·ÉÐÐ£¨ÆËÒí£©)**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®(1-é™æ­¢åˆåœºï¼Œ2,8-é—´æ­‡æ€§é£žè¡Œï¼ˆæ‰‘ç¿¼ï¼‰)**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_WING_FLAPPING_WANG
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -3631,7 +3631,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.03D0
@@ -3639,18 +3639,18 @@
         BB=1.03D0
         BT=1.03D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=2
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
-    Re=75.0D0!1954.616861D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
+    Re=75.0D0!1954.616861D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 15.0D0
     BOTT=-15.0D0
@@ -3676,24 +3676,24 @@
     BOIN=-2.0D0!-1.0D0!-2.5D0
     TOIN= 1.0D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/80.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/80.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/50.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/50.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=800!100µÄ±¶Êý
+        NCYCLE=800!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -3707,35 +3707,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
-    DT=2.8D0*PI/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------ç¡®å®šæ—¶é—´æ­¥------!
+    DT=2.8D0*PI/DBLE(NCYCLE)!7.725054831D0/DBLE(NCYCLE)!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe01580N040000.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=200
     NCLCT=NCYCLE
     NPLT=4
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
-    BOUNDARY_EXISTENCE_1=1!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    BOUNDARY_EXISTENCE_2=0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
+    BOUNDARY_EXISTENCE_1=1!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    BOUNDARY_EXISTENCE_2=0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
-    FREESTREAM_TILT=0.0D0!Ö»ÄÜÎª0
-    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
-    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
+    FREESTREAM_TILT=0.0D0!åªèƒ½ä¸º0
+    ABSX_UPSTROKE_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    TRUX_FLIGHT_ANGLE=180.0D0/180.0D0*PI!113.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
+    ABSX_TRUX_ANGLE=0.0D0/180.0D0*PI!67.0D0/180.0D0*PI!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
-    VELO_RATIO=0.0D0!0.399262959D0!Ä£Äâ1ÇëÈ·ÈÏ·ûºÏÄ£ÄâÄ¿±ê
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
+    VELO_RATIO=0.0D0!0.399262959D0!æ¨¡æ‹Ÿ1è¯·ç¡®è®¤ç¬¦åˆæ¨¡æ‹Ÿç›®æ ‡
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -3748,9 +3748,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=5
     BCTYPE_R=5
     BCTYPE_B=5
@@ -3758,19 +3758,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -3779,7 +3779,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3788,7 +3788,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3797,7 +3797,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -3806,7 +3806,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -3816,7 +3816,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -3825,7 +3825,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3834,7 +3834,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3843,7 +3843,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -3852,7 +3852,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -3862,7 +3862,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -3871,7 +3871,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3880,7 +3880,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3889,7 +3889,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -3898,7 +3898,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -3908,7 +3908,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -3917,7 +3917,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3926,7 +3926,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3935,7 +3935,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -3944,7 +3944,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -3958,7 +3958,7 @@
     RETURN
     END SUBROUTINE
 
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ£¨¾²Ö¹Ô²Öù£©**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®ï¼ˆé™æ­¢åœ†æŸ±ï¼‰**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_STATIC_CYLINDER
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -3967,7 +3967,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.01D0
@@ -3975,18 +3975,18 @@
         BB=1.01D0
         BT=1.01D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=25.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-10.0D0
     RIGH= 10.0D0
     BOTT=-10.0D0
@@ -4012,24 +4012,24 @@
     BOIN=-1.0D0!-1.0D0!-2.5D0
     TOIN= 1.0D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/50.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/50.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/50.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/50.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=100!1500!100µÄ±¶Êý
+        NCYCLE=100!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -4043,38 +4043,38 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     !DTC=CFLC*DX3/( MAXVAL(DABS(U)) + MAXVAL(DABS(V)) )
     !DTV=CFLV*Re*DX3/2.0D0
     !DT=DMIN1(DTV,DTC)
     DT=1.0D0/DBLE(NCYCLE)
 
-    !------ÐøËãÎÄ¼þÃû------!
+    !------ç»­ç®—æ–‡ä»¶å------!
     FILENAME_RESTART="2DXYRe00020N005607.PLT"
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=1.0D0/20.0D0
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=1.0D0!
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -4087,9 +4087,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=5
     BCTYPE_B=4
@@ -4097,19 +4097,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -4118,7 +4118,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4127,7 +4127,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4136,7 +4136,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4145,7 +4145,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -4155,7 +4155,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -4164,7 +4164,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4173,7 +4173,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4182,7 +4182,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4191,7 +4191,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -4201,7 +4201,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -4210,7 +4210,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4219,7 +4219,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4228,7 +4228,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4237,7 +4237,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -4247,7 +4247,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -4256,7 +4256,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4265,7 +4265,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4274,7 +4274,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4283,7 +4283,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM
@@ -4298,7 +4298,7 @@
     RETURN
     END SUBROUTINE
 
-    !**********************************************Ö÷ÒªËãÀýÉèÖÃ£¨¹ÜµÀ¾²Ö¹Ô²Öù£©**********************************************************!
+    !**********************************************ä¸»è¦ç®—ä¾‹è®¾ç½®ï¼ˆç®¡é“é™æ­¢åœ†æŸ±ï¼‰**********************************************************!
     SUBROUTINE MAJOR_CONFIGURATION_STATIC_CYLINDER_IN_CHANNEL
     USE DECLARATION
     USE QUADRIC_PARAMETER
@@ -4307,7 +4307,7 @@
     REAL(KIND=8)::CFLC=1.0D0,CFLV=1.0D0
     REAL(KIND=8)::DTC,DTV
 
-    !------Íø¸ñÖÖÀà------!1-Á¬ÐøÍø¸ñ£»0-·Ö¼¶Íø¸ñ£¨Ä³Ð©Ö»Ê¹ÓÃ¾ùÔÈÍø¸ñËãÀý£¬ÖÃ0²¢¸ü¸ÄLEM1µÈÊýÖµ£©
+    !------ç½‘æ ¼ç§ç±»------!1-è¿žç»­ç½‘æ ¼ï¼›0-åˆ†çº§ç½‘æ ¼ï¼ˆæŸäº›åªä½¿ç”¨å‡åŒ€ç½‘æ ¼ç®—ä¾‹ï¼Œç½®0å¹¶æ›´æ”¹LEM1ç­‰æ•°å€¼ï¼‰
     CONTINUOUS_MESH=1
     IF(CONTINUOUS_MESH==1)THEN
         BL=1.03D0
@@ -4315,18 +4315,18 @@
         BB=1.03D0
         BT=1.03D0
     END IF
-    !------ËãÀýÖÖÀà------!1³õ³¡Îª¾ùÔÈÁ÷³¡µÄËãÀý£¬2³õ³¡ÎªÕæÊµÁ÷³¡µÄËãÀý
+    !------ç®—ä¾‹ç§ç±»------!1åˆåœºä¸ºå‡åŒ€æµåœºçš„ç®—ä¾‹ï¼Œ2åˆåœºä¸ºçœŸå®žæµåœºçš„ç®—ä¾‹
     CASE_TYPE=1
-    !------ÈÎÎñÖÖÀà------!1Õý³£¼ÆËã£¬0Éú³Éintersectionµã·Ö²¼ÊÓÆµ£¬2Êä³öÔË¶¯¹æÂÉ£¬3×ª»»Ïà¶ÔÁ÷³¡£¬4Çó½â½á¹ûÎó²î
+    !------ä»»åŠ¡ç§ç±»------!1æ­£å¸¸è®¡ç®—ï¼Œ0ç”Ÿæˆintersectionç‚¹åˆ†å¸ƒè§†é¢‘ï¼Œ2è¾“å‡ºè¿åŠ¨è§„å¾‹ï¼Œ3è½¬æ¢ç›¸å¯¹æµåœºï¼Œ4æ±‚è§£ç»“æžœè¯¯å·®
     TASK_TYPE=1
-    !------Õ³ÐÔÏî¼ÆËã·½·¨------!1Õý³££¬2¸ù¾ÝÉÏÒ»Ê±¼ä²½¾ö¶¨ÆäÀëÉ¢·½Ê½
+    !------ç²˜æ€§é¡¹è®¡ç®—æ–¹æ³•------!1æ­£å¸¸ï¼Œ2æ ¹æ®ä¸Šä¸€æ—¶é—´æ­¥å†³å®šå…¶ç¦»æ•£æ–¹å¼
     VISCOUS_TERM_METHOD=2
-    !------¶¯±ß½çÐÎ×´------!1Ô²£¬2ÍÖÔ²
+    !------åŠ¨è¾¹ç•Œå½¢çŠ¶------!1åœ†ï¼Œ2æ¤­åœ†
     IB_SHAPE=1
-    !------¸÷ÖÖÎÞÁ¿¸Ù²ÎÊýºÍ×¼ÔòÊý------!
+    !------å„ç§æ— é‡çº²å‚æ•°å’Œå‡†åˆ™æ•°------!
     Re=20.0D0
 
-    !------¼ÆËãÓò³ß¶ÈÁ¿------!
+    !------è®¡ç®—åŸŸå°ºåº¦é‡------!
     LEFT=-15.0D0
     RIGH= 15.0D0
     BOTT=-10.0D0
@@ -4352,24 +4352,24 @@
     BOIN=-1.0D0!-1.0D0!-2.5D0
     TOIN= 1.0D0! 1.0D0! 2.5D0
 
-    !------Íø¸ñÃÜ¶ÈÁ¿------!
+    !------ç½‘æ ¼å¯†åº¦é‡------!
     IF(CONTINUOUS_MESH==0)THEN
-        DX1 =1.0D0/ 3.0D0!Íâ²ã
-        DX21=1.0D0/10.0D0!ÖÐÍâ²ã
-        DX22=1.0D0/30.0D0!ÖÐÖÐ²ã
-        DX23=1.0D0/60.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/50.0D0!ÄÚ²ã
+        DX1 =1.0D0/ 3.0D0!å¤–å±‚
+        DX21=1.0D0/10.0D0!ä¸­å¤–å±‚
+        DX22=1.0D0/30.0D0!ä¸­ä¸­å±‚
+        DX23=1.0D0/60.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/50.0D0!å†…å±‚
     ELSE IF(CONTINUOUS_MESH==1)THEN
-        !DX1 =0.0D0!Íâ²ã
-        !DX21=0.0D0!ÖÐÍâ²ã
-        !DX22=0.0D0!ÖÐÖÐ²ã
-        !DX23=0.0D0!ÖÐÄÚ²ã
-        DX3 =1.0D0/50.0D0!ÄÚ²ã
+        !DX1 =0.0D0!å¤–å±‚
+        !DX21=0.0D0!ä¸­å¤–å±‚
+        !DX22=0.0D0!ä¸­ä¸­å±‚
+        !DX23=0.0D0!ä¸­å†…å±‚
+        DX3 =1.0D0/50.0D0!å†…å±‚
     END IF
 
-    !------µü´ú¿ØÖÆ------!
+    !------è¿­ä»£æŽ§åˆ¶------!
     IF(TASK_TYPE==1)THEN
-        NCYCLE=100!1500!100µÄ±¶Êý
+        NCYCLE=100!1500!100çš„å€æ•°
     ELSE IF(TASK_TYPE==0)THEN
         NCYCLE=250
     ELSE IF(TASK_TYPE==2)THEN
@@ -4383,35 +4383,35 @@
         NDURATION=10*NCYCLE
     END IF
 
-    !------È·¶¨Ê±¼ä²½------!
+    !------ç¡®å®šæ—¶é—´æ­¥------!
     !DTC=CFLC*DX3/( MAXVAL(DABS(U)) + MAXVAL(DABS(V)) )
     !DTV=CFLV*Re*DX3/2.0D0
     !DT=DMIN1(DTV,DTC)
     DT=1.0D0/DBLE(NCYCLE)
 
-    !------µ÷ÓÃÊä³ö´ÎÊý¿ØÖÆ------!
+    !------è°ƒç”¨è¾“å‡ºæ¬¡æ•°æŽ§åˆ¶------!
     NPROBE=NCYCLE
     NCLCT=NCYCLE
     NPLT=1
     NIB=100
 
-    !------¼¤»î±ß½ç------!1-´æÔÚ£¬0-²»´æÔÚ
+    !------æ¿€æ´»è¾¹ç•Œ------!1-å­˜åœ¨ï¼Œ0-ä¸å­˜åœ¨
     BOUNDARY_EXISTENCE_1=1
     BOUNDARY_EXISTENCE_2=0
 
-    !------ÆËÒí×ø±êÏµÐý×ªÏà¹Ø------!
+    !------æ‰‘ç¿¼åæ ‡ç³»æ—‹è½¬ç›¸å…³------!
     FREESTREAM_TILT=0.0D0
     ABSX_UPSTROKE_ANGLE=0.0D0
     TRUX_FLIGHT_ANGLE=0.0D0
     ABSX_TRUX_ANGLE=0.0D0
 
-    !------±³¾°ËÙ¶È³¡ÎÞÁ¿¸ÙËÙ¶È¼°±³¾°ËÙ¶È³¡------!
+    !------èƒŒæ™¯é€Ÿåº¦åœºæ— é‡çº²é€Ÿåº¦åŠèƒŒæ™¯é€Ÿåº¦åœº------!
     VELO_RATIO=1.0D0!
 
     U_FREESTREAM=1.0D0*VELO_RATIO*DCOS(FREESTREAM_TILT)
     V_FREESTREAM=1.0D0*VELO_RATIO*DSIN(FREESTREAM_TILT)
 
-    !------²¼ÖÃÌ½Õë£¨×î¶àËÄ¸ö£©------!
+    !------å¸ƒç½®æŽ¢é’ˆï¼ˆæœ€å¤šå››ä¸ªï¼‰------!
     PROBE_X1=1.2D0
     PROBE_Y1=1.0D0
 
@@ -4424,9 +4424,9 @@
     PROBE_X4=2.5D0
     PROBE_Y4=-1.0D0
 
-    !------±ß½çÌõ¼þÏµÊý------!
-    !1-½ø¿Ú,2-³ö¿Ú,3-¹Ì±Ú£¨ÎÞ»¬ÒÆ£©,4-ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©,5-³ö¿Ú£¨¶ÔÁ÷±ßÌõ£©
-    !£¨×óÎª½ø¿Ú£¬ÉÏÏÂÓÒÎª³ö¿Ú£©
+    !------è¾¹ç•Œæ¡ä»¶ç³»æ•°------!
+    !1-è¿›å£,2-å‡ºå£,3-å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰,4-æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰,5-å‡ºå£ï¼ˆå¯¹æµè¾¹æ¡ï¼‰
+    !ï¼ˆå·¦ä¸ºè¿›å£ï¼Œä¸Šä¸‹å³ä¸ºå‡ºå£ï¼‰
     BCTYPE_L=1
     BCTYPE_R=2
     BCTYPE_B=3
@@ -4434,19 +4434,19 @@
 
     !BC_A*U+BC_B
     !BC_A*DU
-    !BC_A*DU+BC_C*DUN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A= 0£¬BC_B=U_FREESTREAM  £¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£ºÉÏÏÂBC_A= 1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £ºÉÏÏÂBC_A=-1£¬BC_B=0£¬BC_C=0/×óÓÒBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DU+BC_C*DUN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A= 0ï¼ŒBC_B=U_FREESTREAM  ï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šä¸Šä¸‹BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šä¸Šä¸‹BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/å·¦å³BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*V+BC_B
     !BC_A*DV
-    !BC_A*DV+BC_C*DVN ×¨Îª¶ÔÁ÷Ìõ¼þ¶øÉè
-    !ËÙ¶È×ó½ø¿Ú£ºBC_A=-1£¬BC_B=2*V_FREESTREAM£¬BC_C=0£»ÎÞ¼ôÇÐ£¨×ÔÓÉ»¬ÒÆ£©£º×óÓÒBC_A= 1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ³ö¿Ú£ºBC_A= 1£¬BC_B=0             £¬BC_C=0£»¹Ì±Ú£¨ÎÞ»¬ÒÆ£©    £º×óÓÒBC_A=-1£¬BC_B=0£¬BC_C=0/ÉÏÏÂBC_A=0£¬BC_B=0£¬BC_C=0
-    !ËÙ¶ÈÓÒ¶ÔÁ÷³ö¿Ú£ºBC_A=0£¬BC_B=0          £¬BC_C=-U0*DT/DX
+    !BC_A*DV+BC_C*DVN ä¸“ä¸ºå¯¹æµæ¡ä»¶è€Œè®¾
+    !é€Ÿåº¦å·¦è¿›å£ï¼šBC_A=-1ï¼ŒBC_B=2*V_FREESTREAMï¼ŒBC_C=0ï¼›æ— å‰ªåˆ‡ï¼ˆè‡ªç”±æ»‘ç§»ï¼‰ï¼šå·¦å³BC_A= 1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å‡ºå£ï¼šBC_A= 1ï¼ŒBC_B=0             ï¼ŒBC_C=0ï¼›å›ºå£ï¼ˆæ— æ»‘ç§»ï¼‰    ï¼šå·¦å³BC_A=-1ï¼ŒBC_B=0ï¼ŒBC_C=0/ä¸Šä¸‹BC_A=0ï¼ŒBC_B=0ï¼ŒBC_C=0
+    !é€Ÿåº¦å³å¯¹æµå‡ºå£ï¼šBC_A=0ï¼ŒBC_B=0          ï¼ŒBC_C=-U0*DT/DX
     !BC_A*PHI+BC_B
-    !Ñ¹Á¦½ø¿Ú/³ö¿Ú/ÎÞ¼ôÇÐ/¹Ì±Ú:BC_A=1£¬BC_B=0
-    IF(BCTYPE_L==1)THEN!×ó½ø¿Ú
+    !åŽ‹åŠ›è¿›å£/å‡ºå£/æ— å‰ªåˆ‡/å›ºå£:BC_A=1ï¼ŒBC_B=0
+    IF(BCTYPE_L==1)THEN!å·¦è¿›å£
         BCU_AL=0.0D0
         BCU_BL=U_FREESTREAM
         BCU_CL=0.0D0
@@ -4455,7 +4455,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==2)THEN!×ó³ö¿Ú
+    ELSE IF(BCTYPE_L==2)THEN!å·¦å‡ºå£
         BCU_AL=1.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4464,7 +4464,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==3)THEN!×ó¹Ì±Ú
+    ELSE IF(BCTYPE_L==3)THEN!å·¦å›ºå£
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4473,7 +4473,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==4)THEN!×óÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_L==4)THEN!å·¦æ— å‰ªåˆ‡
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=0.0D0
@@ -4482,7 +4482,7 @@
         BCV_CL=0.0D0
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
-    ELSE IF(BCTYPE_L==5)THEN!×ó³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_L==5)THEN!å·¦å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AL=0.0D0
         BCU_BL=0.0D0
         BCU_CL=-DT*U_FREESTREAM
@@ -4492,7 +4492,7 @@
         BCPHI_AL=1.0D0
         BCPHI_BL=0.0D0
     END IF
-    IF(BCTYPE_R==1)THEN!ÓÒ½ø¿Ú
+    IF(BCTYPE_R==1)THEN!å³è¿›å£
         BCU_AR=0.0D0
         BCU_BR=U_FREESTREAM
         BCU_CR=0.0D0
@@ -4501,7 +4501,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==2)THEN!ÓÒ³ö¿Ú
+    ELSE IF(BCTYPE_R==2)THEN!å³å‡ºå£
         BCU_AR=1.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4510,7 +4510,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==3)THEN!ÓÒ¹Ì±Ú
+    ELSE IF(BCTYPE_R==3)THEN!å³å›ºå£
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4519,7 +4519,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==4)THEN!ÓÒÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_R==4)THEN!å³æ— å‰ªåˆ‡
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=0.0D0
@@ -4528,7 +4528,7 @@
         BCV_CR=0.0D0
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
-    ELSE IF(BCTYPE_R==5)THEN!ÓÒ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_R==5)THEN!å³å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AR=0.0D0
         BCU_BR=0.0D0
         BCU_CR=-DT*U_FREESTREAM
@@ -4538,7 +4538,7 @@
         BCPHI_AR=1.0D0
         BCPHI_BR=0.0D0
     END IF
-    IF(BCTYPE_B==1)THEN!ÏÂ½ø¿Ú
+    IF(BCTYPE_B==1)THEN!ä¸‹è¿›å£
         BCU_AB=-1.0D0
         BCU_BB=2.0D0*U_FREESTREAM
         BCU_CB=0.0D0
@@ -4547,7 +4547,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==2)THEN!ÏÂ³ö¿Ú
+    ELSE IF(BCTYPE_B==2)THEN!ä¸‹å‡ºå£
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4556,7 +4556,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==3)THEN!ÏÂ¹Ì±Ú
+    ELSE IF(BCTYPE_B==3)THEN!ä¸‹å›ºå£
         BCU_AB=-1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4565,7 +4565,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==4)THEN!ÏÂÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_B==4)THEN!ä¸‹æ— å‰ªåˆ‡
         BCU_AB=1.0D0
         BCU_BB=0.0D0
         BCU_CB=0.0D0
@@ -4574,7 +4574,7 @@
         BCV_CB=0.0D0
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
-    ELSE IF(BCTYPE_B==5)THEN!ÏÂ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_B==5)THEN!ä¸‹å‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AB=0.0D0
         BCU_BB=0.0D0
         BCU_CB=-DT*V_FREESTREAM
@@ -4584,7 +4584,7 @@
         BCPHI_AB=1.0D0
         BCPHI_BB=0.0D0
     END IF
-    IF(BCTYPE_T==1)THEN!ÉÏ½ø¿Ú
+    IF(BCTYPE_T==1)THEN!ä¸Šè¿›å£
         BCU_AT=-1.0D0
         BCU_BT=2.0D0*U_FREESTREAM
         BCU_CT=0.0D0
@@ -4593,7 +4593,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==2)THEN!ÉÏ³ö¿Ú
+    ELSE IF(BCTYPE_T==2)THEN!ä¸Šå‡ºå£
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4602,7 +4602,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==3)THEN!ÉÏ¹Ì±Ú
+    ELSE IF(BCTYPE_T==3)THEN!ä¸Šå›ºå£
         BCU_AT=-1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4611,7 +4611,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==4)THEN!ÉÏÎÞ¼ôÇÐ
+    ELSE IF(BCTYPE_T==4)THEN!ä¸Šæ— å‰ªåˆ‡
         BCU_AT=1.0D0
         BCU_BT=0.0D0
         BCU_CT=0.0D0
@@ -4620,7 +4620,7 @@
         BCV_CT=0.0D0
         BCPHI_AT=1.0D0
         BCPHI_BT=0.0D0
-    ELSE IF(BCTYPE_T==5)THEN!ÉÏ³ö¿Ú£¨¶ÔÁ÷£©
+    ELSE IF(BCTYPE_T==5)THEN!ä¸Šå‡ºå£ï¼ˆå¯¹æµï¼‰
         BCU_AT=0.0D0
         BCU_BT=0.0D0
         BCU_CT=-DT*V_FREESTREAM

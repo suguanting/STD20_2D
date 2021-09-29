@@ -1,4 +1,4 @@
-﻿    !######################################################################!
+    !######################################################################!
     !#                                                                    #!
     !#                              步骤子函数                            #!
     !#                                                                    #!
@@ -163,7 +163,7 @@
             CALL POSE_VELO_QUADRIC_2D_PURE_ROTATING_STEADY(T)
         END IF
 
-        WRITE(180,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
+        WRITE(180,"( I6,3(1X,F15.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
         IF(IB_LOCOMOTION==1 &
             .OR. IB_LOCOMOTION==2 &
             .OR. IB_LOCOMOTION==11 &
@@ -282,7 +282,7 @@
             CALL POSE_VELO_QUADRIC_2D_INTERMITTENT_HIND(T)
         END IF
 
-        WRITE(200,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
+        WRITE(200,"( I6,3(1X,F15.10))") NSTEP,TAU/TAUC,PHIW/PI*180.0D0,PSIW/PI*180.0D0
         WRITE(210,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,VELO_TRAN_R(2),VELO_ANGL
         WRITE(230,"( I6,3(1X,F14.10))") NSTEP,TAU/TAUC,CEN(1),CEN(2)
 
@@ -1083,6 +1083,20 @@
     DTAUP  =0.27295585D0
     DTAUS  =0.540158569D0
     GAMMA_R=26.31139939D0
+    PSI0   =9.723940932D0/180.0D0*PI!-60.0D0/180.0D0*PI!
+    PSIM   =42.25206072D0/180.0D0*PI
+    !!翻转 上拍最大攻角提前0.1
+    !TAU_0  =0.593442765D0
+    !DTAUP  =0.27295585D0+0.1D0
+    !DTAUS  =0.540158569D0-0.1D0
+    !GAMMA_R=26.31139939D0+0.05D0*360.0D0
+    !PSI0   =9.723940932D0/180.0D0*PI
+    !PSIM   =42.25206072D0/180.0D0*PI
+    !翻转 上拍最大攻角滞后0.1
+    TAU_0  =0.593442765D0
+    DTAUP  =0.27295585D0-0.1D0
+    DTAUS  =0.540158569D0+0.1D0
+    GAMMA_R=26.31139939D0-0.05D0*360.0D0
     PSI0   =9.723940932D0/180.0D0*PI
     PSIM   =42.25206072D0/180.0D0*PI
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
@@ -1357,6 +1371,11 @@
     GAMMA_R=-10.02822399D0
     PSI0   =-2.973544732D0/180.0D0*PI
     PSIM   =39.80685734D0/180.0D0*PI
+    !!翻转(前翅的时间规律)
+    !TAU_0  =0.593442765D0
+    !DTAUP  =0.27295585D0
+    !DTAUS  =0.540158569D0
+    !GAMMA_R=26.31139939D0
     !--------------------本子函数根据不同扑翼规律需改变上方---------------------!
 
     !--------------------周期内时刻TAU---------------------!输出用
@@ -1532,7 +1551,7 @@
     REAL(KIND=8)::THAT_2
 
     IF( (DTAUP+DTAUS)/2.0D0>DMIN1(TAU_0,1.0D0-TAU_0)+1.0D-6 )THEN
-        WRITE(*,*)"翻转运动规律有误"
+        WRITE(*,*) "Error in rotation pattern"
         STOP
     END IF
 
